@@ -1,0 +1,40 @@
+#pragma once
+
+class Camera;
+
+class Bullet
+{
+public:
+	Bullet(int type, int i, int j);
+	~Bullet();
+
+	void loadBulletGLB(const std::string& filename);
+	GLuint loadBulletTexture(const char* path);
+
+	void bulletSetting();
+	void bulletSettingAgain(glm::vec3 Pos);
+	void render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
+		glm::mat4 lightSpaceMatrix, GLuint shadowMap);
+	void renderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
+
+	bool isCollapsed();
+	void bulletUpdate();
+
+	glm::vec3 gettPos() { return tPos; }
+	void setdirection(glm::vec3 startPos, glm::vec3 endPos) { direction = glm::normalize(endPos - startPos); }	
+
+private:
+	glm::vec3 position;
+	GLuint VAO, VBO, EBO, shaderprogram, Texture;
+	std::vector<unsigned int> Indices;
+	GLuint ViewLoc, ProjLoc, ModelLoc;
+	glm::mat4 model{ 1.0f };
+	Assimp::Importer objectImporter;
+	bool shoot{ false };
+	float angle{ 0.0f };
+	glm::vec3 direction{ 1.0f };
+	float bulletSpeed{ 0.2f };
+	int b_type{ 0 };
+	glm::vec3 tPos;
+	int enemy_i{}, enemy_j{};
+};

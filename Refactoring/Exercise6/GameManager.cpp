@@ -41,6 +41,8 @@ void GameManager::winset(int argc, char* argv[])
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 
+	glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
+
 	glfwSetKeyCallback(window, keyFunc);
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetMouseButtonCallback(window, mouseFunc);
@@ -88,8 +90,6 @@ void GameManager::winset(int argc, char* argv[])
 	bgm = soundEngine->play2D(source, true, true);
 	basebgm = soundEngine->play2D(source2, true, true);
 	startbgm->setIsPaused(false);
-
-	glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 }
 
 void GameManager::drawfunc()

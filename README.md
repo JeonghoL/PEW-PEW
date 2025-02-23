@@ -22,4 +22,4 @@ Development environment: Visual Studio 2022
 Graphics: OPENGL
 
 
-INFO - Refactoring project Failed and ReMaking project
+INFO - Refactoring project Failed and ReMaking the project

@@ -20,3 +20,6 @@ Game Title: Pew Pew
 Development environment: Visual Studio 2022
 
 Graphics: OPENGL
+
+
+INFO - Refactoring project

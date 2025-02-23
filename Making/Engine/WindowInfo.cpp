@@ -13,7 +13,5 @@ void WindowInfo::Init()
 
 	glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-		GET_SINGLE(Input)->KeyBoardInput(window, key, scancode, action, mods);
-		});
+	glfwSetKeyCallback(window, Input::KeyBoardInput);
 }

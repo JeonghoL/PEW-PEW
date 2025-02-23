@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "WindowInfo.h"
+#include "Input.h"
 
 void WindowInfo::Init()
 {
@@ -11,4 +12,8 @@ void WindowInfo::Init()
 	glEnable(GL_DEPTH_TEST);
 
 	glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+		GET_SINGLE(Input)->KeyBoardInput(window, key, scancode, action, mods);
+		});
 }

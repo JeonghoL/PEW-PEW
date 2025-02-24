@@ -16,7 +16,7 @@ void Engine::Update()
 		GET_SINGLE(Timer)->Update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		Draw();
+		Draw(window);
 		ShowFps();
 		// TODO
 
@@ -25,8 +25,11 @@ void Engine::Update()
 	}
 }
 
-void Engine::Draw()
+void Engine::Draw(GLFWwindow* window)
 {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
+	glfwGetCursorPos(window, &cur_x, &cur_y);
 
 	glFinish();
 }

@@ -17,12 +17,11 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// 각종 lib
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "glfw3.lib")
 #pragma warning(disable: 4711 4710 4100)
-
-// 각종 lib
 
 // 각종 typedef
 using int8 = __int8;
@@ -51,5 +50,8 @@ const unsigned int WIN_W = 800;
 const unsigned int WIN_H = 600;
 const unsigned int WIN_X = 100;
 const unsigned int WIN_Y = 100;
+
+extern double cur_x;
+extern double cur_y;
 
 extern unique_ptr<class Engine> GEngine;

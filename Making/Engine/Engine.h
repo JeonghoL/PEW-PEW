@@ -5,7 +5,7 @@ class Engine
 public:
 	void Init();
 	void Update();
-	void Draw();
+	void Draw(GLFWwindow* window);
 
 private:
 	void ShowFps();

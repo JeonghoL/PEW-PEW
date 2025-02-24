@@ -3,23 +3,27 @@
 #include "WindowInfo.h"
 #include "Timer.h"
 #include "Skybox.h"
+#include "Camera.h"
 
 void Engine::Init()
 {
 	GET_SINGLE(WindowInfo)->Init();
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Skybox)->Init();
+	GET_SINGLE(Camera)->Init();
 }
 
 void Engine::Update()
 {
 	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
+
 	while (!glfwWindowShouldClose(window)) {
-		GET_SINGLE(Timer)->Update();
+		//GET_SINGLE(Timer)->Update();
+		GET_SINGLE(Camera)->Update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Draw(window);
-		ShowFps();
+		//ShowFps();
 		// TODO
 
 		glfwSwapBuffers(window);
@@ -34,7 +38,8 @@ void Engine::Draw(GLFWwindow* window)
 	glfwGetCursorPos(window, &cur_x, &cur_y);
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
-	glm::mat4 view = glm::mat4(1.0f);
+
+	glm::mat4 view = GET_SINGLE(Camera)->getViewMatrix();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GET_SINGLE(Skybox)->Draw(view, projection);

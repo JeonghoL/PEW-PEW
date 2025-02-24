@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Input.h"
+#include "Camera.h"
 
 void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -21,6 +22,46 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			//}
 			if (action == GLFW_PRESS)
 				glfwSetWindowShouldClose(window, GL_TRUE);
+			break;
+		case GLFW_KEY_RIGHT:
+			if (action == GLFW_PRESS)
+			{
+				GET_SINGLE(Camera)->RotRight(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				GET_SINGLE(Camera)->RotRight(false);
+			}
+			break;
+		case GLFW_KEY_LEFT:
+			if (action == GLFW_PRESS)
+			{
+				GET_SINGLE(Camera)->RotLeft(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				GET_SINGLE(Camera)->RotLeft(false);
+			}
+			break;
+		case GLFW_KEY_UP:
+			if (action == GLFW_PRESS)
+			{
+				GET_SINGLE(Camera)->RotUp(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				GET_SINGLE(Camera)->RotUp(false);
+			}
+			break;
+		case GLFW_KEY_DOWN:
+			if (action == GLFW_PRESS)
+			{
+				GET_SINGLE(Camera)->RotDown(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				GET_SINGLE(Camera)->RotDown(false);
+			}
 			break;
 		//case GLFW_KEY_LEFT_SHIFT:
 		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)

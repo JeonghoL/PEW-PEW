@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MainCharacter.h"
-//#include "Texture.h"
+#include "AnimatedModel.h"
 
 //struct AnimInfo {
 //    float Duration;
@@ -44,9 +44,25 @@
 
 MainCharacter::MainCharacter()
 {
-    //loadGLBFile(0, player_BoneInfo, "basepose/cat_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+	player_BoneInfo = new vector<BoneInfo>();
+
+	animModel = new AnimatedModel();
+
+    animModel->loadGLBFile(0, *player_BoneInfo, "Glb/cat_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
     Texture = LoadTexture("Texture/CatTexture.png");
     SetUpShader("Shaders/CatVert.glsl", "Shaders/CatFrag.glsl", shaderprogram);
+}
+
+MainCharacter::~MainCharacter()
+{
+    delete player_BoneInfo;
+	delete animModel;
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &VBO2);
+	glDeleteBuffers(1, &EBO);
+	glDeleteTextures(1, &Texture);
+	glDeleteProgram(shaderprogram);
 }
 
 void MainCharacter::Update()
@@ -60,7 +76,7 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection)
     //{
         //UpdateAnimation(0, player_BoneInfo, deltaTime, player_CurrentAnim);
         glUseProgram(shaderprogram);
-        //setupBoneTransforms(player_BoneInfo, shaderprogram);
+        animModel->SetupBoneTransforms(*player_BoneInfo, shaderprogram);
 
         //if (!dying)
         //    lastangle = angle;

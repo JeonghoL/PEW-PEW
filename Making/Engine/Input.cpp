@@ -65,6 +65,46 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				input->camera->RotDown(false);
 			}
 			break;
+		case GLFW_KEY_D:
+			if (action == GLFW_PRESS)
+			{
+				input->camera->MoveRight(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				input->camera->MoveRight(false);
+			}
+			break;
+		case GLFW_KEY_A:
+			if (action == GLFW_PRESS)
+			{
+				input->camera->MoveLeft(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				input->camera->MoveLeft(false);
+			}
+			break;
+		case GLFW_KEY_W:
+			if (action == GLFW_PRESS)
+			{
+				input->camera->MoveFront(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				input->camera->MoveFront(false);
+			}
+			break;
+		case GLFW_KEY_S:
+			if (action == GLFW_PRESS)
+			{
+				input->camera->MoveBack(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				input->camera->MoveBack(false);
+			}
+			break;
 		//case GLFW_KEY_LEFT_SHIFT:
 		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
 		//	{

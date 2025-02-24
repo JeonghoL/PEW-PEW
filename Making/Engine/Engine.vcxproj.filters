@@ -19,6 +19,9 @@
     <Filter Include="Character">
       <UniqueIdentifier>{18b323c0-1c3b-4bd1-8cbe-5d4366aa60f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{6204d328-0518-4bfc-ad29-a6feaf13b2fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -51,6 +54,9 @@
     <ClInclude Include="MainCharacter.h">
       <Filter>Character</Filter>
     </ClInclude>
+    <ClInclude Include="AnimatedModel.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -82,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="MainCharacter.cpp">
       <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedModel.cpp">
+      <Filter>Animation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

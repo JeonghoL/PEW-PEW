@@ -54,6 +54,8 @@ public:								\
 
 #define CAMERAPOS()			GET_SINGLE(Camera)->getPosition()
 
+#define MAX_NUM_BONES_PER_VERTEX 4
+
 // 공용 변수들
 const unsigned int WIN_W = 800;
 const unsigned int WIN_H = 600;
@@ -64,6 +66,8 @@ const float PI = 3.141592f;
 
 extern double cur_x;
 extern double cur_y;
+
+const unsigned int MAX_BONES = 100;
 
 extern unique_ptr<class Engine> GEngine;
 

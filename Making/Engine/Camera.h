@@ -23,6 +23,12 @@ public:
 
     //void addfinishpos();
     //void setInitialDirection(const glm::vec3& direction);
+    
+    void MoveRight(bool in) { moveRight = in; };
+    void MoveLeft(bool in) { moveLeft = in; };
+    void MoveFront(bool in) { moveFront = in; };
+    void MoveBack(bool in) { moveBack = in; };
+
     void RotRight(bool in) { rotRight = in; };
 	void RotLeft(bool in) { rotLeft = in; };
 	void RotUp(bool in) { rotUp = in; };
@@ -45,6 +51,11 @@ private:
     glm::vec3 position = { 0.0f, 0.0f, 0.0f };
     float yaw = { 0.0f };
 	float pitch = { 0.0f };
+
+    bool moveRight = { false };
+    bool moveLeft = { false };
+    bool moveFront = { false };
+    bool moveBack = { false };
 
 	bool rotRight = { false };
 	bool rotLeft = { false };

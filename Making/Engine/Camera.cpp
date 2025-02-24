@@ -37,6 +37,18 @@ void Camera::Update()
 
 	if (rotDown && pitch > -89.9f)
 		pitch -= 0.1f;
+
+    if (moveRight)
+		position.z += 0.01f;
+
+	if (moveLeft)
+		position.z -= 0.01f;
+
+	if (moveFront)
+		position.x += 0.01f;
+
+	if (moveBack)
+		position.x -= 0.01f;
 }
 
 //void Camera::handleAltKey(bool pressed) {

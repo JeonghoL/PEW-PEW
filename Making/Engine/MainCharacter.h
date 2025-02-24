@@ -1,10 +1,14 @@
 #pragma once
 //#include "ShadowMapping.h"
 
+class AnimatedModel;
+struct BoneInfo;
+
 class MainCharacter
 {
 public:
 	MainCharacter();
+	~MainCharacter();
 
 	void Update();
 	void Draw(glm::mat4 view, glm::mat4 projection);
@@ -44,7 +48,7 @@ public:
 
 private:
 	//glm::vec3 characterPos{ -37.3051f, 0.0f, 42.5001f };
-	glm::vec3 characterPos{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 characterPos{ 10.0f, 0.0f, 0.0f };
 	GLuint VAO, VBO, VBO2, EBO, shaderprogram, Texture;
 	GLuint ViewLoc, ProjLoc, ModelLoc, TextureLoc, UseTextureLoc, colorHitLoc;
 	std::vector<unsigned int> Indices;
@@ -58,4 +62,7 @@ private:
 	float revive_timer{ 1200.0f };
 
 	bool Right_on{ false }, Left_on{ false }, Top_on{ false }, Bottom_on{ false }, Shift_on{ false }, hitbox_on{ false };
+
+	vector<BoneInfo>* player_BoneInfo;
+	AnimatedModel* animModel;
 };

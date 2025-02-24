@@ -2,11 +2,13 @@
 #include "Engine.h"
 #include "WindowInfo.h"
 #include "Timer.h"
+#include "Skybox.h"
 
 void Engine::Init()
 {
 	GET_SINGLE(WindowInfo)->Init();
 	GET_SINGLE(Timer)->Init();
+	GET_SINGLE(Skybox)->Init();
 }
 
 void Engine::Update()
@@ -31,7 +33,18 @@ void Engine::Draw(GLFWwindow* window)
 	
 	glfwGetCursorPos(window, &cur_x, &cur_y);
 
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GET_SINGLE(Skybox)->Draw(view, projection);
+
 	glFinish();
+}
+
+void Engine::Release()
+{
+	GET_SINGLE(Skybox)->Release();
 }
 
 void Engine::ShowFps()

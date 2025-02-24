@@ -5,6 +5,7 @@
 
 #include <Windows.h>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <map>
@@ -55,3 +56,24 @@ extern double cur_x;
 extern double cur_y;
 
 extern unique_ptr<class Engine> GEngine;
+
+inline string LoadFile(const string& filename) {
+	ifstream file(filename);
+	if (!file.is_open()) {
+		std::cerr << "Error: cannot open \"" << filename << "\"" << std::endl;
+		return "";
+	}
+
+	// 파일 크기 구하기
+	file.seekg(0, std::ios::end);
+	size_t size = file.tellg();
+	file.seekg(0, std::ios::beg);
+
+	// 버퍼 할당 및 파일 읽기
+	std::string buffer;
+	buffer.resize(size);
+	file.read(&buffer[0], size);
+	file.close();
+
+	return buffer;
+}

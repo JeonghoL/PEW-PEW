@@ -42,7 +42,7 @@
 //extern float light_angle;
 //extern bool finish;
 
-void MainCharacter::Init()
+MainCharacter::MainCharacter()
 {
     //loadGLBFile(0, player_BoneInfo, "basepose/cat_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
     Texture = LoadTexture("Texture/CatTexture.png");

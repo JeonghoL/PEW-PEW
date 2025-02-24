@@ -5,6 +5,7 @@
 
 #include <Windows.h>
 #include <iostream>
+#include <memory>
 #include <fstream>
 #include <vector>
 #include <string>

@@ -5,14 +5,22 @@
 #include "Skybox.h"
 #include "Camera.h"
 #include "MainCharacter.h"
+#include "Input.h"
 
 void Engine::Init()
 {
 	GET_SINGLE(WindowInfo)->Init();
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Skybox)->Init();
-	GET_SINGLE(Camera)->Init();
-	GET_SINGLE(MainCharacter)->Init();
+
+	camera = make_unique<Camera>();
+	mainCat = make_unique<MainCharacter>();
+	input = make_unique<Input>();
+	input->SetCamera(camera.get());
+
+	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
+	glfwSetWindowUserPointer(window, input.get());
+	glfwSetKeyCallback(window, Input::KeyBoardInput);
 }
 
 void Engine::Update()
@@ -21,7 +29,7 @@ void Engine::Update()
 
 	while (!glfwWindowShouldClose(window)) {
 		//GET_SINGLE(Timer)->Update();
-		GET_SINGLE(Camera)->Update();
+		camera->Update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Draw(window);
@@ -40,11 +48,11 @@ void Engine::Draw(GLFWwindow* window)
 	glfwGetCursorPos(window, &cur_x, &cur_y);
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
-	glm::mat4 view = GET_SINGLE(Camera)->getViewMatrix();
+	glm::mat4 view = camera->getViewMatrix();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GET_SINGLE(Skybox)->Draw(view, projection);
-	GET_SINGLE(MainCharacter)->Draw(view, projection);
+	mainCat->Draw(view, projection);
 
 	glFinish();
 }

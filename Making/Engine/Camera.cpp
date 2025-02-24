@@ -7,7 +7,7 @@
 //extern bool cloud_go;
 //extern bool finish;
 
-void Camera::Init()
+Camera::Camera()
 {
     Rm = { 1.0f };
     LeftAlt_on = { false };
@@ -20,8 +20,8 @@ void Camera::Init()
     finish_pos = { 0.0f };
 
     glm::vec3 position = { 0.0f, 0.0f, 0.0f };
-	yaw = { 0.0f };
-	pitch = { 0.0f };
+    yaw = { 0.0f };
+    pitch = { 0.0f };
 }
 
 void Camera::Update()

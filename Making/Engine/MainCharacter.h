@@ -3,12 +3,10 @@
 
 class MainCharacter
 {
-	DECLARE_SINGLE(MainCharacter);
-
 public:
-	void Init();
-	void Update();
+	MainCharacter();
 
+	void Update();
 	void Draw(glm::mat4 view, glm::mat4 projection);
 
 	//void drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap);

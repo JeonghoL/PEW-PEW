@@ -4,6 +4,8 @@
 
 void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+	Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
+
 	//bool wasMoving = mainCat->isMoving();
 	//bool wasRunning = mainCat->shift_value();
 
@@ -26,41 +28,41 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 		case GLFW_KEY_RIGHT:
 			if (action == GLFW_PRESS)
 			{
-				GET_SINGLE(Camera)->RotRight(true);
+				input->camera->RotRight(true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				GET_SINGLE(Camera)->RotRight(false);
+				input->camera->RotRight(false);
 			}
 			break;
 		case GLFW_KEY_LEFT:
 			if (action == GLFW_PRESS)
 			{
-				GET_SINGLE(Camera)->RotLeft(true);
+				input->camera->RotLeft(true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				GET_SINGLE(Camera)->RotLeft(false);
+				input->camera->RotLeft(false);
 			}
 			break;
 		case GLFW_KEY_UP:
 			if (action == GLFW_PRESS)
 			{
-				GET_SINGLE(Camera)->RotUp(true);
+				input->camera->RotUp(true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				GET_SINGLE(Camera)->RotUp(false);
+				input->camera->RotUp(false);
 			}
 			break;
 		case GLFW_KEY_DOWN:
 			if (action == GLFW_PRESS)
 			{
-				GET_SINGLE(Camera)->RotDown(true);
+				input->camera->RotDown(true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				GET_SINGLE(Camera)->RotDown(false);
+				input->camera->RotDown(false);
 			}
 			break;
 		//case GLFW_KEY_LEFT_SHIFT:

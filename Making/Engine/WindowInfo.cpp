@@ -12,6 +12,4 @@ void WindowInfo::Init()
 	glEnable(GL_DEPTH_TEST);
 
 	glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-	glfwSetKeyCallback(window, Input::KeyBoardInput);
 }

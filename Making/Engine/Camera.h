@@ -1,10 +1,9 @@
 #pragma once
 
 class Camera {
-    DECLARE_SINGLE(Camera);
-
 public:
-    void Init();
+    Camera();
+
     void Update();
     //void handleAltKey(bool pressed);
     //void handleMouseMovement(double cur_x, double cur_y);

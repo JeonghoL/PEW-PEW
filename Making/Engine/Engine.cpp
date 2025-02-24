@@ -13,13 +13,13 @@ void Engine::Init()
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Skybox)->Init();
 
-	camera = make_unique<Camera>();
-	mainCat = make_unique<MainCharacter>();
-	input = make_unique<Input>();
-	input->SetCamera(camera.get());
+	camera = new Camera();
+	mainCat = new MainCharacter();
+	input = new Input();
+	input->SetCamera(camera);
 
 	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
-	glfwSetWindowUserPointer(window, input.get());
+	glfwSetWindowUserPointer(window, input);
 	glfwSetKeyCallback(window, Input::KeyBoardInput);
 }
 
@@ -34,6 +34,7 @@ void Engine::Update()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Draw(window);
 		//ShowFps();
+		
 		// TODO
 
 		glfwSwapBuffers(window);
@@ -60,6 +61,9 @@ void Engine::Draw(GLFWwindow* window)
 void Engine::Release()
 {
 	GET_SINGLE(Skybox)->Release();
+	delete input;
+	delete mainCat;
+	delete camera;
 }
 
 void Engine::ShowFps()

@@ -16,7 +16,7 @@ private:
 	void ShowFps();
 
 private:
-	unique_ptr<Camera> camera;
-	unique_ptr<MainCharacter> mainCat;
-	unique_ptr<Input> input;
+	Camera* camera = { nullptr };
+	MainCharacter* mainCat = { nullptr };
+	Input* input = { nullptr };
 };

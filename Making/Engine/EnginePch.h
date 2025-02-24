@@ -34,6 +34,7 @@ using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
+// 싱글톤 매크로
 #define DECLARE_SINGLE(type)		\
 private:							\
 	type() {}						\
@@ -47,6 +48,7 @@ public:								\
 
 #define GET_SINGLE(type)	type::GetInstance()
 
+// 공용 변수들
 const unsigned int WIN_W = 800;
 const unsigned int WIN_H = 600;
 const unsigned int WIN_X = 100;
@@ -57,6 +59,7 @@ extern double cur_y;
 
 extern unique_ptr<class Engine> GEngine;
 
+// 공용 함수들
 inline string LoadFile(const string& filename) {
 	ifstream file(filename);
 	if (!file.is_open()) {

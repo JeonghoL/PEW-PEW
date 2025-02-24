@@ -18,6 +18,10 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
 // 각종 lib
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glew32.lib")
@@ -64,23 +68,6 @@ extern double cur_y;
 extern unique_ptr<class Engine> GEngine;
 
 // 공용 함수들
-inline string LoadFile(const string& filename) {
-	ifstream file(filename);
-	if (!file.is_open()) {
-		std::cerr << "Error: cannot open \"" << filename << "\"" << std::endl;
-		return "";
-	}
-
-	// 파일 크기 구하기
-	file.seekg(0, std::ios::end);
-	size_t size = file.tellg();
-	file.seekg(0, std::ios::beg);
-
-	// 버퍼 할당 및 파일 읽기
-	std::string buffer;
-	buffer.resize(size);
-	file.read(&buffer[0], size);
-	file.close();
-
-	return buffer;
-}
+string LoadFile(const string& filename);
+GLuint LoadTexture(const char* path);
+void SetUpShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);

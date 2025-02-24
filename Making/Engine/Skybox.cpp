@@ -6,7 +6,7 @@ void Skybox::Init()
 {
     faces = { "Skybox/right.jpg", "Skybox/left.jpg", "Skybox/top.jpg", "Skybox/bottom.jpg", "Skybox/front.jpg", "Skybox/back.jpg" };
     cubemapTexture = LoadCubemap(faces);
-    SetUpSkyboxShader("Shaders/SkyboxVert.glsl", "Shaders/SkyboxFrag.glsl", shaderprogram);
+    SetUpShader("Shaders/SkyboxVert.glsl", "Shaders/SkyboxFrag.glsl", shaderprogram);
     SetUpSkyboxVertices();
 
     glGenVertexArrays(1, &VAO);
@@ -104,35 +104,6 @@ void Skybox::SetUpSkyboxVertices()
          1.0f, -1.0f,  1.0f
     };
     memcpy(skyboxVertices, vertices, sizeof(vertices));
-}
-
-void Skybox::SetUpSkyboxShader(const char* vertexName, const char* fragmentName, GLuint& shaderName)
-{
-    string vertSource = LoadFile(vertexName);
-    string fragSource = LoadFile(fragmentName);
-
-    if (vertSource.empty() || fragSource.empty()) {
-        cerr << "Failed to load shader files" << endl;
-        return;
-    }
-
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const char* vertSourcePtr = vertSource.c_str();
-    glShaderSource(vertexShader, 1, &vertSourcePtr, NULL);
-    glCompileShader(vertexShader);
-
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* fragSourcePtr = fragSource.c_str();
-    glShaderSource(fragmentShader, 1, &fragSourcePtr, NULL);
-    glCompileShader(fragmentShader);
-
-    shaderName = glCreateProgram();
-    glAttachShader(shaderName, vertexShader);
-    glAttachShader(shaderName, fragmentShader);
-    glLinkProgram(shaderName);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
 }
 
 void Skybox::Draw(const glm::mat4& view, const glm::mat4& projection)

@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Skybox.h"
 #include "Camera.h"
+#include "MainCharacter.h"
 
 void Engine::Init()
 {
@@ -11,6 +12,7 @@ void Engine::Init()
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Skybox)->Init();
 	GET_SINGLE(Camera)->Init();
+	GET_SINGLE(MainCharacter)->Init();
 }
 
 void Engine::Update()
@@ -38,11 +40,11 @@ void Engine::Draw(GLFWwindow* window)
 	glfwGetCursorPos(window, &cur_x, &cur_y);
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
-
 	glm::mat4 view = GET_SINGLE(Camera)->getViewMatrix();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GET_SINGLE(Skybox)->Draw(view, projection);
+	GET_SINGLE(MainCharacter)->Draw(view, projection);
 
 	glFinish();
 }

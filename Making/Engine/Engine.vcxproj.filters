@@ -16,6 +16,9 @@
     <Filter Include="Object">
       <UniqueIdentifier>{087f9cd6-fa7a-4955-8c3c-91fd7bf9ef4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Character">
+      <UniqueIdentifier>{18b323c0-1c3b-4bd1-8cbe-5d4366aa60f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -45,6 +48,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="MainCharacter.h">
+      <Filter>Character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -73,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MainCharacter.cpp">
+      <Filter>Character</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

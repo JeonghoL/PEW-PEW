@@ -10,8 +10,6 @@ public:
 	unsigned int LoadCubemap(vector<string> faces);
 	void SetUpSkyboxVertices();
 
-	void SetUpSkyboxShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);
-
 	void Draw(const glm::mat4& view, const glm::mat4& projection);
 
 private:

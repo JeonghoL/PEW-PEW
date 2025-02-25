@@ -31,10 +31,11 @@ void Engine::Update()
 	while (!glfwWindowShouldClose(window)) {
 		GET_SINGLE(Timer)->Update();
 		camera->Update();
+		mainCat->Update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Draw(window);
-		//ShowFps();
+		ShowFps();
 		
 		// TODO
 
@@ -46,17 +47,19 @@ void Engine::Update()
 void Engine::Draw(GLFWwindow* window)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	
 	glfwGetCursorPos(window, &cur_x, &cur_y);
-
 	float deltatime = GET_SINGLE(Timer)->GetDeltaTime();
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
-	glm::mat4 view = camera->getViewMatrix();
+	glm::mat4 view = camera->getViewMatrix(mainCat->getPosition());
+	mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->getPosition());
+	glm::vec3 viewPos = camera->getPosition(mainCat->getPosition());
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Normal Pass ½ÃÀÛ
 	GET_SINGLE(Skybox)->Draw(view, projection);
-	mainCat->Draw(view, projection, deltatime);
+	mainCat->Draw(view, projection, viewPos, deltatime);
 
 	glFinish();
 }

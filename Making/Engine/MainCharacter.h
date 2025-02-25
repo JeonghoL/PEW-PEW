@@ -9,18 +9,18 @@ public:
 	~MainCharacter();
 
 	void Update();
-	void Draw(glm::mat4 view, glm::mat4 projection, float deltaTime);
+	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime);
 
 	//void drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap);
 
-	//void setRight_on(bool in);
-	//void setLeft_on(bool in);
-	//void setTop_on(bool in);
-	//void setBottom_on(bool in);
+	void setRight_on(bool in);
+	void setLeft_on(bool in);
+	void setTop_on(bool in);
+	void setBottom_on(bool in);
 	//void shift_on(bool in);
 	//void hitboxOnOff(bool in);
 
-	//void walk();
+	void walk();
 	//void run();
 	//void jump(bool in);
 	//void stop();
@@ -32,9 +32,9 @@ public:
 
 	//void setlife();
 
-	//bool isMoving() const {
-	//	return Right_on || Left_on || Top_on || Bottom_on;
-	//}
+	bool isMoving() const {
+		return Right_on || Left_on || Top_on || Bottom_on;
+	}
 
 	const glm::vec3& getPosition() const { return characterPos; }
 	const glm::mat4& getmodel() const { return model; }
@@ -48,8 +48,7 @@ public:
 	void setAnimationType(const std::string& animName);
 
 private:
-	//glm::vec3 characterPos{ -37.3051f, 0.0f, 42.5001f };
-	glm::vec3 characterPos{ 10.0f, 0.0f, 0.0f };
+	glm::vec3 characterPos{ -37.3051f, 0.0f, 42.5001f };
 	GLuint VAO, VBO, VBO2, EBO, shaderprogram, Texture;
 	GLuint ViewLoc, ProjLoc, ModelLoc, TextureLoc, UseTextureLoc, colorHitLoc;
 	std::vector<unsigned int> Indices;

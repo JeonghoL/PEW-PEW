@@ -76,10 +76,15 @@ MainCharacter::~MainCharacter()
 
 void MainCharacter::Update()
 {
-
+    if (isMoving()) {
+        //if (shift_value())
+        //    run();
+        //else
+            walk();
+    }
 }
 
-void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, float deltaTime)
+void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime)
 {
     //if (!dead)
     //{
@@ -92,6 +97,7 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, float deltaTime)
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, characterPos);
+        //model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
         //if (!dying)
         //    model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
         //else
@@ -116,8 +122,10 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, float deltaTime)
         //glUniform1i(shadowMapLoc, 1);
 
         //GLuint lightPosLoc = glGetUniformLocation(shaderprogram, "lightPos");
+        GLuint viewPosLoc = glGetUniformLocation(shaderprogram, "viewPos");
         //glm::vec3 lightPos{ -37.3051f - (1000.0f * cos(light_angle)), 0.0f + 1000.0f, 42.5001f + (1000.0f * sin(light_angle)) };
         //glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
+        glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPos));
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, Texture);
@@ -182,26 +190,26 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, float deltaTime)
 //    }
 //}
 
-//void MainCharacter::setRight_on(bool in)
-//{
-//    Right_on = in;
-//}
-//
-//void MainCharacter::setLeft_on(bool in)
-//{
-//    Left_on = in;
-//}
-//
-//void MainCharacter::setTop_on(bool in)
-//{
-//    Top_on = in;
-//}
-//
-//void MainCharacter::setBottom_on(bool in)
-//{
-//    Bottom_on = in;
-//}
-//
+void MainCharacter::setRight_on(bool in)
+{
+    Right_on = in;
+}
+
+void MainCharacter::setLeft_on(bool in)
+{
+    Left_on = in;
+}
+
+void MainCharacter::setTop_on(bool in)
+{
+    Top_on = in;
+}
+
+void MainCharacter::setBottom_on(bool in)
+{
+    Bottom_on = in;
+}
+
 //void MainCharacter::shift_on(bool in)
 //{
 //    Shift_on = in;
@@ -212,38 +220,38 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, float deltaTime)
 //    hitbox_on = in;
 //}
 
-//void MainCharacter::walk() {
-//    if (!getFirstPersonView()) {
-//        if (Right_on && !wallcollapsed_d())
-//            characterPos.x += 0.005f;
-//        if (Left_on && !wallcollapsed_a())
-//            characterPos.x -= 0.005f;
-//        if (Top_on && !wallcollapsed_w())
-//            characterPos.z -= 0.005f;
-//        if (Bottom_on && !wallcollapsed_s())
-//            characterPos.z += 0.005f;
-//    }
-//    else {
-//        glm::vec3 forward(
-//            sin(getCamerahori()),
-//            0,
-//            cos(getCamerahori())
-//        );
-//        glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
-//
-//        glm::vec3 moveDir(0.0f);
-//        if (Top_on && !wallcollapsed_forward(forward)) moveDir += forward;
-//        if (Bottom_on && !wallcollapsed_backward(forward)) moveDir -= forward;
-//        if (Right_on && !wallcollapsed_right(right)) moveDir += right;
-//        if (Left_on && !wallcollapsed_left(right)) moveDir -= right;
-//
-//        if (glm::length(moveDir) > 0) {
-//            moveDir = glm::normalize(moveDir);
-//            glm::vec3 nextPos = characterPos + moveDir * 0.005f;
-//            characterPos = nextPos;
-//        }
-//    }
-//}
+void MainCharacter::walk() {
+    //if (!getFirstPersonView()) {
+        if (Right_on/* && !wallcollapsed_d()*/)
+            characterPos.x += 0.005f;
+        if (Left_on/* && !wallcollapsed_a()*/)
+            characterPos.x -= 0.005f;
+        if (Top_on/* && !wallcollapsed_w()*/)
+            characterPos.z -= 0.005f;
+        if (Bottom_on/* && !wallcollapsed_s()*/)
+            characterPos.z += 0.005f;
+    //}
+    /*else {
+        glm::vec3 forward(
+            sin(getCamerahori()),
+            0,
+            cos(getCamerahori())
+        );
+        glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
+
+        glm::vec3 moveDir(0.0f);
+        if (Top_on && !wallcollapsed_forward(forward)) moveDir += forward;
+        if (Bottom_on && !wallcollapsed_backward(forward)) moveDir -= forward;
+        if (Right_on && !wallcollapsed_right(right)) moveDir += right;
+        if (Left_on && !wallcollapsed_left(right)) moveDir -= right;
+
+        if (glm::length(moveDir) > 0) {
+            moveDir = glm::normalize(moveDir);
+            glm::vec3 nextPos = characterPos + moveDir * 0.005f;
+            characterPos = nextPos;
+        }
+    }*/
+}
 
 //void MainCharacter::run()
 //{

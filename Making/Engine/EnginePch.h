@@ -67,6 +67,8 @@ const float PI = 3.141592f;
 extern double cur_x;
 extern double cur_y;
 
+extern glm::vec3 mouseDir;
+
 const unsigned int MAX_BONES = 100;
 
 extern unique_ptr<class Engine> GEngine;

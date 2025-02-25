@@ -6,7 +6,7 @@ void Skybox::Init()
 {
     faces = { "Skybox/right.jpg", "Skybox/left.jpg", "Skybox/top.jpg", "Skybox/bottom.jpg", "Skybox/front.jpg", "Skybox/back.jpg" };
     cubemapTexture = LoadCubemap(faces);
-    SetUpShader("Shaders/SkyboxVert.glsl", "Shaders/SkyboxFrag.glsl", shaderprogram);
+    SetUpShader("Shaders/SkyBoxVert.glsl", "Shaders/SkyBoxFrag.glsl", shaderprogram);
     SetUpSkyboxVertices();
 
     glGenVertexArrays(1, &VAO);

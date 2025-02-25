@@ -57,6 +57,9 @@
     <ClInclude Include="AnimatedModel.h">
       <Filter>Animation</Filter>
     </ClInclude>
+    <ClInclude Include="StaticObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -91,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="AnimatedModel.cpp">
       <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObject.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

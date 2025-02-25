@@ -4,6 +4,7 @@
 
 double cur_x = 0.0f;
 double cur_y = 0.0f;
+glm::vec3 mouseDir;
 
 string LoadFile(const string& filename) {
 	ifstream file(filename);

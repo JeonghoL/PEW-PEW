@@ -45,8 +45,11 @@
 MainCharacter::MainCharacter()
 {
 	player_BoneInfo = new vector<BoneInfo>();
-
 	animModel = new AnimatedModel();
+    player_CurrentAnim = new AnimInfo();
+    animLibrary = new AnimatedModel::AnimationLibrary();
+
+    saveAnimations();
 
     animModel->loadGLBFile(0, *player_BoneInfo, "Glb/cat_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
     Texture = LoadTexture("Texture/CatTexture.png");
@@ -55,8 +58,14 @@ MainCharacter::MainCharacter()
 
 MainCharacter::~MainCharacter()
 {
+    delete player_CurrentAnim;
     delete player_BoneInfo;
 	delete animModel;
+
+    if (animLibrary != nullptr) {
+        delete animLibrary;
+    }
+
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &VBO2);
@@ -70,11 +79,11 @@ void MainCharacter::Update()
 
 }
 
-void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection)
+void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, float deltaTime)
 {
     //if (!dead)
     //{
-        //UpdateAnimation(0, player_BoneInfo, deltaTime, player_CurrentAnim);
+        animModel->UpdateAnimation(0, *player_BoneInfo, deltaTime, *player_CurrentAnim);
         glUseProgram(shaderprogram);
         animModel->SetupBoneTransforms(*player_BoneInfo, shaderprogram);
 
@@ -323,3 +332,28 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection)
 //        hitbox_on = { false };
 //    }
 //}
+
+void MainCharacter::saveAnimations()
+{
+    animLibrary->loadAnimation("Idle", "Animations/cat_animation_idle.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Die", "Animations/cat_animation_die.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Walk", "Animations/cat_animation_walking.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Run", "Animations/cat_animation_run.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Hit", "Animations/cat_animation_hit.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Jump", "Animations/cat_animation_jump.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("AimIdle", "Animations/cat_animation_idle_aim.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("AimWalk", "Animations/cat_animation_walking_aim.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Fire", "Animations/cat_animation_firing_aim.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("FireWalk", "Animations/cat_animation_firing_walk.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("FireRun", "Animations/cat_animation_firing_run.glb", animationImporters, animModel);
+    animLibrary->loadAnimation("Dance", "Animations/cat_animation_dance.glb", animationImporters, animModel);
+
+    animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+}
+
+void MainCharacter::setAnimationType(const std::string& animName)
+{
+    if (animLibrary && player_CurrentAnim) {
+        animLibrary->changeAnimation(animName, *player_CurrentAnim);
+    }
+}

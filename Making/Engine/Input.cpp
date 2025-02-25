@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Input.h"
 #include "Camera.h"
+#include "MainCharacter.h"
 
 void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -104,6 +105,14 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			{
 				input->camera->MoveBack(false);
 			}
+			break;
+		case GLFW_KEY_1:
+			if (action == GLFW_PRESS)
+				input->mainCat->setAnimationType("Walk");
+			break;
+		case GLFW_KEY_2:
+			if (action == GLFW_PRESS)
+				input->mainCat->setAnimationType("Run");
 			break;
 		//case GLFW_KEY_LEFT_SHIFT:
 		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)

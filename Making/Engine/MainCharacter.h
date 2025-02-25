@@ -1,8 +1,6 @@
 #pragma once
 //#include "ShadowMapping.h"
-
-class AnimatedModel;
-struct BoneInfo;
+#include "AnimatedModel.h"
 
 class MainCharacter
 {
@@ -11,7 +9,7 @@ public:
 	~MainCharacter();
 
 	void Update();
-	void Draw(glm::mat4 view, glm::mat4 projection);
+	void Draw(glm::mat4 view, glm::mat4 projection, float deltaTime);
 
 	//void drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap);
 
@@ -46,6 +44,9 @@ public:
 	void setdead(bool in) { dead = in; }
 	void setFinishPos() { characterPos = glm::vec3{ -5.0f, 0.0f, 5.0f }; }
 
+	void saveAnimations();
+	void setAnimationType(const std::string& animName);
+
 private:
 	//glm::vec3 characterPos{ -37.3051f, 0.0f, 42.5001f };
 	glm::vec3 characterPos{ 10.0f, 0.0f, 0.0f };
@@ -65,4 +66,8 @@ private:
 
 	vector<BoneInfo>* player_BoneInfo;
 	AnimatedModel* animModel;
+	AnimInfo* player_CurrentAnim;
+	AnimatedModel::AnimationLibrary* animLibrary = { nullptr };
+
+	std::vector<std::unique_ptr<Assimp::Importer>> animationImporters;
 };

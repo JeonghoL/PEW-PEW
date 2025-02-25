@@ -17,6 +17,7 @@ void Engine::Init()
 	mainCat = new MainCharacter();
 	input = new Input();
 	input->SetCamera(camera);
+	input->SetMainCharacter(mainCat);
 
 	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
 	glfwSetWindowUserPointer(window, input);
@@ -28,7 +29,7 @@ void Engine::Update()
 	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
 
 	while (!glfwWindowShouldClose(window)) {
-		//GET_SINGLE(Timer)->Update();
+		GET_SINGLE(Timer)->Update();
 		camera->Update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -48,12 +49,14 @@ void Engine::Draw(GLFWwindow* window)
 	
 	glfwGetCursorPos(window, &cur_x, &cur_y);
 
+	float deltatime = GET_SINGLE(Timer)->GetDeltaTime();
+
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
 	glm::mat4 view = camera->getViewMatrix();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GET_SINGLE(Skybox)->Draw(view, projection);
-	mainCat->Draw(view, projection);
+	mainCat->Draw(view, projection, deltatime);
 
 	glFinish();
 }

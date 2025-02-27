@@ -2,9 +2,8 @@
 
 class ShadowMapping {
 public:
-    ShadowMapping();
-    ~ShadowMapping();
-    void Init();
+	ShadowMapping();
+	~ShadowMapping();
 
     void BindFramebuffer() const;
     void UnbindFramebuffer() const;
@@ -40,4 +39,6 @@ private:
     GLuint staticdepthShaderProgram;
 
     void InitShaders();
+
+    float light_angle = { 0.0f };
 };

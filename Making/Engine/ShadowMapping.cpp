@@ -1,18 +1,7 @@
 #include "pch.h"
 #include "ShadowMapping.h"
 
-extern float light_angle;
-
-ShadowMapping::ShadowMapping() : depthMapFBO(0), depthMap(0), depthMapFBO_enemy(0), depthMap_enemy(0) {}
-
-ShadowMapping::~ShadowMapping() {
-    glDeleteFramebuffers(1, &depthMapFBO);
-    glDeleteTextures(1, &depthMap);
-    glDeleteFramebuffers(1, &depthMapFBO_enemy);
-    glDeleteTextures(1, &depthMap_enemy);
-}
-
-void ShadowMapping::Init() {
+ShadowMapping::ShadowMapping() : depthMapFBO(0), depthMap(0), depthMapFBO_enemy(0), depthMap_enemy(0) {
     glGenFramebuffers(1, &depthMapFBO);
 
     glGenTextures(1, &depthMap);
@@ -50,6 +39,13 @@ void ShadowMapping::Init() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     InitShaders();
+}
+
+ShadowMapping::~ShadowMapping() {
+    glDeleteFramebuffers(1, &depthMapFBO);
+    glDeleteTextures(1, &depthMap);
+    glDeleteFramebuffers(1, &depthMapFBO_enemy);
+    glDeleteTextures(1, &depthMap_enemy);
 }
 
 void ShadowMapping::BindFramebuffer() const {

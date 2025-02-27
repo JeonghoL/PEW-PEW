@@ -49,20 +49,25 @@ public:
 	void SetAnimationType(const std::string& animName);
 
 private:
-	glm::vec3 characterPos{ -37.3051f, 0.0f, 42.5001f };
+	glm::vec3 characterPos = { -37.3051f, 0.0f, 42.5001f };
 	GLuint VAO, VBO, VBO2, EBO, shaderprogram, Texture;
 	GLuint ViewLoc, ProjLoc, ModelLoc, TextureLoc, UseTextureLoc, colorHitLoc;
 	std::vector<unsigned int> Indices;
-	glm::mat4 model{ 1.0f };
-	glm::vec4 hitcolor{ 1.0f, 1.0f, 1.0f, 1.0f };
-	int hit_cnt{ 200 };
-	bool dead{ false };
-	bool dying{ false };
+	glm::mat4 model = { 1.0f };
+	glm::vec4 hitcolor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	int hit_cnt = { 200 };
+	bool dead = { false };
+	bool dying = { false };
 	float lastangle;
-	int life{ 6 };
-	float revive_timer{ 1200.0f };
+	int life = { 6 };
+	float revive_timer = { 1200.0f };
 
-	bool Right_on{ false }, Left_on{ false }, Top_on{ false }, Bottom_on{ false }, Shift_on{ false }, hitbox_on{ false };
+	bool Right_on = { false }; 
+	bool Left_on = { false };
+	bool Top_on = { false };
+	bool Bottom_on = { false };
+	bool Shift_on = { false };
+	bool hitbox_on = { false };
 
 	vector<BoneInfo>* player_BoneInfo;
 	AnimatedModel* animModel;

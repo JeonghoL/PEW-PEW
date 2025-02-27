@@ -12,6 +12,6 @@ public:
 	void SetMainCharacter(MainCharacter* cat) { mainCat = cat; }
 
 private:
-	Camera* camera;
-	MainCharacter* mainCat;
+	Camera* camera = { nullptr };
+	MainCharacter* mainCat = { nullptr };
 };

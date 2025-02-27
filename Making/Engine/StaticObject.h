@@ -16,11 +16,15 @@ public:
 	void drawStaticobjectShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
 private:
 	glm::vec3 position;
+
 	GLuint VAO, VBO, EBO, shaderprogram, Texture;
 	GLuint ViewLoc, ProjLoc, ModelLoc;
+
 	std::vector<unsigned int> Indices;
-	glm::mat4 model{ 1.0f };
-	glm::mat4 projection{ 1.0f };
-	glm::mat4 view{ 1.0f };
+
+	glm::mat4 model = { 1.0f };
+	glm::mat4 projection = { 1.0f };
+	glm::mat4 view = { 1.0f };
+
 	Assimp::Importer objectImporter;
 };

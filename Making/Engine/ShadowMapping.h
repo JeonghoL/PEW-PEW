@@ -2,8 +2,8 @@
 
 class ShadowMapping {
 public:
-	ShadowMapping();
-	~ShadowMapping();
+    ShadowMapping();
+    ~ShadowMapping();
 
     void BindFramebuffer() const;
     void UnbindFramebuffer() const;
@@ -23,8 +23,8 @@ public:
     GLuint GetStaticDepthShaderProgram() const { return staticdepthShaderProgram; }
 
 private:
-    const unsigned int SHADOW_WIDTH = 4096;
-    const unsigned int SHADOW_HEIGHT = 4096;
+    const unsigned int SHADOW_WIDTH = { 4096 };
+    const unsigned int SHADOW_HEIGHT = { 4096 };
 
     unsigned int depthMapFBO;
     unsigned int depthMap;

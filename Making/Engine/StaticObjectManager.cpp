@@ -45,6 +45,7 @@ void StaticObjectManager::Release()
 
 void StaticObjectManager::Update()
 {
+	// 구름 같은 움직이는 오브젝트들 업데이트 필요
 }
 
 void StaticObjectManager::Draw(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,

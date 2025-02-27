@@ -25,6 +25,9 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{05dbd5c6-99e5-4a5c-988f-803a9b9a47f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shadow">
+      <UniqueIdentifier>{266bf901-df9a-485b-a70a-1bbba37b3767}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="StaticObjectManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMapping.h">
+      <Filter>Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -106,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="StaticObjectManager.cpp">
       <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMapping.cpp">
+      <Filter>Shadow</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

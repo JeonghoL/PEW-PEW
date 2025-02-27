@@ -1,17 +1,18 @@
 #pragma once
 
+class MainCharacter;
 class Camera;
 
 class Bullet
 {
 public:
-	Bullet(int type, int i, int j, MainCharacter* mainChar, Camera* cam);
+	Bullet(int type, int i, int j);
 	~Bullet();
 
 	void LoadBulletGLB(const std::string& filename);
 	GLuint LoadBulletTexture(const char* path);
 
-	void BulletSetting();
+	void BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::vec3 mousePick);
 	void BulletSettingAgain(glm::vec3 Pos);
 	void render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 		glm::mat4 lightSpaceMatrix, GLuint shadowMap);
@@ -37,8 +38,4 @@ private:
 	int b_type{ 0 };
 	glm::vec3 tPos;
 	int enemy_i{}, enemy_j{};
-
-private:
-	MainCharacter* mainCharacterRef;
-	Camera* cameraRef;
 };

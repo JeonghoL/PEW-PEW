@@ -1,6 +1,8 @@
 #pragma once
 #include "AnimatedModel.h"
 
+class Bullet;
+class Camera;
 class ShadowMapping;
 
 class MainCharacter
@@ -47,8 +49,16 @@ public:
 	void SetDead(bool in) { dead = in; }
 	void SetFinishPos() { characterPos = glm::vec3{ -5.0f, 0.0f, 5.0f }; }
 
+	bool GetFiring() { return firing; }
+	void SetFiring(bool in) { firing = in; }
+
+	void SetCamera(Camera* cam) { camera = cam; }
+
 	void SaveAnimations();
 	void SetAnimationType(const std::string& animName);
+
+	AnimInfo* GetCurrentAnim() { return player_CurrentAnim; }
+	AnimatedModel::AnimationLibrary* GetAnimLibrary() { return animLibrary; }
 
 private:
 	glm::vec3 characterPos = { -37.3051f, 0.0f, 42.5001f };
@@ -71,8 +81,13 @@ private:
 	bool _Shift = { false };
 	bool hitbox_on = { false };
 
+	bool Bullet_cnt[3] = { false };
+
 	bool firing = { false };
 	bool firing_induration = { false };
+
+	Camera* camera = { nullptr };
+	vector<Bullet*> bullets;
 
 	vector<BoneInfo>* player_BoneInfo;
 	AnimatedModel* animModel;

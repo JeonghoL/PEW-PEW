@@ -20,6 +20,8 @@ void Engine::Init()
 	mainCat = new MainCharacter();
 	shadowMap = new ShadowMapping();
 
+	mainCat->SetCamera(camera);
+
 	input = new Input();
 	input->SetCamera(camera);
 	input->SetMainCharacter(mainCat);
@@ -28,6 +30,7 @@ void Engine::Init()
 	glfwSetWindowUserPointer(window, input);
 	glfwSetKeyCallback(window, Input::KeyBoardInput);
 	glfwSetScrollCallback(window, Input::Scroll_callback);
+	glfwSetMouseButtonCallback(window, Input::MouseFunc);
 }
 
 void Engine::Update()
@@ -62,6 +65,8 @@ void Engine::Draw(GLFWwindow* window)
 	glm::vec3 viewPos = camera->GetPosition(mainCat->GetPosition());
 	glm::mat4 lightSpaceMatrix = shadowMap->GetLightSpaceMatrix();
 	float angle = camera->GetAngle();
+
+	mainCat->ChangeCatAnimation(view, projection);
 
 	DrawShadow();
 

@@ -4,10 +4,10 @@
 #include "MainCharacter.h"
 #include "Camera.h"
 
-extern bool FirstPersonView;
-extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
+//extern bool FirstPersonView;
+//extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
 
-Bullet::Bullet(int type, int i, int j, MainCharacter* mainChar, Camera* cam)
+Bullet::Bullet(int type, int i, int j)
 {
 	SetUpShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
 	if (type == 1)
@@ -143,16 +143,16 @@ GLuint Bullet::LoadBulletTexture(const char* path)
 	return textureID;
 }
 
-void Bullet::BulletSetting()
+void Bullet::BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::vec3 mousePick)
 {
 	if (b_type == 1)
 	{
-		position = mainCat->getPosition();
+		position = mainCharacter->GetPosition();
 		position.y = 0.45f;
 
 		angle = atan2(mouseDir.x, mouseDir.z);
 
-		if (!FirstPersonView) {
+		if (!camera->GetViewType()) {
 
 			position.x += cos(angle) * 0.2f;
 			position.z -= sin(angle) * 0.2f;
@@ -163,8 +163,8 @@ void Bullet::BulletSetting()
 			angle = atan2(direction.x, direction.z);
 		}
 		else {
-			angle = camera.get_horizontal_angle();
-			float verticalAngle = camera.get_vertical_angle();
+			angle = camera->GetHorizontalAngle();
+			float verticalAngle = camera->GetVerticalAngle();
 
 			direction = glm::vec3(
 				sin(angle) * cos(verticalAngle),
@@ -177,30 +177,30 @@ void Bullet::BulletSetting()
 		model = glm::translate(model, position);
 		model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	else if (b_type == 2)
-	{
-		position = enemy[enemy_i][enemy_j]->getPosition();
-		position.y = 0.45f;
-
-		tPos = mainCat->getPosition();
-		tPos.y = 0.45f;
-		direction = glm::normalize(tPos - position);
-		position += 0.5f * direction;
-		angle = atan2(direction.x, direction.z);
-	}
+	//else if (b_type == 2)
+	//{
+	//	position = enemy[enemy_i][enemy_j]->getPosition();
+	//	position.y = 0.45f;
+	//
+	//	tPos = mainCat->getPosition();
+	//	tPos.y = 0.45f;
+	//	direction = glm::normalize(tPos - position);
+	//	position += 0.5f * direction;
+	//	angle = atan2(direction.x, direction.z);
+	//}
 }
 
-void Bullet::BulletSettingAgain(glm::vec3 Pos)
-{
-	position = enemy[enemy_i][enemy_j]->getPosition();
-	position.y = 0.45f;
-
-	tPos = Pos;
-	tPos.y = 0.45f;
-	direction = glm::normalize(tPos - position);
-	position += 0.5f * direction;
-	angle = atan2(direction.x, direction.z);
-}
+//void Bullet::BulletSettingAgain(glm::vec3 Pos)
+//{
+//	position = enemy[enemy_i][enemy_j]->getPosition();
+//	position.y = 0.45f;
+//
+//	tPos = Pos;
+//	tPos.y = 0.45f;
+//	direction = glm::normalize(tPos - position);
+//	position += 0.5f * direction;
+//	angle = atan2(direction.x, direction.z);
+//}
 
 void Bullet::render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 	glm::mat4 lightSpaceMatrix, GLuint shadowMap)
@@ -246,63 +246,63 @@ void Bullet::renderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
 	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 }
 
-bool Bullet::isCollapsed()
-{
-	bool check{ false };
-
-	for (int i = 0; i < 70; ++i)
-	{
-		if (min_Z[i] <= position.z && max_Z[i] >= position.z)
-		{
-			if (position.x <= max_X[i] && position.x > min_X[i])
-				check = true;
-		}
-	}
-
-	if (b_type == 1)
-	{
-		for (int i = 0; i < 3; ++i)
-		{
-			for (int j = 0; j < 9; ++j)
-			{
-				glm::vec3 pos = enemy[i][j]->getPosition();
-
-				if (!(enemy[i][j]->getstate() == 4))
-				{
-					if (position.y >= 0.0f && position.y <= 0.95f)
-					{
-						if ((position.x >= pos.x - 0.25f && position.x <= pos.x + 0.25f) &&
-							(position.z >= pos.z - 0.2f && position.z <= pos.z + 0.2f))
-						{
-							enemy[i][j]->setlife();
-							return true;
-						}
-					}
-				}
-			}
-		}
-	}
-	else if (b_type == 2)
-	{
-		glm::vec3 pos = mainCat->getPosition();
-
-		if (!mainCat->getdying())
-		{
-			if (position.y >= 0.0f && position.y <= 0.95f)
-			{
-				if ((position.x >= pos.x - 0.25f && position.x <= pos.x + 0.25f) &&
-					(position.z >= pos.z - 0.2f && position.z <= pos.z + 0.2f))
-				{
-					// 주인공 캐릭터 타격
-					mainCat->setlife();
-					return true;
-				}
-			}
-		}
-	}
-
-	return check;
-}
+//bool Bullet::isCollapsed()
+//{
+//	bool check{ false };
+//
+//	for (int i = 0; i < 70; ++i)
+//	{
+//		if (min_Z[i] <= position.z && max_Z[i] >= position.z)
+//		{
+//			if (position.x <= max_X[i] && position.x > min_X[i])
+//				check = true;
+//		}
+//	}
+//
+//	if (b_type == 1)
+//	{
+//		for (int i = 0; i < 3; ++i)
+//		{
+//			for (int j = 0; j < 9; ++j)
+//			{
+//				glm::vec3 pos = enemy[i][j]->getPosition();
+//
+//				if (!(enemy[i][j]->getstate() == 4))
+//				{
+//					if (position.y >= 0.0f && position.y <= 0.95f)
+//					{
+//						if ((position.x >= pos.x - 0.25f && position.x <= pos.x + 0.25f) &&
+//							(position.z >= pos.z - 0.2f && position.z <= pos.z + 0.2f))
+//						{
+//							enemy[i][j]->setlife();
+//							return true;
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//	else if (b_type == 2)
+//	{
+//		glm::vec3 pos = mainCat->getPosition();
+//
+//		if (!mainCat->getdying())
+//		{
+//			if (position.y >= 0.0f && position.y <= 0.95f)
+//			{
+//				if ((position.x >= pos.x - 0.25f && position.x <= pos.x + 0.25f) &&
+//					(position.z >= pos.z - 0.2f && position.z <= pos.z + 0.2f))
+//				{
+//					// 주인공 캐릭터 타격
+//					mainCat->setlife();
+//					return true;
+//				}
+//			}
+//		}
+//	}
+//
+//	return check;
+//}
 
 void Bullet::bulletUpdate()
 {

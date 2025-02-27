@@ -2,6 +2,8 @@
 #include "MainCharacter.h"
 #include "AnimatedModel.h"
 #include "ShadowMapping.h"
+#include "Bullet.h"
+#include "Camera.h"
 
 //extern float getCamerahori();
 //extern bool getFirstPersonView();
@@ -326,31 +328,31 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 			firing_induration = true;
 			firetimer = player_CurrentAnim->Duration * 0.56f;
 
-			if (player_CurrentAnim->CurrentTime >= firetimer && !bullet_num[0])
+			if (player_CurrentAnim->CurrentTime >= firetimer && !Bullet_cnt[0])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[0] = true;
+				Bullet_cnt[0] = true;
 			}
 
-			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !bullet_num[1])
+			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !Bullet_cnt[1])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[1] = true;
+				Bullet_cnt[1] = true;
 			}
 
-			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !bullet_num[2])
+			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !Bullet_cnt[2])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[2] = true;
+				Bullet_cnt[2] = true;
 			}
 
 			if (player_CurrentAnim->CurrentTime + 10.0f >= player_CurrentAnim->Duration)
@@ -381,7 +383,7 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
 				}
 
-				for (bool& bullet_nums : bullet_num)
+				for (bool& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}
@@ -390,31 +392,31 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 			firing_induration = true;
 			firetimer = player_CurrentAnim->Duration * 0.56f;
 
-			if (player_CurrentAnim->CurrentTime >= firetimer && !bullet_num[0])
+			if (player_CurrentAnim->CurrentTime >= firetimer && !Bullet_cnt[0])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[0] = true;
+				Bullet_cnt[0] = true;
 			}
 
-			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !bullet_num[1])
+			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !Bullet_cnt[1])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[1] = true;
+				Bullet_cnt[1] = true;
 			}
 
-			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !bullet_num[2])
+			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !Bullet_cnt[2])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[2] = true;
+				Bullet_cnt[2] = true;
 			}
 
 			if (player_CurrentAnim->CurrentTime + 10.0f >= player_CurrentAnim->Duration)
@@ -445,7 +447,7 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
 				}
 
-				for (bool& bullet_nums : bullet_num)
+				for (bool& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}
@@ -454,31 +456,31 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 			firing_induration = true;
 			firetimer = player_CurrentAnim->Duration * 0.56f;
 
-			if (player_CurrentAnim->CurrentTime >= firetimer && !bullet_num[0])
+			if (player_CurrentAnim->CurrentTime >= firetimer && !Bullet_cnt[0])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[0] = true;
+				Bullet_cnt[0] = true;
 			}
 
-			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !bullet_num[1])
+			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !Bullet_cnt[1])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[1] = true;
+				Bullet_cnt[1] = true;
 			}
 
-			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !bullet_num[2])
+			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !Bullet_cnt[2])
 			{
-				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				mousePick = camera->GetMousePicking(cur_x, cur_y, projection, view);
 				Bullet* newBullet = new Bullet(1, 0, 0);
-				newBullet->bulletSetting();
+				newBullet->BulletSetting(this, camera, mousePick);
 				bullets.push_back(newBullet);
-				bullet_num[2] = true;
+				Bullet_cnt[2] = true;
 			}
 
 			if (player_CurrentAnim->CurrentTime + 10.0f >= player_CurrentAnim->Duration)
@@ -509,7 +511,7 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
 				}
 
-				for (bool& bullet_nums : bullet_num)
+				for (bool& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}

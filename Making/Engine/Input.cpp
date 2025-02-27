@@ -202,3 +202,33 @@ void Input::Scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	if (input->camera->Get_start_pos() == 0)
 		input->camera->HandleScroll(yoffset);
 }
+
+void Input::MouseFunc(GLFWwindow* window, int button, int action, int mods)
+{
+	Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
+
+	switch (button)
+	{
+	case GLFW_MOUSE_BUTTON_LEFT:
+		if (input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying() /*&& !finish*/)
+		{
+			if (action == GLFW_PRESS)
+			{
+				input->mainCat->SetFiring(true);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				input->mainCat->SetFiring(false);
+			}
+		}
+		break;
+	}
+
+	// 수정필요
+	/*if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Run")
+		input->mainCat->GetCurrentAnim().changeAnimation("FireRun", player_CurrentAnim);
+	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Walk")
+		playeranimLib.changeAnimation("FireWalk", player_CurrentAnim);
+	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Idle")
+		playeranimLib.changeAnimation("Fire", player_CurrentAnim);*/
+}

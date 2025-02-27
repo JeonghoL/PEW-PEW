@@ -15,8 +15,8 @@
 
 StaticObject::StaticObject(const char* glb, const char* png)
 {
-	SetUpShader("StaticObjectVert.glsl", "StaticObjectFrag.glsl", shaderprogram);
-	loadStaticObjectGLB(glb);
+	SetUpShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
+	LoadStaticObjectGLB(glb);
 	Texture = LoadTexture(png);
 }
 
@@ -28,7 +28,7 @@ StaticObject::~StaticObject()
 }
 
 
-void StaticObject::loadStaticObjectGLB(const std::string& filename) {
+void StaticObject::LoadStaticObjectGLB(const std::string& filename) {
 	const aiScene* scene = objectImporter.ReadFile(filename,
 		aiProcess_Triangulate |
 		aiProcess_FlipUVs |
@@ -111,12 +111,12 @@ void StaticObject::drawStaticobject(const glm::mat4& orgview, const glm::mat4& o
 	ModelLoc = glGetUniformLocation(shaderprogram, "model");
 	glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderprogram, "lightSpaceMatrix"),
-		1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+	//glUniformMatrix4fv(glGetUniformLocation(shaderprogram, "lightSpaceMatrix"),
+	//	1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, shadowMap);
-	glUniform1i(glGetUniformLocation(shaderprogram, "shadowMap"), 1);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, shadowMap);
+	//glUniform1i(glGetUniformLocation(shaderprogram, "shadowMap"), 1);
 
 	//GLuint lightPosLoc = glGetUniformLocation(shaderprogram, "lightPos");
 	GLuint viewPosLoc = glGetUniformLocation(shaderprogram, "viewPos");

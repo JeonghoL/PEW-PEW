@@ -3,6 +3,7 @@
 class Camera;
 class MainCharacter;
 class Input;
+class StaticObject;
 
 class Engine
 {

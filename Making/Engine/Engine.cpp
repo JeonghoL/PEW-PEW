@@ -6,12 +6,14 @@
 #include "Camera.h"
 #include "MainCharacter.h"
 #include "Input.h"
+#include "StaticObjectManager.h"
 
 void Engine::Init()
 {
 	GET_SINGLE(WindowInfo)->Init();
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Skybox)->Init();
+	GET_SINGLE(StaticObjectManager)->Init();
 
 	camera = new Camera();
 	mainCat = new MainCharacter();
@@ -54,11 +56,13 @@ void Engine::Draw(GLFWwindow* window)
 	glm::mat4 view = camera->getViewMatrix(mainCat->getPosition());
 	mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->getPosition());
 	glm::vec3 viewPos = camera->getPosition(mainCat->getPosition());
-
-
+	
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Normal Pass ½ÃÀÛ
 	GET_SINGLE(Skybox)->Draw(view, projection);
+	
+	GET_SINGLE(StaticObjectManager)->Draw(view, projection, viewPos, glm::mat4(1.0f), 0);
+
 	mainCat->Draw(view, projection, viewPos, deltatime);
 
 	glFinish();
@@ -67,6 +71,7 @@ void Engine::Draw(GLFWwindow* window)
 void Engine::Release()
 {
 	GET_SINGLE(Skybox)->Release();
+	GET_SINGLE(StaticObjectManager)->Release();
 	delete input;
 	delete mainCat;
 	delete camera;

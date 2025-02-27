@@ -6,7 +6,7 @@ public:
 	StaticObject(const char* glb, const char* png);
 	~StaticObject();
 
-	void loadStaticObjectGLB(const std::string& filename);
+	void LoadStaticObjectGLB(const std::string& filename);
 
 	void drawStaticobject(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 		glm::mat4 lightSpaceMatrix, GLuint shadowMap);

@@ -22,6 +22,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{6204d328-0518-4bfc-ad29-a6feaf13b2fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{05dbd5c6-99e5-4a5c-988f-803a9b9a47f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="StaticObject.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="StaticObjectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="StaticObject.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObjectManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

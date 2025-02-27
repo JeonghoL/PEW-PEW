@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MainCharacter.h"
 #include "AnimatedModel.h"
+#include "ShadowMapping.h"
 
 //struct AnimInfo {
 //    float Duration;
@@ -84,7 +85,7 @@ void MainCharacter::Update()
     }
 }
 
-void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime)
+void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime, float angle, glm::mat4 lightSpaceMatrix, GLuint depthMap)
 {
     //if (!dead)
     //{
@@ -97,7 +98,7 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, characterPos);
-        //model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
         //if (!dying)
         //    model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
         //else
@@ -113,18 +114,10 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos
         ModelLoc = glGetUniformLocation(shaderprogram, "model");
         glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, &model[0][0]);
 
-        //GLuint lightSpaceMatrixLoc = glGetUniformLocation(shaderprogram, "lightSpaceMatrix");
-        //glUniformMatrix4fv(lightSpaceMatrixLoc, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-        glActiveTexture(GL_TEXTURE1);
-        //glBindTexture(GL_TEXTURE_2D, depthMap);
-        //GLuint shadowMapLoc = glGetUniformLocation(shaderprogram, "shadowMap");
-        //glUniform1i(shadowMapLoc, 1);
-
-        //GLuint lightPosLoc = glGetUniformLocation(shaderprogram, "lightPos");
+        GLuint lightPosLoc = glGetUniformLocation(shaderprogram, "lightPos");
         GLuint viewPosLoc = glGetUniformLocation(shaderprogram, "viewPos");
-        //glm::vec3 lightPos{ -37.3051f - (1000.0f * cos(light_angle)), 0.0f + 1000.0f, 42.5001f + (1000.0f * sin(light_angle)) };
-        //glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
+        glm::vec3 lightPos{ -37.3051f - (1000.0f * cos(light_angle)), 0.0f + 1000.0f, 42.5001f + (1000.0f * sin(light_angle)) };
+        glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
         glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPos));
 
         glActiveTexture(GL_TEXTURE0);
@@ -170,25 +163,26 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos
     //}
 }
 
-//void MainCharacter::drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap)
-//{
-//    if (!dead)
-//    {
-//        model = glm::mat4(1.0f);
-//        model = glm::translate(model, mainCat->getPosition());
-//        if (!dying)
-//            model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
-//        else
-//            model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
-//        if (finish)
-//            model = glm::scale(model, glm::vec3(20.0f));
-//        ModelLoc = glGetUniformLocation(shadowMap->getDepthShaderProgram(), "model");
-//        glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
-//        setupBoneTransforms(player_BoneInfo, shadowMap->getDepthShaderProgram());
-//        glBindVertexArray(VAO);
-//        glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-//    }
-//}
+void MainCharacter::Drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap)
+{
+    //if (!dead)
+    //{
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, mainCat->getPosition());
+        if (!dying)
+            model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+        else
+            model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
+        //if (finish)
+        //    model = glm::scale(model, glm::vec3(20.0f));
+
+        ModelLoc = glGetUniformLocation(shadowMap->GetDepthShaderProgram(), "model");
+        glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        animModel->SetupBoneTransforms(*player_BoneInfo, shadowMap->GetDepthShaderProgram());
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+    //}
+}
 
 void MainCharacter::setRight_on(bool in)
 {

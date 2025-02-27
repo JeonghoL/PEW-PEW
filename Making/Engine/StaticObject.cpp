@@ -111,17 +111,17 @@ void StaticObject::drawStaticobject(const glm::mat4& orgview, const glm::mat4& o
 	ModelLoc = glGetUniformLocation(shaderprogram, "model");
 	glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-	//glUniformMatrix4fv(glGetUniformLocation(shaderprogram, "lightSpaceMatrix"),
-	//	1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(shaderprogram, "lightSpaceMatrix"),
+		1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, shadowMap);
-	//glUniform1i(glGetUniformLocation(shaderprogram, "shadowMap"), 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, shadowMap);
+	glUniform1i(glGetUniformLocation(shaderprogram, "shadowMap"), 1);
 
-	//GLuint lightPosLoc = glGetUniformLocation(shaderprogram, "lightPos");
+	GLuint lightPosLoc = glGetUniformLocation(shaderprogram, "lightPos");
 	GLuint viewPosLoc = glGetUniformLocation(shaderprogram, "viewPos");
-	//glm::vec3 lightPos{ -37.3051f - (1000.0f * cos(light_angle)), 0.0f + 1000.0f, 42.5001f + (1000.0f * sin(light_angle)) };
-	//glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
+	glm::vec3 lightPos{ -37.3051f - (1000.0f * cos(light_angle)), 0.0f + 1000.0f, 42.5001f + (1000.0f * sin(light_angle)) };
+	glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
 	glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPos));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Texture);
@@ -215,13 +215,13 @@ void StaticObject::drawStaticobject(const glm::mat4& orgview, const glm::mat4& o
 //	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 //}
 
-//void StaticObject::drawStaticobjectShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
-//{
-//	glUseProgram(depthShader);
-//	glUniformMatrix4fv(glGetUniformLocation(depthShader, "lightSpaceMatrix"),
-//		1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-//	glUniformMatrix4fv(glGetUniformLocation(depthShader, "model"),
-//		1, GL_FALSE, glm::value_ptr(model));
-//	glBindVertexArray(VAO);
-//	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-//}
+void StaticObject::drawStaticobjectShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
+{
+	glUseProgram(depthShader);
+	glUniformMatrix4fv(glGetUniformLocation(depthShader, "lightSpaceMatrix"),
+		1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(depthShader, "model"),
+		1, GL_FALSE, glm::value_ptr(model));
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+}

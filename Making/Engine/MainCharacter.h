@@ -2,6 +2,8 @@
 //#include "ShadowMapping.h"
 #include "AnimatedModel.h"
 
+class ShadowMapping;
+
 class MainCharacter
 {
 public:
@@ -9,9 +11,9 @@ public:
 	~MainCharacter();
 
 	void Update();
-	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime);
+	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime, float angle, glm::mat4 lightSpaceMatrix, GLuint depthMap);
 
-	//void drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap);
+	void Drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap);
 
 	void setRight_on(bool in);
 	void setLeft_on(bool in);

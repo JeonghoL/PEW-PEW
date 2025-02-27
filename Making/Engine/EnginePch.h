@@ -71,6 +71,8 @@ extern glm::vec3 mouseDir;
 
 const unsigned int MAX_BONES = 100;
 
+extern float light_angle;
+
 extern unique_ptr<class Engine> GEngine;
 
 // 공용 함수들

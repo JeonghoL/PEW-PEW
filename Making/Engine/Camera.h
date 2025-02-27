@@ -6,9 +6,9 @@ public:
 
     void Update();
     //void handleAltKey(bool pressed);
-    void handleMouseMovement(double cur_x, double cur_y);
+    void HandleMouseMovement(double cur_x, double cur_y);
     //void handleScroll(double yoffset);
-    void starting();
+    void Starting();
 
     glm::mat4 Get1stPersonViewMatrix(const glm::vec3& targetPos);
     glm::mat4 Get3rdPersonViewMatrix(const glm::vec3& targetPos);
@@ -29,8 +29,10 @@ public:
 
 	bool GetViewType() { return FirstPersonView; }
 
-    glm::vec3 getPosition(const glm::vec3& targetPos);
-	glm::mat4 getViewMatrix(const glm::vec3& targetPos);
+    glm::vec3 GetPosition(const glm::vec3& targetPos);
+	glm::mat4 GetViewMatrix(const glm::vec3& targetPos);
+
+	float GetAngle() { return angle; }
 
     void SetAngle();
 	void SetStart(bool in) { start = in; }

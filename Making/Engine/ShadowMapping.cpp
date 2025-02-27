@@ -75,6 +75,6 @@ void ShadowMapping::UpdateLightSpaceMatrix(const glm::vec3& currentCharacterPos)
 }
 
 void ShadowMapping::InitShaders() {
-    SetUpShader("shadowMappingvs.glsl", "shadowMappingfs.glsl", depthShaderProgram);
-    SetUpShader("shadowstaticMappingvs.glsl", "shadowstaticMappingfs.glsl", staticdepthShaderProgram);
+    SetUpShader("Shaders/ShadowMappingVert.glsl", "Shaders/ShadowMappingFrag.glsl", depthShaderProgram);
+    SetUpShader("Shaders/ShadowStaticMappingVert.glsl", "Shaders/ShadowStaticMappingFrag.glsl", staticdepthShaderProgram);
 }

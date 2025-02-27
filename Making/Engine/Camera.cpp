@@ -24,9 +24,9 @@ void Camera::Update()
 {
     if (start)
     {
-        starting();
+        Starting();
     }
-    handleMouseMovement(cur_x, cur_y);
+    HandleMouseMovement(cur_x, cur_y);
     SetAngle();
 }
 
@@ -37,7 +37,7 @@ void Camera::Update()
 //    }
 //}
 
-void Camera::handleMouseMovement(double cur_x, double cur_y) {
+void Camera::HandleMouseMovement(double cur_x, double cur_y) {
     if (!FirstPersonView)
     {
         if (LeftAlt_on) {
@@ -105,7 +105,7 @@ void Camera::handleMouseMovement(double cur_x, double cur_y) {
 //    }
 //}
 
-void Camera::starting()
+void Camera::Starting()
 {
     if (start_pos > 0.0f)
         start_pos -= 0.1f;
@@ -246,7 +246,7 @@ glm::vec3 Camera::SetMouseWorldDirection(float cur_x, float cur_y, const glm::ma
     }
 }
 
-glm::vec3 Camera::getPosition(const glm::vec3& targetPos) {
+glm::vec3 Camera::GetPosition(const glm::vec3& targetPos) {
     if (FirstPersonView) {
         const float EYE_HEIGHT = 0.7f * Rm;
         glm::vec3 look_direction = glm::vec3(
@@ -278,7 +278,7 @@ glm::vec3 Camera::getPosition(const glm::vec3& targetPos) {
     }
 }
 
-glm::mat4 Camera::getViewMatrix(const glm::vec3& targetPos)
+glm::mat4 Camera::GetViewMatrix(const glm::vec3& targetPos)
 {
     glm::mat4 view = glm::mat4(1.0f);
 

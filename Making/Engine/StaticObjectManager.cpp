@@ -57,6 +57,14 @@ void StaticObjectManager::Draw(const glm::mat4& orgview, const glm::mat4& orgpro
 	}
 }
 
+void StaticObjectManager::DrawShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
+{
+	for (auto& obj : StaticObjects)
+	{
+		obj->drawStaticobjectShadow(lightSpaceMatrix, depthShader);
+	}
+}
+
 StaticObject* StaticObjectManager::AddStaticObject(const char* glb, const char* png)
 {
 	StaticObject* obj = new StaticObject(glb, png);

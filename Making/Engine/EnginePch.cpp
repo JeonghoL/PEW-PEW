@@ -5,6 +5,8 @@
 double cur_x = 0.0f;
 double cur_y = 0.0f;
 glm::vec3 mouseDir;
+float light_angle = { 0.0f };
+
 
 string LoadFile(const string& filename) {
 	ifstream file(filename);

@@ -12,6 +12,7 @@ public:
 	void Init();
 	void Update();
 	void Draw(GLFWwindow* window);
+	void DrawShadow();
 	void Release();
 
 private:

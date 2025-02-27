@@ -20,7 +20,7 @@ public:
     glm::mat4 GetLightSpaceMatrix_Enemy() const { return lightSpaceMatrix_enemy; }
 
     GLuint GetDepthShaderProgram() const { return depthShaderProgram; }
-    GLuint GetstaticDepthShaderProgram() const { return staticdepthShaderProgram; }
+    GLuint GetStaticDepthShaderProgram() const { return staticdepthShaderProgram; }
 
 private:
     const unsigned int SHADOW_WIDTH = 4096;
@@ -39,6 +39,4 @@ private:
     GLuint staticdepthShaderProgram;
 
     void InitShaders();
-
-    float light_angle = { 0.0f };
 };

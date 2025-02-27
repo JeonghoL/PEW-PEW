@@ -13,7 +13,7 @@ public:
 
 	//void drawcloud(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint shadowMap);
 	//void drawEnd(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint shadowMap);
-	//void drawStaticobjectShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
+	void drawStaticobjectShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
 private:
 	glm::vec3 position;
 	GLuint VAO, VBO, EBO, shaderprogram, Texture;

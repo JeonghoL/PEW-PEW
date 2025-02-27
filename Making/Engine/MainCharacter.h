@@ -1,5 +1,4 @@
 #pragma once
-//#include "ShadowMapping.h"
 #include "AnimatedModel.h"
 
 class ShadowMapping;
@@ -13,16 +12,16 @@ public:
 	void Update();
 	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime, float angle);
 
-	void Drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap);
+	void Drawshadow(float angle, GLuint depthShaderProgram, const glm::mat4& lightSpaceMatrix);
 
-	void setRight_on(bool in);
-	void setLeft_on(bool in);
-	void setTop_on(bool in);
-	void setBottom_on(bool in);
+	void SetRight_on(bool in);
+	void SetLeft_on(bool in);
+	void SetTop_on(bool in);
+	void SetBottom_on(bool in);
 	//void shift_on(bool in);
 	//void hitboxOnOff(bool in);
 
-	void walk();
+	void Walk();
 	//void run();
 	//void jump(bool in);
 	//void stop();
@@ -34,20 +33,20 @@ public:
 
 	//void setlife();
 
-	bool isMoving() const {
+	bool IsMoving() const {
 		return Right_on || Left_on || Top_on || Bottom_on;
 	}
 
-	const glm::vec3& getPosition() const { return characterPos; }
-	const glm::mat4& getmodel() const { return model; }
-	const bool& getdying() const { return dying; }
+	const glm::vec3& GetPosition() const { return characterPos; }
+	const glm::mat4& GetModel() const { return model; }
+	const bool& GetDying() const { return dying; }
 
-	void setPosition() { characterPos = glm::vec3{ -44.0f, 0.0f, -48.0f }; }
-	void setdead(bool in) { dead = in; }
-	void setFinishPos() { characterPos = glm::vec3{ -5.0f, 0.0f, 5.0f }; }
+	void SetPosition() { characterPos = glm::vec3{ -44.0f, 0.0f, -48.0f }; }
+	void SetDead(bool in) { dead = in; }
+	void SetFinishPos() { characterPos = glm::vec3{ -5.0f, 0.0f, 5.0f }; }
 
-	void saveAnimations();
-	void setAnimationType(const std::string& animName);
+	void SaveAnimations();
+	void SetAnimationType(const std::string& animName);
 
 private:
 	glm::vec3 characterPos{ -37.3051f, 0.0f, 42.5001f };

@@ -3,26 +3,6 @@
 #include "AnimatedModel.h"
 #include "ShadowMapping.h"
 
-//struct AnimInfo {
-//    float Duration;
-//    float TicksPerSecond;
-//    float CurrentTime;
-//    const aiAnimation* animation;
-//    const aiNode* rootNode;
-//    bool isPlaying;
-//
-//    AnimInfo() {
-//        Duration = 0.0f;
-//        TicksPerSecond = 0.0f;
-//        CurrentTime = 0.0f;
-//        animation = nullptr;
-//        rootNode = nullptr;
-//        isPlaying = false;
-//    }
-//};
-
-//extern struct BoneInfo;
-//extern std::vector<BoneInfo> player_BoneInfo;
 //extern float getCamerahori();
 //extern bool getFirstPersonView();
 //extern bool wallcollapsed_w(), wallcollapsed_s(), wallcollapsed_a(), wallcollapsed_d();
@@ -50,7 +30,7 @@ MainCharacter::MainCharacter()
     player_CurrentAnim = new AnimInfo();
     animLibrary = new AnimatedModel::AnimationLibrary();
 
-    saveAnimations();
+    SaveAnimations();
 
     animModel->loadGLBFile(0, *player_BoneInfo, "Glb/cat_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
     Texture = LoadTexture("Texture/CatTexture.png");
@@ -77,11 +57,11 @@ MainCharacter::~MainCharacter()
 
 void MainCharacter::Update()
 {
-    if (isMoving()) {
+    if (IsMoving()) {
         //if (shift_value())
         //    run();
         //else
-            walk();
+            Walk();
     }
 }
 
@@ -163,12 +143,12 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos
     //}
 }
 
-void MainCharacter::Drawshadow(MainCharacter* mainCat, float angle, ShadowMapping* shadowMap)
+void MainCharacter::Drawshadow(float angle, GLuint depthShaderProgram, const glm::mat4& lightSpaceMatrix)
 {
     //if (!dead)
     //{
         model = glm::mat4(1.0f);
-        model = glm::translate(model, mainCat->getPosition());
+        model = glm::translate(model, characterPos);
         if (!dying)
             model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
         else
@@ -176,30 +156,30 @@ void MainCharacter::Drawshadow(MainCharacter* mainCat, float angle, ShadowMappin
         //if (finish)
         //    model = glm::scale(model, glm::vec3(20.0f));
 
-        ModelLoc = glGetUniformLocation(shadowMap->GetDepthShaderProgram(), "model");
+        ModelLoc = glGetUniformLocation(depthShaderProgram, "model");
         glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        animModel->SetupBoneTransforms(*player_BoneInfo, shadowMap->GetDepthShaderProgram());
+        animModel->SetupBoneTransforms(*player_BoneInfo, depthShaderProgram);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     //}
 }
 
-void MainCharacter::setRight_on(bool in)
+void MainCharacter::SetRight_on(bool in)
 {
     Right_on = in;
 }
 
-void MainCharacter::setLeft_on(bool in)
+void MainCharacter::SetLeft_on(bool in)
 {
     Left_on = in;
 }
 
-void MainCharacter::setTop_on(bool in)
+void MainCharacter::SetTop_on(bool in)
 {
     Top_on = in;
 }
 
-void MainCharacter::setBottom_on(bool in)
+void MainCharacter::SetBottom_on(bool in)
 {
     Bottom_on = in;
 }
@@ -214,7 +194,7 @@ void MainCharacter::setBottom_on(bool in)
 //    hitbox_on = in;
 //}
 
-void MainCharacter::walk() {
+void MainCharacter::Walk() {
     //if (!getFirstPersonView()) {
         if (Right_on/* && !wallcollapsed_d()*/)
             characterPos.x += 0.005f;
@@ -335,7 +315,7 @@ void MainCharacter::walk() {
 //    }
 //}
 
-void MainCharacter::saveAnimations()
+void MainCharacter::SaveAnimations()
 {
     animLibrary->loadAnimation("Idle", "Animations/cat_animation_idle.glb", animationImporters, animModel);
     animLibrary->loadAnimation("Die", "Animations/cat_animation_die.glb", animationImporters, animModel);
@@ -353,7 +333,7 @@ void MainCharacter::saveAnimations()
     animLibrary->changeAnimation("Idle", *player_CurrentAnim);
 }
 
-void MainCharacter::setAnimationType(const std::string& animName)
+void MainCharacter::SetAnimationType(const std::string& animName)
 {
     if (animLibrary && player_CurrentAnim) {
         animLibrary->changeAnimation(animName, *player_CurrentAnim);

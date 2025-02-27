@@ -56,9 +56,9 @@ void Engine::Draw(GLFWwindow* window)
 	float deltatime = GET_SINGLE(Timer)->GetDeltaTime();
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
-	glm::mat4 view = camera->GetViewMatrix(mainCat->getPosition());
-	mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->getPosition());
-	glm::vec3 viewPos = camera->GetPosition(mainCat->getPosition());
+	glm::mat4 view = camera->GetViewMatrix(mainCat->GetPosition());
+	mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->GetPosition());
+	glm::vec3 viewPos = camera->GetPosition(mainCat->GetPosition());
 	glm::mat4 lightSpaceMatrix = shadowMap->GetLightSpaceMatrix();
 	float angle = camera->GetAngle();
 
@@ -76,7 +76,7 @@ void Engine::Draw(GLFWwindow* window)
 
 void Engine::DrawShadow()
 {
-	shadowMap->UpdateLightSpaceMatrix(mainCat->getPosition());		// Shadow Pass 시작
+	shadowMap->UpdateLightSpaceMatrix(mainCat->GetPosition());		// Shadow Pass 시작
 	shadowMap->BindFramebuffer();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -87,7 +87,7 @@ void Engine::DrawShadow()
 
 	float angle = camera->GetAngle();
 
-	mainCat->Drawshadow(mainCat, angle, shadowMap);
+	mainCat->Drawshadow(angle, shadowMap->GetDepthShaderProgram(), shadowMap->GetLightSpaceMatrix());
 
 	//for (int i = 0; i < 3; ++i) {
 	//	for (int j = 0; j < 9; ++j)

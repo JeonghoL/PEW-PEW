@@ -48,11 +48,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			//{
 				if (action == GLFW_PRESS)
 				{
-					input->mainCat->setRight_on(true);
+					input->mainCat->SetRight_on(true);
 				}
 				else if (action == GLFW_RELEASE)
 				{
-					input->mainCat->setRight_on(false);
+					input->mainCat->SetRight_on(false);
 				}
 			//}
 			break;
@@ -61,11 +61,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			//{
 				if (action == GLFW_PRESS)
 				{
-					input->mainCat->setLeft_on(true);
+					input->mainCat->SetLeft_on(true);
 				}
 				else if (action == GLFW_RELEASE)
 				{
-					input->mainCat->setLeft_on(false);
+					input->mainCat->SetLeft_on(false);
 				}
 			//}
 			break;
@@ -74,11 +74,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			//{
 				if (action == GLFW_PRESS)
 				{
-					input->mainCat->setTop_on(true);
+					input->mainCat->SetTop_on(true);
 				}
 				else if (action == GLFW_RELEASE)
 				{
-					input->mainCat->setTop_on(false);
+					input->mainCat->SetTop_on(false);
 				}
 			//}
 			break;
@@ -87,11 +87,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			//{
 				if (action == GLFW_PRESS)
 				{
-					input->mainCat->setBottom_on(true);
+					input->mainCat->SetBottom_on(true);
 				}
 				else if (action == GLFW_RELEASE)
 				{
-					input->mainCat->setBottom_on(false);
+					input->mainCat->SetBottom_on(false);
 				}
 			//}
 			break;

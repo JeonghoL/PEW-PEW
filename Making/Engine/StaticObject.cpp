@@ -2,11 +2,6 @@
 #include "StaticObject.h"
 #include "stb_image.h"
 
-//extern float light_angle;
-
-//extern void setupShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);
-//extern const char* objectvs;
-//extern const char* objectfs;
 //extern float cloud_pos_z;
 //extern bool cloud_go;
 //extern float end_y;

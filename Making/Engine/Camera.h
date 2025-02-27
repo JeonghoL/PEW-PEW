@@ -19,7 +19,7 @@ public:
     float GetHorizontalAngle() const { return camera_horizontal_angle; }
     float GetVerticalAngle() const { return camera_vertical_angle; }
     float Get_start_pos() const { return start_pos; }
-    //glm::vec3 getMousePicking(float mouseX, float mouseY, const glm::mat4& projection, const glm::mat4& view);
+    glm::vec3 GetMousePicking(float mouseX, float mouseY, const glm::mat4& projection, const glm::mat4& view);
 
     //void addfinishpos();
     void SetInitialDirection(const glm::vec3& direction);

@@ -75,6 +75,9 @@
     <ClInclude Include="Alien.h">
       <Filter>Character</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="Alien.cpp">
       <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

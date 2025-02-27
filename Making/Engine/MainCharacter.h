@@ -37,6 +37,8 @@ public:
 		return _Right || _Left || _Top || _Bottom;
 	}
 
+	void ChangeCatAnimation(const glm::mat4& view, const glm::mat4& projection);
+
 	const glm::vec3& GetPosition() const { return characterPos; }
 	const glm::mat4& GetModel() const { return model; }
 	const bool& GetDying() const { return dying; }
@@ -68,6 +70,9 @@ private:
 	bool _Bottom = { false };
 	bool _Shift = { false };
 	bool hitbox_on = { false };
+
+	bool firing = { false };
+	bool firing_induration = { false };
 
 	vector<BoneInfo>* player_BoneInfo;
 	AnimatedModel* animModel;

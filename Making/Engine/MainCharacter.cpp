@@ -314,6 +314,220 @@ void MainCharacter::Run()
 //    }
 //}
 
+void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& projection)
+{
+	float firetimer;
+	glm::vec3 mousePick;
+
+	if (!GetDying())
+	{
+		if (animLibrary->getcurrentAnimation() == "FireRun")
+		{
+			firing_induration = true;
+			firetimer = player_CurrentAnim->Duration * 0.56f;
+
+			if (player_CurrentAnim->CurrentTime >= firetimer && !bullet_num[0])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[0] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !bullet_num[1])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[1] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !bullet_num[2])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[2] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime + 10.0f >= player_CurrentAnim->Duration)
+			{
+				if (!firing)
+				{
+					if (IsMoving())
+					{
+						if (Shift_value())
+							animLibrary->changeAnimation("Run", *player_CurrentAnim);
+						else
+							animLibrary->changeAnimation("Walk", *player_CurrentAnim);
+					}
+					else
+						animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+					firing_induration = false;
+				}
+				else
+				{
+					if (IsMoving())
+					{
+						if (!Shift_value())
+							animLibrary->changeAnimation("FireWalk", *player_CurrentAnim);
+						else
+							animLibrary->changeAnimation("FireRun", *player_CurrentAnim);
+					}
+					else
+						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
+				}
+
+				for (bool& bullet_nums : bullet_num)
+					bullet_nums = false;
+			}
+		}
+		else if (animLibrary->getcurrentAnimation() == "FireWalk")
+		{
+			firing_induration = true;
+			firetimer = player_CurrentAnim->Duration * 0.56f;
+
+			if (player_CurrentAnim->CurrentTime >= firetimer && !bullet_num[0])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[0] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !bullet_num[1])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[1] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !bullet_num[2])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[2] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime + 10.0f >= player_CurrentAnim->Duration)
+			{
+				if (!firing)
+				{
+					if (IsMoving())
+					{
+						if (Shift_value())
+							animLibrary->changeAnimation("Run", *player_CurrentAnim);
+						else
+							animLibrary->changeAnimation("Walk", *player_CurrentAnim);
+					}
+					else
+						animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+					firing_induration = false;
+				}
+				else
+				{
+					if (IsMoving())
+					{
+						if (Shift_value())
+							animLibrary->changeAnimation("FireRun", *player_CurrentAnim);
+						else
+							animLibrary->changeAnimation("FireWalk", *player_CurrentAnim);
+					}
+					else
+						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
+				}
+
+				for (bool& bullet_nums : bullet_num)
+					bullet_nums = false;
+			}
+		}
+		else if (animLibrary->getcurrentAnimation() == "Fire")
+		{
+			firing_induration = true;
+			firetimer = player_CurrentAnim->Duration * 0.56f;
+
+			if (player_CurrentAnim->CurrentTime >= firetimer && !bullet_num[0])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[0] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime >= firetimer + 150.0f && !bullet_num[1])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[1] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime >= firetimer + 300.0f && !bullet_num[2])
+			{
+				mousePick = camera.getMousePicking(cur_x, cur_y, projection, view);
+				Bullet* newBullet = new Bullet(1, 0, 0);
+				newBullet->bulletSetting();
+				bullets.push_back(newBullet);
+				bullet_num[2] = true;
+			}
+
+			if (player_CurrentAnim->CurrentTime + 10.0f >= player_CurrentAnim->Duration)
+			{
+				if (!firing)
+				{
+					if (IsMoving())
+					{
+						if (Shift_value())
+							animLibrary->changeAnimation("Run", *player_CurrentAnim);
+						else
+							animLibrary->changeAnimation("Walk", *player_CurrentAnim);
+					}
+					else
+						animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+					firing_induration = false;
+				}
+				else
+				{
+					if (IsMoving())
+					{
+						if (Shift_value())
+							animLibrary->changeAnimation("FireRun", *player_CurrentAnim);
+						else
+							animLibrary->changeAnimation("FireWalk", *player_CurrentAnim);
+					}
+					else
+						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
+				}
+
+				for (bool& bullet_nums : bullet_num)
+					bullet_nums = false;
+			}
+		}
+		else if (animLibrary->getcurrentAnimation() == "Die")
+			animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+	}
+	else
+	{
+		if (animLibrary->getcurrentAnimation() != "Die")
+			animLibrary->changeAnimation("Die", *player_CurrentAnim);
+		else
+		{
+			if (player_CurrentAnim->CurrentTime + 10 >= player_CurrentAnim->Duration)
+				SetDead(true);
+		}
+	}
+}
+
 void MainCharacter::SaveAnimations()
 {
     animLibrary->loadAnimation("Idle", "Animations/cat_animation_idle.glb", animationImporters, animModel);

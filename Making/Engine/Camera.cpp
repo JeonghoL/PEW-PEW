@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Camera.h"
 
-//extern bool FirstPersonView;
 //extern ISound* startbgm, * basebgm;
 //extern float soundVol;
 //extern bool cloud_go;
@@ -199,30 +198,30 @@ glm::vec3 Camera::GetMouseWorldDirection(float cur_x, float cur_y, const glm::ma
     }
 }
 
-//glm::vec3 Camera::getMousePicking(float mouseX, float mouseY,
-//    const glm::mat4& projection, const glm::mat4& view)
-//{
-//    float x = (2.0f * mouseX) / WIN_W - 1.0f;
-//    float y = 1.0f - (2.0f * mouseY) / WIN_H;
-//
-//    glm::vec4 rayStart_NDC(x, y, -1.0f, 1.0f);
-//    glm::vec4 rayEnd_NDC(x, y, 1.0f, 1.0f);
-//
-//    glm::mat4 invProjView = glm::inverse(projection * view);
-//    glm::vec4 rayStart_world = invProjView * rayStart_NDC;
-//    glm::vec4 rayEnd_world = invProjView * rayEnd_NDC;
-//
-//    rayStart_world /= rayStart_world.w;
-//    rayEnd_world /= rayEnd_world.w;
-//
-//    glm::vec3 rayOrigin = glm::vec3(rayStart_world);
-//    glm::vec3 rayDir = glm::normalize(glm::vec3(rayEnd_world - rayStart_world));
-//
-//    float t = (0.45f - rayOrigin.y) / rayDir.y;     // 3ÀÎÄª¿¡¼­ ÃÑ¾Ë ³ôÀÌ°¡ 0.45f
-//    glm::vec3 planeIntersection = rayOrigin + rayDir * t;
-//
-//    return planeIntersection;
-//}
+glm::vec3 Camera::GetMousePicking(float mouseX, float mouseY,
+    const glm::mat4& projection, const glm::mat4& view)
+{
+    float x = (2.0f * mouseX) / WIN_W - 1.0f;
+    float y = 1.0f - (2.0f * mouseY) / WIN_H;
+
+    glm::vec4 rayStart_NDC(x, y, -1.0f, 1.0f);
+    glm::vec4 rayEnd_NDC(x, y, 1.0f, 1.0f);
+
+    glm::mat4 invProjView = glm::inverse(projection * view);
+    glm::vec4 rayStart_world = invProjView * rayStart_NDC;
+    glm::vec4 rayEnd_world = invProjView * rayEnd_NDC;
+
+    rayStart_world /= rayStart_world.w;
+    rayEnd_world /= rayEnd_world.w;
+
+    glm::vec3 rayOrigin = glm::vec3(rayStart_world);
+    glm::vec3 rayDir = glm::normalize(glm::vec3(rayEnd_world - rayStart_world));
+
+    float t = (0.45f - rayOrigin.y) / rayDir.y;     // 3ÀÎÄª¿¡¼­ ÃÑ¾Ë ³ôÀÌ°¡ 0.45f
+    glm::vec3 planeIntersection = rayOrigin + rayDir * t;
+
+    return planeIntersection;
+}
 
 //void Camera::addfinishpos()
 //{

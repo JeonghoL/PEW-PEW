@@ -4,6 +4,7 @@ class Camera;
 class MainCharacter;
 class Input;
 class StaticObject;
+class ShadowMapping;
 
 class Engine
 {
@@ -20,4 +21,6 @@ private:
 	Camera* camera = { nullptr };
 	MainCharacter* mainCat = { nullptr };
 	Input* input = { nullptr };
+	ShadowMapping* shadowMap = { nullptr };
+
 };

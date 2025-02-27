@@ -12,7 +12,7 @@ ShadowMapping::~ShadowMapping() {
     glDeleteTextures(1, &depthMap_enemy);
 }
 
-void ShadowMapping::init() {
+void ShadowMapping::Init() {
     glGenFramebuffers(1, &depthMapFBO);
 
     glGenTextures(1, &depthMap);
@@ -49,19 +49,19 @@ void ShadowMapping::init() {
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    initShaders();
+    InitShaders();
 }
 
-void ShadowMapping::bindFramebuffer() const {
+void ShadowMapping::BindFramebuffer() const {
     glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 }
 
-void ShadowMapping::unbindFramebuffer() const {
+void ShadowMapping::UnbindFramebuffer() const {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void ShadowMapping::updateLightSpaceMatrix(const glm::vec3& currentCharacterPos) {
+void ShadowMapping::UpdateLightSpaceMatrix(const glm::vec3& currentCharacterPos) {
     float near_plane = 0.1f;
     float far_plane = 100.0f;
     float ortho_size = 12.0f;
@@ -78,7 +78,7 @@ void ShadowMapping::updateLightSpaceMatrix(const glm::vec3& currentCharacterPos)
     lightSpaceMatrix = lightProjection * lightView;
 }
 
-void ShadowMapping::initShaders() {
+void ShadowMapping::InitShaders() {
     SetUpShader("shadowMappingvs.glsl", "shadowMappingfs.glsl", depthShaderProgram);
     SetUpShader("shadowstaticMappingvs.glsl", "shadowstaticMappingfs.glsl", staticdepthShaderProgram);
 }

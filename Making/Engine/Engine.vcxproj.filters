@@ -72,6 +72,9 @@
     <ClInclude Include="ShadowMapping.h">
       <Filter>Shadow</Filter>
     </ClInclude>
+    <ClInclude Include="Alien.h">
+      <Filter>Character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="ShadowMapping.cpp">
       <Filter>Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="Alien.cpp">
+      <Filter>Character</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

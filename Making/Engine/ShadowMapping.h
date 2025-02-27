@@ -4,24 +4,24 @@ class ShadowMapping {
 public:
     ShadowMapping();
     ~ShadowMapping();
-    void init();
+    void Init();
 
-    unsigned int getDepthMapFBO() const { return depthMapFBO; }
-    unsigned int getDepthMap() const { return depthMap; }
+    void BindFramebuffer() const;
+    void UnbindFramebuffer() const;
 
-    unsigned int getDepthMapFBO_Enemy() const { return depthMapFBO_enemy; }
-    unsigned int getDepthMap_Enemy() const { return depthMap_enemy; }
+    void UpdateLightSpaceMatrix(const glm::vec3& currentCharacterPos);
 
-    void bindFramebuffer() const;
-    void unbindFramebuffer() const;
+    unsigned int GetDepthMapFBO() const { return depthMapFBO; }
+    unsigned int GetDepthMap() const { return depthMap; }
 
-    glm::mat4 getLightSpaceMatrix() const { return lightSpaceMatrix; }
-    glm::mat4 getLightSpaceMatrix_Enemy() const { return lightSpaceMatrix_enemy; }
+    unsigned int GetDepthMapFBO_Enemy() const { return depthMapFBO_enemy; }
+    unsigned int GetDepthMap_Enemy() const { return depthMap_enemy; }
 
-    void updateLightSpaceMatrix(const glm::vec3& currentCharacterPos);
+    glm::mat4 GetLightSpaceMatrix() const { return lightSpaceMatrix; }
+    glm::mat4 GetLightSpaceMatrix_Enemy() const { return lightSpaceMatrix_enemy; }
 
-    GLuint getDepthShaderProgram() const { return depthShaderProgram; }
-    GLuint getstaticDepthShaderProgram() const { return staticdepthShaderProgram; }
+    GLuint GetDepthShaderProgram() const { return depthShaderProgram; }
+    GLuint GetstaticDepthShaderProgram() const { return staticdepthShaderProgram; }
 
 private:
     const unsigned int SHADOW_WIDTH = 4096;
@@ -39,5 +39,5 @@ private:
     GLuint depthShaderProgram;
     GLuint staticdepthShaderProgram;
 
-    void initShaders();
+    void InitShaders();
 };

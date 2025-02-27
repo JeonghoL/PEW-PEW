@@ -7,6 +7,7 @@
 #include "MainCharacter.h"
 #include "Input.h"
 #include "StaticObjectManager.h"
+#include "ShadowMapping.h"
 
 void Engine::Init()
 {
@@ -17,6 +18,8 @@ void Engine::Init()
 
 	camera = new Camera();
 	mainCat = new MainCharacter();
+	shadowMap = new ShadowMapping();
+
 	input = new Input();
 	input->SetCamera(camera);
 	input->SetMainCharacter(mainCat);
@@ -74,6 +77,7 @@ void Engine::Release()
 	GET_SINGLE(StaticObjectManager)->Release();
 	delete input;
 	delete mainCat;
+	delete shadowMap;
 	delete camera;
 }
 

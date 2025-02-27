@@ -18,15 +18,15 @@ public:
 	void SetLeft_on(bool in);
 	void SetTop_on(bool in);
 	void SetBottom_on(bool in);
-	//void shift_on(bool in);
+	void Shift_on(bool in);
 	//void hitboxOnOff(bool in);
 
 	void Walk();
-	//void run();
+	void Run();
 	//void jump(bool in);
 	//void stop();
 
-	//bool shift_value() const { return Shift_on; }
+	bool Shift_value() const { return _Shift; }
 	//bool hitbox_ison() const { return hitbox_on; }
 
 	//void changehitColor();
@@ -34,7 +34,7 @@ public:
 	//void setlife();
 
 	bool IsMoving() const {
-		return Right_on || Left_on || Top_on || Bottom_on;
+		return _Right || _Left || _Top || _Bottom;
 	}
 
 	const glm::vec3& GetPosition() const { return characterPos; }
@@ -62,11 +62,11 @@ private:
 	int life = { 6 };
 	float revive_timer = { 1200.0f };
 
-	bool Right_on = { false }; 
-	bool Left_on = { false };
-	bool Top_on = { false };
-	bool Bottom_on = { false };
-	bool Shift_on = { false };
+	bool _Right = { false }; 
+	bool _Left = { false };
+	bool _Top = { false };
+	bool _Bottom = { false };
+	bool _Shift = { false };
 	bool hitbox_on = { false };
 
 	vector<BoneInfo>* player_BoneInfo;

@@ -16,27 +16,25 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				input->camera->SetStart(true);
 			break;
 		case GLFW_KEY_Q:
-			//if ((camera.get_start_pos() != 0 && !mainCat->getdying()) || finish)
-			//{
-			//	if (action == GLFW_PRESS)
-			//		glfwSetWindowShouldClose(window, GL_TRUE);
-			//}
-			if (action == GLFW_PRESS)
-				glfwSetWindowShouldClose(window, GL_TRUE);
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
+				if (action == GLFW_PRESS)
+					glfwSetWindowShouldClose(window, GL_TRUE);
+			}
 			break;
-		//case GLFW_KEY_LEFT_SHIFT:
-		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-		//	{
-		//		if (action == GLFW_PRESS)
-		//		{
-		//			mainCat->shift_on(true);
-		//		}
-		//		else if (action == GLFW_RELEASE)
-		//		{
-		//			mainCat->shift_on(false);
-		//		}
-		//	}
-		//	break;
+		case GLFW_KEY_LEFT_SHIFT:
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
+				if (action == GLFW_PRESS)
+				{
+					input->mainCat->Shift_on(true);
+				}
+				else if (action == GLFW_RELEASE)
+				{
+					input->mainCat->Shift_on(false);
+				}
+			}
+			break;
 		//case GLFW_KEY_C:
 		//	if (action == GLFW_PRESS)
 		//	{
@@ -44,8 +42,8 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 		//	}
 		//	break;
 		case GLFW_KEY_D:
-			//if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-			//{
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
 				if (action == GLFW_PRESS)
 				{
 					input->mainCat->SetRight_on(true);
@@ -54,11 +52,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				{
 					input->mainCat->SetRight_on(false);
 				}
-			//}
+			}
 			break;
 		case GLFW_KEY_A:
-			//if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-			//{
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
 				if (action == GLFW_PRESS)
 				{
 					input->mainCat->SetLeft_on(true);
@@ -67,11 +65,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				{
 					input->mainCat->SetLeft_on(false);
 				}
-			//}
+			}
 			break;
 		case GLFW_KEY_W:
-			//if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-			//{
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
 				if (action == GLFW_PRESS)
 				{
 					input->mainCat->SetTop_on(true);
@@ -80,11 +78,11 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				{
 					input->mainCat->SetTop_on(false);
 				}
-			//}
+			}
 			break;
 		case GLFW_KEY_S:
-			//if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-			//{
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
 				if (action == GLFW_PRESS)
 				{
 					input->mainCat->SetBottom_on(true);
@@ -93,10 +91,10 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				{
 					input->mainCat->SetBottom_on(false);
 				}
-			//}
+			}
 			break;
 		//case GLFW_KEY_H:
-		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
+		//	if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
 		//	{
 		//		if (action == GLFW_PRESS)
 		//		{
@@ -108,8 +106,8 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 		//	}
 		//	break;
 		case GLFW_KEY_V:
-			//if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-			//{
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
 				if (action == GLFW_PRESS)
 				{
 					input->camera->ChangeViewType();
@@ -118,10 +116,10 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 						input->camera->SetInitialDirection(mouseDir);
 					}
 				}
-			//}
+			}
 			break;
 		//case GLFW_KEY_0:
-		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
+		//	if (camera.Get_start_pos() == 0 && !mainCat->getdying() && !finish)
 		//	{
 		//		if (action == GLFW_PRESS)
 		//		{
@@ -131,7 +129,7 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 		//	}
 		//	break;
 		//case GLFW_KEY_1:
-		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
+		//	if (camera.Get_start_pos() == 0 && !mainCat->getdying() && !finish)
 		//	{
 		//		if (action == GLFW_PRESS)
 		//		{
@@ -139,15 +137,15 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 		//		}
 		//	}
 		//	break;
-		//case GLFW_KEY_LEFT_ALT:
-		//	if (camera.get_start_pos() == 0 && !mainCat->getdying() && !finish)
-		//	{
-		//		if (action == GLFW_PRESS)
-		//			camera.handleAltKey(true);
-		//		else if (action == GLFW_RELEASE)
-		//			camera.handleAltKey(false);
-		//	}
-		//	break;
+		case GLFW_KEY_LEFT_ALT:
+			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			{
+				if (action == GLFW_PRESS)
+					input->camera->HandleAltKey(true);
+				else if (action == GLFW_RELEASE)
+					input->camera->HandleAltKey(false);
+			}
+			break;
 		//case GLFW_KEY_EQUAL:
 		//	if (action == GLFW_PRESS)
 		//	{
@@ -195,4 +193,12 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 	//		}
 	//	}
 	//}
+}
+
+void Input::Scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
+
+	if (input->camera->Get_start_pos() == 0)
+		input->camera->HandleScroll(yoffset);
 }

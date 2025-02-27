@@ -5,9 +5,9 @@ public:
     Camera();
 
     void Update();
-    //void handleAltKey(bool pressed);
+    void HandleAltKey(bool pressed);
     void HandleMouseMovement(double cur_x, double cur_y);
-    //void handleScroll(double yoffset);
+    void HandleScroll(double yoffset);
     void Starting();
 
     glm::mat4 Get1stPersonViewMatrix(const glm::vec3& targetPos);
@@ -18,7 +18,7 @@ public:
     //float getZoomLevel() const { return Rm; }
     float GetHorizontalAngle() const { return camera_horizontal_angle; }
     float GetVerticalAngle() const { return camera_vertical_angle; }
-    //float get_start_pos() const { return start_pos; }
+    float Get_start_pos() const { return start_pos; }
     //glm::vec3 getMousePicking(float mouseX, float mouseY, const glm::mat4& projection, const glm::mat4& view);
 
     //void addfinishpos();

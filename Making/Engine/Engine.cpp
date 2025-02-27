@@ -27,6 +27,7 @@ void Engine::Init()
 	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
 	glfwSetWindowUserPointer(window, input);
 	glfwSetKeyCallback(window, Input::KeyBoardInput);
+	glfwSetScrollCallback(window, Input::Scroll_callback);
 }
 
 void Engine::Update()

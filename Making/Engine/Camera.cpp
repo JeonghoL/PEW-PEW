@@ -30,12 +30,12 @@ void Camera::Update()
     SetAngle();
 }
 
-//void Camera::handleAltKey(bool pressed) {
-//    LeftAlt_on = pressed;
-//    if (pressed) {
-//        first_click = true;
-//    }
-//}
+void Camera::HandleAltKey(bool pressed) {
+    LeftAlt_on = pressed;
+    if (pressed) {
+        first_click = true;
+    }
+}
 
 void Camera::HandleMouseMovement(double cur_x, double cur_y) {
     if (!FirstPersonView)
@@ -87,23 +87,23 @@ void Camera::HandleMouseMovement(double cur_x, double cur_y) {
     }
 }
 
-//void Camera::handleScroll(double yoffset) {
-//    if (!FirstPersonView && !finish)
-//    {
-//        if (yoffset == -1) {
-//            if (Rm < 1.0f)
-//            {
-//                Rm += 0.05f;
-//            }
-//        }
-//        else if (yoffset == 1) {
-//            if (Rm > 0.5f)
-//            {
-//                Rm -= 0.05f;
-//            }
-//        }
-//    }
-//}
+void Camera::HandleScroll(double yoffset) {
+    if (!FirstPersonView /*&& !finish*/)
+    {
+        if (yoffset == -1) {
+            if (Rm < 1.0f)
+            {
+                Rm += 0.05f;
+            }
+        }
+        else if (yoffset == 1) {
+            if (Rm > 0.5f)
+            {
+                Rm -= 0.05f;
+            }
+        }
+    }
+}
 
 void Camera::Starting()
 {

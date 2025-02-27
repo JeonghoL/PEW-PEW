@@ -69,7 +69,7 @@ void Engine::Draw(GLFWwindow* window)
 	
 	GET_SINGLE(StaticObjectManager)->Draw(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
 
-	mainCat->Draw(view, projection, viewPos, deltatime, angle, lightSpaceMatrix, shadowMap->GetDepthMap());
+	mainCat->Draw(view, projection, viewPos, deltatime, angle);
 
 	glFinish();
 }

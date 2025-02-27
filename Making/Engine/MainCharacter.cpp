@@ -85,7 +85,7 @@ void MainCharacter::Update()
     }
 }
 
-void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime, float angle, glm::mat4 lightSpaceMatrix, GLuint depthMap)
+void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime, float angle)
 {
     //if (!dead)
     //{

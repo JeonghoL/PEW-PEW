@@ -1,24 +1,6 @@
 #pragma once
 
 class ShadowMapping {
-private:
-    const unsigned int SHADOW_WIDTH = 4096;
-    const unsigned int SHADOW_HEIGHT = 4096;
-
-    unsigned int depthMapFBO;
-    unsigned int depthMap;
-
-    unsigned int depthMapFBO_enemy;
-    unsigned int depthMap_enemy;
-
-    glm::mat4 lightProjection, lightProjection_enemy;
-    glm::mat4 lightView, lightView_enemy;
-    glm::mat4 lightSpaceMatrix, lightSpaceMatrix_enemy;
-    GLuint depthShaderProgram;
-    GLuint staticdepthShaderProgram;
-
-    void initShaders();
-
 public:
     ShadowMapping();
     ~ShadowMapping();
@@ -40,4 +22,22 @@ public:
 
     GLuint getDepthShaderProgram() const { return depthShaderProgram; }
     GLuint getstaticDepthShaderProgram() const { return staticdepthShaderProgram; }
+
+private:
+    const unsigned int SHADOW_WIDTH = 4096;
+    const unsigned int SHADOW_HEIGHT = 4096;
+
+    unsigned int depthMapFBO;
+    unsigned int depthMap;
+
+    unsigned int depthMapFBO_enemy;
+    unsigned int depthMap_enemy;
+
+    glm::mat4 lightProjection, lightProjection_enemy;
+    glm::mat4 lightView, lightView_enemy;
+    glm::mat4 lightSpaceMatrix, lightSpaceMatrix_enemy;
+    GLuint depthShaderProgram;
+    GLuint staticdepthShaderProgram;
+
+    void initShaders();
 };

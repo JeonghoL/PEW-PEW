@@ -1,6 +1,24 @@
 #pragma once
 
-class Camera {
+// vt
+//class IA
+//{
+//public: 
+//};
+//
+//class B : public IA
+//{
+//
+//};
+//
+//class C : public IA
+//{
+//
+//};
+
+// vector<long long*> s = 
+
+class Camera final {
 public:
     Camera();
 
@@ -27,17 +45,22 @@ public:
     void ChangeViewType() { FirstPersonView = !FirstPersonView; }
 	glm::vec3 SetMouseWorldDirection(float cur_x, float cur_y, const glm::mat4& projection, const glm::mat4& view, const glm::vec3& targetPos);
 
-	bool GetViewType() { return FirstPersonView; }
+	bool GetViewType() const { return FirstPersonView; }
 
     glm::vec3 GetPosition(const glm::vec3& targetPos);
 	glm::mat4 GetViewMatrix(const glm::vec3& targetPos);
 
-	float GetAngle() { return angle; }
+	float GetAngle() const { return angle; }
 
     void SetAngle();
 	void SetStart(bool in) { start = in; }
 
 private:
+    // Camera camera;
+    // LeftAlt_on
+
+    // 멤버 변수는 헤더에 초기화하는 것을 추천.
+
     float Rm = { 1.0f };
     bool LeftAlt_on = { false };
     bool first_click = { false };

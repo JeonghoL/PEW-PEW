@@ -10,7 +10,7 @@
 
 StaticObject::StaticObject(const char* glb, const char* png)
 {
-	SetUpShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
+	SetupShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
 	LoadStaticObjectGLB(glb);
 	Texture = LoadTexture(png);
 }

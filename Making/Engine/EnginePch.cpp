@@ -7,7 +7,6 @@ double cur_y = 0.0f;
 glm::vec3 mouseDir;
 float light_angle = { 0.0f };
 
-
 string LoadFile(const string& filename) {
 	ifstream file(filename);
 	if (!file.is_open()) {
@@ -64,8 +63,11 @@ GLuint LoadTexture(const char* path)
 	return textureID;
 }
 
-void SetUpShader(const char* vertexName, const char* fragmentName, GLuint& shaderName)
+void SetupShader(const char* vertexName, const char* fragmentName, GLuint& shaderName)
 {
+	assert(vertexName != nullptr);
+	assert(fragmentName != nullptr);
+
 	string vertSource = LoadFile(vertexName);
 	string fragSource = LoadFile(fragmentName);
 

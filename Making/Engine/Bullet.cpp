@@ -9,18 +9,18 @@
 
 Bullet::Bullet(int type, int i, int j)
 {
-	SetUpShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
+	SetupShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
 	if (type == 1)
 	{
-		LoadBulletGLB("glb/dagger.glb");
-		Texture = LoadBulletTexture("texture/dagger.png");
+		LoadBulletGLB("StaticGlb/dagger.glb");
+		Texture = LoadBulletTexture("Texture/dagger.png");
 		b_type = type;
 		bulletSpeed = 0.2f;
 	}
 	else if (type == 2)
 	{
-		LoadBulletGLB("glb/star.glb");
-		Texture = LoadBulletTexture("texture/star.png");
+		LoadBulletGLB("StaticGlb/star.glb");
+		Texture = LoadBulletTexture("Texture/star.png");
 		b_type = type;
 		enemy_i = i;
 		enemy_j = j;
@@ -206,13 +206,14 @@ void Bullet::render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec
 	glm::mat4 lightSpaceMatrix, GLuint shadowMap)
 {
 	glUseProgram(shaderprogram);
+
+	// TODO: 캐싱 처리하자.
 	ViewLoc = glGetUniformLocation(shaderprogram, "view");
-	glUniformMatrix4fv(ViewLoc, 1, GL_FALSE, &orgview[0][0]);
-
 	ProjLoc = glGetUniformLocation(shaderprogram, "projection");
-	glUniformMatrix4fv(ProjLoc, 1, GL_FALSE, &orgproj[0][0]);
-
 	ModelLoc = glGetUniformLocation(shaderprogram, "model");
+
+	glUniformMatrix4fv(ViewLoc, 1, GL_FALSE, &orgview[0][0]);
+	glUniformMatrix4fv(ProjLoc, 1, GL_FALSE, &orgproj[0][0]);
 	glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderprogram, "lightSpaceMatrix"),

@@ -260,7 +260,7 @@ void AnimatedModel::LoadBones(const aiMesh* mesh, vector<BoneInfo>& BoneInfoName
 	}
 }
 
-void AnimatedModel::SetupBoneTransforms(vector<BoneInfo>& BoneInfoName, GLuint shadername)
+void AnimatedModel::SetupBoneTransforms(const vector<BoneInfo>& BoneInfoName, GLuint shadername)
 {
 	for (unsigned int i = 0; i < BoneInfoName.size(); i++) {
 		std::string uniformName = "gBones[" + std::to_string(i) + "]";

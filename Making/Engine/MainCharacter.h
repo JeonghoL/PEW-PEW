@@ -50,6 +50,8 @@ public:
 	void SetFinishPos() { characterPos = glm::vec3{ -5.0f, 0.0f, 5.0f }; }
 
 	bool GetFiring() { return firing; }
+	bool GetFiringInduration() { return firing_induration; }
+	
 	void SetFiring(bool in) { firing = in; }
 
 	void SetCamera(Camera* cam) { camera = cam; }

@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Camera.h"
 
+// TODO(이정호): 정리 다 되면 없애자.
 //extern float getCamerahori();
 //extern bool getFirstPersonView();
 //extern bool wallcollapsed_w(), wallcollapsed_s(), wallcollapsed_a(), wallcollapsed_d();
@@ -36,11 +37,12 @@ MainCharacter::MainCharacter()
 
     animModel->loadGLBFile(0, *player_BoneInfo, "Glb/cat_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
     Texture = LoadTexture("Texture/CatTexture.png");
-    SetUpShader("Shaders/CatVert.glsl", "Shaders/CatFrag.glsl", shaderprogram);
+    SetupShader("Shaders/CatVert.glsl", "Shaders/CatFrag.glsl", shaderprogram);
 }
 
 MainCharacter::~MainCharacter()
 {
+	// RELEASE(player_CurrentAnim);
     delete player_CurrentAnim;
     delete player_BoneInfo;
 	delete animModel;
@@ -532,6 +534,12 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 
 void MainCharacter::SaveAnimations()
 {
+//#define ANIMATION(x) "Animation"##x".glb");
+//
+//	Animation("cat_animation_idle");
+	// Texture
+	// sound
+
     animLibrary->loadAnimation("Idle", "Animations/cat_animation_idle.glb", animationImporters, animModel);
     animLibrary->loadAnimation("Die", "Animations/cat_animation_die.glb", animationImporters, animModel);
     animLibrary->loadAnimation("Walk", "Animations/cat_animation_walking.glb", animationImporters, animModel);

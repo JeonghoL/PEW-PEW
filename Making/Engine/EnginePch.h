@@ -62,14 +62,14 @@ const unsigned int WIN_H = 1440;		// 1440
 const unsigned int WIN_X = 0;
 const unsigned int WIN_Y = 0;
 
-const float PI = 3.141592f;
+constexpr float PI = 3.141592f;
 
 extern double cur_x;
 extern double cur_y;
 
 extern glm::vec3 mouseDir;
 
-const unsigned int MAX_BONES = 100;
+constexpr unsigned int MAX_BONES = 100;
 
 extern float light_angle;
 
@@ -78,4 +78,4 @@ extern unique_ptr<class Engine> GEngine;
 // 공용 함수들
 string LoadFile(const string& filename);
 GLuint LoadTexture(const char* path);
-void SetUpShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);
+void SetupShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);

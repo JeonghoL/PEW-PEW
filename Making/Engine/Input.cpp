@@ -7,8 +7,8 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 {
 	Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
 
-	//bool wasMoving = mainCat->isMoving();
-	//bool wasRunning = mainCat->shift_value();
+	bool wasMoving = input->mainCat->IsMoving();
+	bool wasRunning = input->mainCat->Shift_value();
 
 	switch (key) {
 		case GLFW_KEY_P:
@@ -171,28 +171,28 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 		//	break;
 	}
 
-	//bool isMovingNow = mainCat->isMoving();
-	//bool isRunningNow = mainCat->shift_value();
-	//
-	//if (wasMoving != isMovingNow || (isMovingNow && wasRunning != isRunningNow)) {
-	//	if (!firing_induration)
-	//	{
-	//		if (isMovingNow) {
-	//			if (isRunningNow)
-	//			{
-	//				playeranimLib.changeAnimation("Run", player_CurrentAnim);
-	//			}
-	//			else
-	//			{
-	//				playeranimLib.changeAnimation("Walk", player_CurrentAnim);
-	//			}
-	//		}
-	//		else
-	//		{
-	//			playeranimLib.changeAnimation("Idle", player_CurrentAnim);
-	//		}
-	//	}
-	//}
+	bool isMovingNow = input->mainCat->IsMoving();
+	bool isRunningNow = input->mainCat->Shift_value();
+	
+	if (wasMoving != isMovingNow || (isMovingNow && wasRunning != isRunningNow)) {
+		if (!input->mainCat->GetFiringInduration())
+		{
+			if (isMovingNow) {
+				if (isRunningNow)
+				{
+					input->mainCat->GetAnimLibrary()->changeAnimation("Run", *input->mainCat->GetCurrentAnim());
+				}
+				else
+				{
+					input->mainCat->GetAnimLibrary()->changeAnimation("Walk", *input->mainCat->GetCurrentAnim());
+				}
+			}
+			else
+			{
+				input->mainCat->GetAnimLibrary()->changeAnimation("Idle", *input->mainCat->GetCurrentAnim());
+			}
+		}
+	}
 }
 
 void Input::Scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
@@ -225,10 +225,10 @@ void Input::MouseFunc(GLFWwindow* window, int button, int action, int mods)
 	}
 
 	// 수정필요
-	/*if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Run")
-		input->mainCat->GetCurrentAnim().changeAnimation("FireRun", player_CurrentAnim);
+	if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Run")
+		input->mainCat->GetAnimLibrary()->changeAnimation("FireRun", *input->mainCat->GetCurrentAnim());
 	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Walk")
-		playeranimLib.changeAnimation("FireWalk", player_CurrentAnim);
+		input->mainCat->GetAnimLibrary()->changeAnimation("FireWalk", *input->mainCat->GetCurrentAnim());
 	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Idle")
-		playeranimLib.changeAnimation("Fire", player_CurrentAnim);*/
+		input->mainCat->GetAnimLibrary()->changeAnimation("Fire", *input->mainCat->GetCurrentAnim());
 }

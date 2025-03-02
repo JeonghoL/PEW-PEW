@@ -17,6 +17,7 @@ Camera::Camera()
     camera_vertical_angle = { 0.0f };
     start_pos = { 30.0f };
     finish_pos = { 0.0f };
+
 }
 
 void Camera::Update()
@@ -25,6 +26,7 @@ void Camera::Update()
     {
         Starting();
     }
+    
     HandleMouseMovement(cur_x, cur_y);
     SetAngle();
 }
@@ -86,16 +88,19 @@ void Camera::HandleMouseMovement(double cur_x, double cur_y) {
     }
 }
 
-void Camera::HandleScroll(double yoffset) {
+void Camera::HandleScroll(double yoffset) 
+{
     if (!FirstPersonView /*&& !finish*/)
     {
-        if (yoffset == -1) {
+        if (yoffset == -1) 
+        {
             if (Rm < 1.0f)
             {
                 Rm += 0.05f;
             }
         }
-        else if (yoffset == 1) {
+        else if (yoffset == 1) 
+        {
             if (Rm > 0.5f)
             {
                 Rm -= 0.05f;

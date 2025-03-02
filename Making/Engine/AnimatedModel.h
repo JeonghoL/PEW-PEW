@@ -124,9 +124,10 @@ struct VertexBoneData {
 
 class AnimatedModel
 {
+	// public protected private
 public:
 	struct AnimationLibrary {
-		map<std::string, AnimInfo> animations;
+		unordered_map<std::string, AnimInfo> animations;
 		std::string currentAnimationName;
 
 		void loadAnimation(const std::string& name, const std::string& filename,
@@ -177,7 +178,7 @@ public:
 public:
 	AnimatedModel();
 	void loadGLBFile(int j, vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, vector<unsigned int>& Indices); 
-	void SetupBoneTransforms(vector<BoneInfo>& BoneInfoName, GLuint shadername);
+	void SetupBoneTransforms(const vector<BoneInfo>& BoneInfoName, GLuint shadername);
 	void UpdateAnimation(int j, vector<BoneInfo>& BoneInfoName, float deltaTime, AnimInfo& currentAnim);
 
 private:

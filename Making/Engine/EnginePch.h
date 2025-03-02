@@ -54,9 +54,9 @@ public:								\
 
 #define CAMERAPOS()			GET_SINGLE(Camera)->getPosition()
 
+// 공용 변수들
 #define MAX_NUM_BONES_PER_VERTEX 4
 
-// 공용 변수들
 const unsigned int WIN_W = 2560;		// 2560
 const unsigned int WIN_H = 1440;		// 1440
 const unsigned int WIN_X = 0;

@@ -177,7 +177,7 @@ public:
 
 public:
 	AnimatedModel();
-	void loadGLBFile(int j, vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, vector<unsigned int>& Indices); 
+	void LoadGLBFile(int j, vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, vector<unsigned int>& Indices); 
 	void SetupBoneTransforms(const vector<BoneInfo>& BoneInfoName, GLuint shadername);
 	void UpdateAnimation(int j, vector<BoneInfo>& BoneInfoName, float deltaTime, AnimInfo& currentAnim);
 

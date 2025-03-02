@@ -6,7 +6,7 @@ AnimatedModel::AnimatedModel()
 	m_GlobalInverseTransform.resize(10, glm::mat4(1.0f));
 }
 
-void AnimatedModel::loadGLBFile(int j, vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, vector<unsigned int>& Indices)
+void AnimatedModel::LoadGLBFile(int j, vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, vector<unsigned int>& Indices)
 {
 	
 	const aiScene* scene = characterImporter.ReadFile(filename,

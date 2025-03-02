@@ -72,11 +72,14 @@
     <ClInclude Include="ShadowMapping.h">
       <Filter>Shadow</Filter>
     </ClInclude>
-    <ClInclude Include="Alien.h">
+    <ClInclude Include="Enemy.h">
       <Filter>Character</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,11 +125,14 @@
     <ClCompile Include="ShadowMapping.cpp">
       <Filter>Shadow</Filter>
     </ClCompile>
-    <ClCompile Include="Alien.cpp">
+    <ClCompile Include="Enemy.cpp">
       <Filter>Character</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

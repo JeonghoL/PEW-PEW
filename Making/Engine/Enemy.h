@@ -1,8 +1,10 @@
 #pragma once
 
 struct AnimInfo;
+struct BoneInfo;
 class AnimatedModel;
 class Bullet;
+class MainCharacter;
 class ShadowMapping;
 
 class Enemy
@@ -11,30 +13,30 @@ public:
     Enemy(int num, int POINT);
     ~Enemy();
 
-    void draw(int POINT, float deltaTime, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
-    void drawshadow(int POINT, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime);
+    void Draw(int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
+    void DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime);
 
-    void movetoward();
-    void lookupdate();
+    void MoveToward(MainCharacter* mainCat);
+    void LookUpdate(const glm::vec3& cPos);
 
     bool wallcollapsed_s();
     bool wallcollapsed_w();
     bool wallcollapsed_d();
     bool wallcollapsed_a();
 
-    void setAnimation();
+    void SetAnimation(MainCharacter* mainCat);
 
-    void setlife();
+    void SetLife();
 
-    const glm::vec3& getPosition() const { return enemypos; }
-    const glm::mat4& getmodel() const { return model; }
-    const int& getstate() const { return state; }
-    const int& getlife() const { return life; }
-    const bool& getdead() const { return dead; }
-    const float& getlastangle() const { return lastangle; }
+    const glm::vec3& GetPosition() const { return enemypos; }
+    const glm::mat4& GetModel() const { return model; }
+    const int& GetState() const { return state; }
+    const int& GetLife() const { return life; }
+    const bool& GetDead() const { return dead; }
+    const float& GetLastAngle() const { return lastangle; }
 
-    void setdie();
-    void setrevive_timer();
+    void SetDead();
+    void SetReviveTimer();
 
 private:
     glm::vec3 enemypos, targetpos;
@@ -59,6 +61,7 @@ private:
     Bullet* newBullet;
     glm::vec3 tPos;
 
+    vector<BoneInfo>* alien_BoneInfo;
     AnimatedModel* animModel;
-    AnimInfo* enemy_CurrentAnim[3][9];
+    AnimInfo* enemy_CurrentAnim;
 };

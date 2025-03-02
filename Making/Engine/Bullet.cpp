@@ -3,6 +3,7 @@
 #include "stb_image.h"
 #include "MainCharacter.h"
 #include "Camera.h"
+#include "EnemyManager.h"
 
 //extern bool FirstPersonView;
 //extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
@@ -143,7 +144,7 @@ GLuint Bullet::LoadBulletTexture(const char* path)
 	return textureID;
 }
 
-void Bullet::BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::vec3 mousePick)
+void Bullet::BulletSetting(MainCharacter* mainCharacter, EnemyManager* enemies, Camera* camera, glm::vec3 mousePick)
 {
 	if (b_type == 1)
 	{
@@ -177,17 +178,17 @@ void Bullet::BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::ve
 		model = glm::translate(model, position);
 		model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	//else if (b_type == 2)
-	//{
-	//	position = enemy[enemy_i][enemy_j]->getPosition();
-	//	position.y = 0.45f;
-	//
-	//	tPos = mainCat->getPosition();
-	//	tPos.y = 0.45f;
-	//	direction = glm::normalize(tPos - position);
-	//	position += 0.5f * direction;
-	//	angle = atan2(direction.x, direction.z);
-	//}
+	else if (b_type == 2)
+	{
+		position = enemies[enemy_i][enemy_j]->GetPosition();
+		position.y = 0.45f;
+	
+		tPos = mainCharacter->GetPosition();
+		tPos.y = 0.45f;
+		direction = glm::normalize(tPos - position);
+		position += 0.5f * direction;
+		angle = atan2(direction.x, direction.z);
+	}
 }
 
 //void Bullet::BulletSettingAgain(glm::vec3 Pos)

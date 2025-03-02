@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "StaticObjectManager.h"
 #include "ShadowMapping.h"
+#include "EnemyManager.h"
 
 void Engine::Init()
 {
@@ -18,6 +19,7 @@ void Engine::Init()
 
 	camera = new Camera();
 	mainCat = new MainCharacter();
+	enemyManager = new EnemyManager();
 	shadowMap = new ShadowMapping();
 
 	mainCat->SetCamera(camera);
@@ -128,6 +130,8 @@ void Engine::Release()
 {
 	GET_SINGLE(Skybox)->Release();
 	GET_SINGLE(StaticObjectManager)->Release();
+	enemyManager->Release();
+	delete enemyManager;
 	delete input;
 	delete mainCat;
 	delete shadowMap;

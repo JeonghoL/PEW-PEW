@@ -3,13 +3,8 @@
 #include "MainCharacter.h"
 #include "Bullet.h"
 #include "AnimatedModel.h"
+#include "ShadowMapping.h"
 
-const char* enemyvs = "enemyvs.glsl";
-const char* enemyfs = "enemyfs.glsl";
-const char* enemylinevs = "enemylineVert.glsl";
-const char* enemylinefs = "enemylineFrag.glsl";
-
-//extern struct BoneInfo;
 //extern MainCharacter* mainCat;
 //extern std::vector<BoneInfo> enemy_BoneInfo[3];
 //extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
@@ -20,8 +15,6 @@ const char* enemylinefs = "enemylineFrag.glsl";
 //extern void loadGLBFile(int j, std::vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, std::vector<unsigned int>& Indices);
 //extern void setupShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);
 //extern Texture textureLoader;
-//extern AnimInfo enemy_CurrentAnim[3][9];
-//extern Enemy* enemy[3][9];
 //extern std::vector<std::vector<std::vector<Bullet*>>> enemyBullets;
 //extern float light_angle;
 //extern bool finish;
@@ -60,20 +53,22 @@ const std::vector<glm::vec3> ENEMY_SPAWN_POINTS = {
 
 Enemy::Enemy(int num, int POINT)
 {
+	animModel = new AnimatedModel();
+
     if (num == 1)
     {
-        loadGLBFile(num + 1, enemy_BoneInfo[num - 1], "basepose/alien_1_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = textureLoader.loadTexture("texture/alien_1_basecolor.png");
+        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "basepose/alien_1_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("texture/alien_1_basecolor.png");
     }
     else if (num == 2)
     {
-        loadGLBFile(num + 1, enemy_BoneInfo[num - 1], "basepose/alien_2_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = textureLoader.loadTexture("texture/alien_2_basecolor.png");
+        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "basepose/alien_2_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("texture/alien_2_basecolor.png");
     }
     else if (num == 3)
     {
-        loadGLBFile(num + 1, enemy_BoneInfo[num - 1], "basepose/alien_3_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = textureLoader.loadTexture("texture/alien_3_basecolor.png");
+        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "basepose/alien_3_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("texture/alien_3_basecolor.png");
     }
     SetupShader("enemyvs.glsl", "enemyfs.glsl", shaderprogram);
     glGenVertexArrays(1, &lVAO);
@@ -121,17 +116,17 @@ Enemy::~Enemy()
     glDeleteProgram(shaderprogram);
 }
 
-void Enemy::draw(int POINT, float deltaTime, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
+void Enemy::Draw(int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
 {
     if (!dead)
     {
-        UpdateAnimation(type + 1, enemy_BoneInfo[type - 1], deltaTime * 0.5f, enemy_CurrentAnim[type - 1][POINT]);
+        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
         glUseProgram(shaderprogram);
-        setupBoneTransforms(enemy_BoneInfo[type - 1], shaderprogram);
+        animModel->SetupBoneTransforms(*alien_BoneInfo, shaderprogram);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, enemy->getPosition());
-        glm::vec3 pos = mainCat->getPosition();
+        model = glm::translate(model, enemy->GetPosition());
+        glm::vec3 pos = cPos;
         float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
         float angle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
         if (distance < 13.0f)
@@ -179,12 +174,12 @@ void Enemy::draw(int POINT, float deltaTime, Enemy* enemy, glm::mat4 view, glm::
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-        if (state == 2 && enemy_CurrentAnim[type - 1][point].CurrentTime < 750)
+        if (state == 2 && enemy_CurrentAnim->CurrentTime < 750)
         {
             if (!newbullet)
             {
                 newBullet = new Bullet(2, type - 1, point);
-                newBullet->bulletSetting();
+                newBullet->BulletSetting();
                 newbullet = true;
 
                 tPos = newBullet->gettPos();
@@ -253,7 +248,7 @@ void Enemy::draw(int POINT, float deltaTime, Enemy* enemy, glm::mat4 view, glm::
         revive_timer = { 2400.0f };
         dead = { false };
         aim_target = { false };
-        glm::vec3 pos = mainCat->getPosition();
+        glm::vec3 pos = cPos;
         lastangle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
         fire = { false };
         newbullet = { false };
@@ -298,19 +293,19 @@ void Enemy::draw(int POINT, float deltaTime, Enemy* enemy, glm::mat4 view, glm::
         else
             model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        if (finish)
-            state = 5;
+        //if (finish)
+        //    state = 5;
     }
 }
 
-void Enemy::drawshadow(int POINT, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime)
+void Enemy::DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime)
 {
     if (!dead)
     {
-        UpdateAnimation(type + 1, enemy_BoneInfo[type - 1], deltaTime * 0.5f, enemy_CurrentAnim[type - 1][POINT]);
+        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
         model = glm::mat4(1.0f);
-        model = glm::translate(model, enemy->getPosition());
-        glm::vec3 pos = mainCat->getPosition();
+        model = glm::translate(model, enemy->GetPosition());
+        glm::vec3 pos = cPos;
         float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
         float angle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
         if (distance < 13.0f)
@@ -322,19 +317,19 @@ void Enemy::drawshadow(int POINT, Enemy* enemy, ShadowMapping* shadowMap, float 
         }
         model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        ModelLoc = glGetUniformLocation(shadowMap->getDepthShaderProgram(), "model");
+        ModelLoc = glGetUniformLocation(shadowMap->GetDepthShaderProgram(), "model");
         glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        setupBoneTransforms(enemy_BoneInfo[type - 1], shadowMap->getDepthShaderProgram());
+        animModel->SetupBoneTransforms(*alien_BoneInfo, shadowMap->GetDepthShaderProgram());
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     }
 }
 
-void Enemy::movetoward()
+void Enemy::MoveToward(MainCharacter* mainCat)
 {
-    if (!dead && !mainCat->getdying())
+    if (!dead && !mainCat->GetDying())
     {
-        glm::vec3 pos = mainCat->getPosition();
+        glm::vec3 pos = mainCat->GetPosition();
         glm::vec3 direction = glm::normalize(pos - enemypos);
         float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
 
@@ -359,7 +354,7 @@ void Enemy::movetoward()
         {
             if (!aim_target)
             {
-                targetpos = mainCat->getPosition();
+                targetpos = mainCat->GetPosition();
                 aim_target = true;
             }
 
@@ -379,9 +374,9 @@ void Enemy::movetoward()
     }
 }
 
-void Enemy::lookupdate()
+void Enemy::LookUpdate(const glm::vec3& cPos)
 {
-    glm::vec3 pos = mainCat->getPosition();
+    glm::vec3 pos = cPos;
     float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
     float angle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
 
@@ -391,186 +386,186 @@ void Enemy::lookupdate()
         model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-bool Enemy::wallcollapsed_s()
+//bool Enemy::wallcollapsed_s()
+//{
+//    glm::vec3 pos = enemypos;
+//    bool check = false;
+//    glm::vec3 other_pos;
+//
+//    for (int i = 0; i < 70; ++i)
+//    {
+//        if (min_X[i] <= pos.x && max_X[i] >= pos.x)
+//        {
+//            if (pos.z + 0.25f <= max_Z[i] && pos.z + 0.25f > min_Z[i])
+//                check = true;
+//        }
+//    }
+//
+//    for (int i = 0; i < 3; ++i)
+//    {
+//        for (int j = 0; j < 9; ++j)
+//        {
+//            if (i == (type - 1) && j == point)
+//                continue;
+//            else
+//            {
+//                if (!(enemy[i][j]->getstate() == 4))
+//                {
+//                    other_pos = enemy[i][j]->getPosition();
+//                    if (abs(pos.x - other_pos.x) < 0.6f)
+//                    {
+//                        if (other_pos.z - pos.z < 0.6f && other_pos.z - pos.z > 0.0f)
+//                            check = true;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    return check;
+//}
+//
+//bool Enemy::wallcollapsed_w()
+//{
+//    glm::vec3 pos = enemypos;
+//    bool check = false;
+//    glm::vec3 other_pos;
+//
+//    for (int i = 0; i < 70; ++i)
+//    {
+//        if (min_X[i] <= pos.x && max_X[i] >= pos.x)
+//        {
+//            if (pos.z - 0.25f <= max_Z[i] && pos.z - 0.25f > min_Z[i])
+//                check = true;
+//        }
+//    }
+//
+//    for (int i = 0; i < 3; ++i)
+//    {
+//        for (int j = 0; j < 9; ++j)
+//        {
+//            if (i == (type - 1) && j == point)
+//                continue;
+//            else
+//            {
+//                if (!(enemy[i][j]->getstate() == 4))
+//                {
+//                    other_pos = enemy[i][j]->getPosition();
+//                    if (abs(pos.x - other_pos.x) < 0.6f)
+//                    {
+//                        if (other_pos.z - pos.z > -0.6f && other_pos.z - pos.z < 0.0f)
+//                            check = true;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    return check;
+//}
+//
+//bool Enemy::wallcollapsed_d()
+//{
+//    glm::vec3 pos = enemypos;
+//    bool check = false;
+//    glm::vec3 other_pos;
+//
+//    for (int i = 0; i < 70; ++i)
+//    {
+//        if (min_Z[i] <= pos.z && max_Z[i] >= pos.z)
+//        {
+//            if (pos.x + 0.25f <= max_X[i] && pos.x + 0.25f > min_X[i])
+//                check = true;
+//        }
+//    }
+//
+//    for (int i = 0; i < 3; ++i)
+//    {
+//        for (int j = 0; j < 9; ++j)
+//        {
+//            if (i == (type - 1) && j == point)
+//                continue;
+//            else
+//            {
+//                if (!(enemy[i][j]->getstate() == 4))
+//                {
+//                    other_pos = enemy[i][j]->getPosition();
+//                    if (abs(pos.z - other_pos.z) < 0.6f)
+//                    {
+//                        if (other_pos.x - pos.x < 0.6f && other_pos.x - pos.x > 0.0f)
+//                            check = true;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    return check;
+//}
+//
+//bool Enemy::wallcollapsed_a()
+//{
+//    glm::vec3 pos = enemypos;
+//    bool check = false;
+//    glm::vec3 other_pos;
+//
+//    for (int i = 0; i < 70; ++i)
+//    {
+//        if (min_Z[i] <= pos.z && max_Z[i] >= pos.z)
+//        {
+//            if (pos.x - 0.25f <= max_X[i] && pos.x - 0.25f > min_X[i])
+//                check = true;
+//        }
+//    }
+//
+//    for (int i = 0; i < 3; ++i)
+//    {
+//        for (int j = 0; j < 9; ++j)
+//        {
+//            if (i == (type - 1) && j == point)
+//                continue;
+//            else
+//            {
+//                if (!(enemy[i][j]->getstate() == 4))
+//                {
+//                    other_pos = enemy[i][j]->getPosition();
+//                    if (abs(pos.z - other_pos.z) < 0.6f)
+//                    {
+//                        if (other_pos.x - pos.x > -0.6f && other_pos.x - pos.x < 0.0f)
+//                            check = true;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    return check;
+//}
+
+void Enemy::SetAnimation(MainCharacter* mainCat)
 {
-    glm::vec3 pos = enemypos;
-    bool check = false;
-    glm::vec3 other_pos;
-
-    for (int i = 0; i < 70; ++i)
-    {
-        if (min_X[i] <= pos.x && max_X[i] >= pos.x)
-        {
-            if (pos.z + 0.25f <= max_Z[i] && pos.z + 0.25f > min_Z[i])
-                check = true;
-        }
-    }
-
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 9; ++j)
-        {
-            if (i == (type - 1) && j == point)
-                continue;
-            else
-            {
-                if (!(enemy[i][j]->getstate() == 4))
-                {
-                    other_pos = enemy[i][j]->getPosition();
-                    if (abs(pos.x - other_pos.x) < 0.6f)
-                    {
-                        if (other_pos.z - pos.z < 0.6f && other_pos.z - pos.z > 0.0f)
-                            check = true;
-                    }
-                }
-            }
-        }
-    }
-
-    return check;
-}
-
-bool Enemy::wallcollapsed_w()
-{
-    glm::vec3 pos = enemypos;
-    bool check = false;
-    glm::vec3 other_pos;
-
-    for (int i = 0; i < 70; ++i)
-    {
-        if (min_X[i] <= pos.x && max_X[i] >= pos.x)
-        {
-            if (pos.z - 0.25f <= max_Z[i] && pos.z - 0.25f > min_Z[i])
-                check = true;
-        }
-    }
-
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 9; ++j)
-        {
-            if (i == (type - 1) && j == point)
-                continue;
-            else
-            {
-                if (!(enemy[i][j]->getstate() == 4))
-                {
-                    other_pos = enemy[i][j]->getPosition();
-                    if (abs(pos.x - other_pos.x) < 0.6f)
-                    {
-                        if (other_pos.z - pos.z > -0.6f && other_pos.z - pos.z < 0.0f)
-                            check = true;
-                    }
-                }
-            }
-        }
-    }
-
-    return check;
-}
-
-bool Enemy::wallcollapsed_d()
-{
-    glm::vec3 pos = enemypos;
-    bool check = false;
-    glm::vec3 other_pos;
-
-    for (int i = 0; i < 70; ++i)
-    {
-        if (min_Z[i] <= pos.z && max_Z[i] >= pos.z)
-        {
-            if (pos.x + 0.25f <= max_X[i] && pos.x + 0.25f > min_X[i])
-                check = true;
-        }
-    }
-
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 9; ++j)
-        {
-            if (i == (type - 1) && j == point)
-                continue;
-            else
-            {
-                if (!(enemy[i][j]->getstate() == 4))
-                {
-                    other_pos = enemy[i][j]->getPosition();
-                    if (abs(pos.z - other_pos.z) < 0.6f)
-                    {
-                        if (other_pos.x - pos.x < 0.6f && other_pos.x - pos.x > 0.0f)
-                            check = true;
-                    }
-                }
-            }
-        }
-    }
-
-    return check;
-}
-
-bool Enemy::wallcollapsed_a()
-{
-    glm::vec3 pos = enemypos;
-    bool check = false;
-    glm::vec3 other_pos;
-
-    for (int i = 0; i < 70; ++i)
-    {
-        if (min_Z[i] <= pos.z && max_Z[i] >= pos.z)
-        {
-            if (pos.x - 0.25f <= max_X[i] && pos.x - 0.25f > min_X[i])
-                check = true;
-        }
-    }
-
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 9; ++j)
-        {
-            if (i == (type - 1) && j == point)
-                continue;
-            else
-            {
-                if (!(enemy[i][j]->getstate() == 4))
-                {
-                    other_pos = enemy[i][j]->getPosition();
-                    if (abs(pos.z - other_pos.z) < 0.6f)
-                    {
-                        if (other_pos.x - pos.x > -0.6f && other_pos.x - pos.x < 0.0f)
-                            check = true;
-                    }
-                }
-            }
-        }
-    }
-
-    return check;
-}
-
-void Enemy::setAnimation()
-{
-    glm::vec3 pos = mainCat->getPosition();
+    glm::vec3 pos = mainCat->GetPosition();
     glm::vec3 direction = glm::normalize(pos - enemypos);
     float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
 
     if (state == 1)
     {
-        if (mainCat->getdying())
+        if (mainCat->GetDying())
             state = 0;
     }
     else if (state == 2)
     {
-        if ((enemy_CurrentAnim[type - 1][point].CurrentTime >= 800 && enemy_CurrentAnim[type - 1][point].CurrentTime <= 1300) && !fire)
+        if ((enemy_CurrentAnim->CurrentTime >= 800 && enemy_CurrentAnim->CurrentTime <= 1300) && !fire)
         {
             newBullet = new Bullet(2, type - 1, point);
             newBullet->bulletSettingAgain(tPos);
             enemyBullets[type - 1][point].push_back(newBullet);
         }
-        else if (enemy_CurrentAnim[type - 1][point].CurrentTime > 1300 && !fire)
+        else if (enemy_CurrentAnim->CurrentTime > 1300 && !fire)
             fire = true;
-        else if (enemy_CurrentAnim[type - 1][point].CurrentTime + 10 >= (enemy_CurrentAnim[type - 1][point].Duration))
+        else if (enemy_CurrentAnim->CurrentTime + 10 >= (enemy_CurrentAnim->Duration))
         {
-            if (mainCat->getdying())
+            if (mainCat->GetDying())
                 state = 0;
             {
                 if (distance > 4.0f && distance < 13.0f)
@@ -589,7 +584,7 @@ void Enemy::setAnimation()
                         lastangle = angle;
                     }
                 }
-                enemy_CurrentAnim[type - 1][point].CurrentTime = 0;
+                enemy_CurrentAnim->CurrentTime = 0;
                 aim_target = false;
                 fire = false;
                 newbullet = false;
@@ -598,9 +593,9 @@ void Enemy::setAnimation()
     }
     else if (state == 3)
     {
-        if (enemy_CurrentAnim[type - 1][point].CurrentTime + 10 >= (enemy_CurrentAnim[type - 1][point].Duration))
+        if (enemy_CurrentAnim->CurrentTime + 10 >= (enemy_CurrentAnim->Duration))
         {
-            if (mainCat->getdying())
+            if (mainCat->GetDying())
                 state = 0;
             else
             {
@@ -618,14 +613,14 @@ void Enemy::setAnimation()
     }
     else if (state == 4)
     {
-        if (enemy_CurrentAnim[type - 1][point].CurrentTime + 10 >= (enemy_CurrentAnim[type - 1][point].Duration))
+        if (enemy_CurrentAnim->CurrentTime + 10 >= (enemy_CurrentAnim->Duration))
         {
             dead = true;
         }
     }
 }
 
-void Enemy::setlife()
+void Enemy::SetLife()
 {
     if (life > 1)
     {
@@ -645,13 +640,13 @@ void Enemy::setlife()
     }
 }
 
-void Enemy::setdie()
+void Enemy::SetDead()
 {
     state = 4;
     life = 0;
 }
 
-void Enemy::setrevive_timer()
+void Enemy::SetReviveTimer()
 {
     revive_timer = 240.0f;
 }

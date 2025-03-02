@@ -513,7 +513,7 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
 				}
 
-				for (bool& bullet_nums : Bullet_cnt)
+				for (auto& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}
@@ -529,6 +529,15 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 			if (player_CurrentAnim->CurrentTime + 10 >= player_CurrentAnim->Duration)
 				SetDead(true);
 		}
+	}
+}
+
+void MainCharacter::ThrowBullets(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint shadowMap)
+{
+	for (auto& bullet : bullets)
+	{
+		bullet->bulletUpdate();
+		bullet->render(orgview, orgproj, viewPos, lightSpaceMatrix, shadowMap);
 	}
 }
 

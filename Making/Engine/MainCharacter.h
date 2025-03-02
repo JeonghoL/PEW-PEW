@@ -41,6 +41,8 @@ public:
 
 	void ChangeCatAnimation(const glm::mat4& view, const glm::mat4& projection);
 
+	void ThrowBullets(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint shadowMap);
+
 	const glm::vec3& GetPosition() const { return characterPos; }
 	const glm::mat4& GetModel() const { return model; }
 	const bool& GetDying() const { return dying; }
@@ -51,7 +53,7 @@ public:
 
 	bool GetFiring() { return firing; }
 	bool GetFiringInduration() { return firing_induration; }
-	
+
 	void SetFiring(bool in) { firing = in; }
 
 	void SetCamera(Camera* cam) { camera = cam; }

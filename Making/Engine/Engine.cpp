@@ -76,6 +76,7 @@ void Engine::Draw(GLFWwindow* window)
 	GET_SINGLE(StaticObjectManager)->Draw(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
 
 	mainCat->Draw(view, projection, viewPos, deltatime, angle);
+	mainCat->ThrowBullets(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
 
 	glFinish();
 }

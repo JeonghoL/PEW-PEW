@@ -12,7 +12,7 @@ public:
 	void LoadBulletGLB(const std::string& filename);
 	GLuint LoadBulletTexture(const char* path);
 
-	void BulletSetting(MainCharacter* mainCharacter, EnemyManager* enemies, Camera* camera, glm::vec3 mousePick);
+	void BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::vec3 mousePick);
 	void BulletSettingAgain(glm::vec3 Pos);
 	void render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 		glm::mat4 lightSpaceMatrix, GLuint shadowMap);

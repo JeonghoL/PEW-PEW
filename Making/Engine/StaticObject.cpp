@@ -2,12 +2,6 @@
 #include "StaticObject.h"
 #include "stb_image.h"
 
-//extern float cloud_pos_z;
-//extern bool cloud_go;
-//extern float end_y;
-//extern bool send_end;
-//extern bool finish;
-
 StaticObject::StaticObject(const char* glb, const char* png)
 {
 	SetupShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);

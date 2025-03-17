@@ -120,14 +120,12 @@ void Engine::DrawShadow()
 
 	mainCat->Drawshadow(angle, shadowMap->GetDepthShaderProgram(), shadowMap->GetLightSpaceMatrix());
 
-	//for (int i = 0; i < 3; ++i) {
-	//	for (int j = 0; j < 9; ++j)
-	//	{
-	//		enemy[i][j]->setAnimation();
-	//		enemy[i][j]->movetoward();
-	//		enemy[i][j]->drawshadow(j, enemy[i][j], shadowMap, deltaTime);
-	//	}
-	//}
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 9; ++j)
+		{
+			enemy[i][j]->DrawShadow(j, mainCat->GetPosition(), enemy[i][j], shadowMap);
+		}
+	}
 
 	GET_SINGLE(StaticObjectManager)->DrawShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
 

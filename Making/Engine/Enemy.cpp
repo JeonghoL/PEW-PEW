@@ -4,20 +4,6 @@
 #include "Bullet.h"
 #include "ShadowMapping.h"
 
-//extern MainCharacter* mainCat;
-//extern std::vector<BoneInfo> enemy_BoneInfo[3];
-//extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
-//
-//extern void setupBoneTransforms(std::vector<BoneInfo>& BoneInfoName, GLuint shadername);
-//extern void UpdateAnimation(int j, std::vector<BoneInfo>& BoneInfoName, float deltaTime, AnimInfo& currentAnim);
-//
-//extern void loadGLBFile(int j, std::vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, std::vector<unsigned int>& Indices);
-//extern void setupShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);
-//extern Texture textureLoader;
-//extern std::vector<std::vector<std::vector<Bullet*>>> enemyBullets;
-//extern float light_angle;
-//extern bool finish;
-
 const std::vector<glm::vec3> ENEMY_SPAWN_POINTS = {
     glm::vec3(1.54972, 0.0f, 35.1811),
     glm::vec3(-2.91028, 0.0f, 19.5118),
@@ -320,11 +306,10 @@ void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec
     }
 }
 
-void Enemy::DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime)
+void Enemy::DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap)
 {
     if (!dead)
     {
-        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
         model = glm::mat4(1.0f);
         model = glm::translate(model, enemy->GetPosition());
         glm::vec3 pos = cPos;

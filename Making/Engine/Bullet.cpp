@@ -5,9 +5,6 @@
 #include "Camera.h"
 #include "Enemy.h"
 
-//extern bool FirstPersonView;
-//extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
-
 Bullet::Bullet(int type, int i, int j)
 {
 	SetupShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);

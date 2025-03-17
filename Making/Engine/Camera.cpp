@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "Camera.h"
 
-//extern ISound* startbgm, * basebgm;
-//extern float soundVol;
-//extern bool cloud_go;
-//extern bool finish;
-
 Camera::Camera()
 {
     Rm = { 1.0f };

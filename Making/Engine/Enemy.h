@@ -14,7 +14,7 @@ public:
     void Update(MainCharacter* mainCat);
 
     void Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
-    void DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime);
+    void DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap);
 
     void MoveToward(MainCharacter* mainCat);
     void LookUpdate(const glm::vec3& cPos);

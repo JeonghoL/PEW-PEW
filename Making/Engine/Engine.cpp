@@ -154,6 +154,11 @@ void Engine::Release()
 	delete mainCat;
 	delete shadowMap;
 	delete camera;
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+			delete enemy[i][j];
+	}
 }
 
 void Engine::ShowFps()

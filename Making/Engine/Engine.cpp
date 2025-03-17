@@ -5,10 +5,10 @@
 #include "Skybox.h"
 #include "Camera.h"
 #include "MainCharacter.h"
+#include "Enemy.h"
 #include "Input.h"
 #include "StaticObjectManager.h"
 #include "ShadowMapping.h"
-#include "EnemyManager.h"
 
 void Engine::Init()
 {
@@ -19,10 +19,18 @@ void Engine::Init()
 
 	camera = new Camera();
 	mainCat = new MainCharacter();
-	enemyManager = new EnemyManager();
+
 	shadowMap = new ShadowMapping();
 
 	mainCat->SetCamera(camera);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+		{
+			enemy[i][j] = new Enemy(i + 1, j);
+		}
+	}
 
 	input = new Input();
 	input->SetCamera(camera);
@@ -80,6 +88,12 @@ void Engine::Draw(GLFWwindow* window)
 	mainCat->Draw(view, projection, viewPos, deltatime, angle);
 	mainCat->ThrowBullets(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
 
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+			enemy[i][j]->Draw(viewPos, j, deltatime, mainCat->GetPosition(), enemy[i][j], view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
+	}
+
 	glFinish();
 }
 
@@ -130,8 +144,6 @@ void Engine::Release()
 {
 	GET_SINGLE(Skybox)->Release();
 	GET_SINGLE(StaticObjectManager)->Release();
-	enemyManager->Release();
-	delete enemyManager;
 	delete input;
 	delete mainCat;
 	delete shadowMap;

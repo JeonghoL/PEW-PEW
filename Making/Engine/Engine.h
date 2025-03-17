@@ -5,7 +5,7 @@ class MainCharacter;
 class Input;
 class StaticObject;
 class ShadowMapping;
-class EnemyManager;
+class Enemy;
 
 class Engine
 {
@@ -24,5 +24,5 @@ private:
 	MainCharacter* mainCat = { nullptr };
 	Input* input = { nullptr };
 	ShadowMapping* shadowMap = { nullptr };
-	EnemyManager* enemyManager = { nullptr };
+	Enemy* enemy[3][9] = { nullptr };
 };

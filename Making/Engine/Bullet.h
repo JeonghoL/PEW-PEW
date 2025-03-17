@@ -1,6 +1,7 @@
 #pragma once
 
 class MainCharacter;
+class Enemy;
 class Camera;
 
 class Bullet
@@ -13,7 +14,8 @@ public:
 	GLuint LoadBulletTexture(const char* path);
 
 	void BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::vec3 mousePick);
-	void BulletSettingAgain(glm::vec3 Pos);
+	void BulletSetting(Enemy* enemy, const glm::vec3 pos);
+	void BulletSettingAgain(Enemy* enemy, glm::vec3 Pos);
 	void render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 		glm::mat4 lightSpaceMatrix, GLuint shadowMap);
 	void renderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);

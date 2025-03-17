@@ -3,7 +3,7 @@
 #include "stb_image.h"
 #include "MainCharacter.h"
 #include "Camera.h"
-#include "EnemyManager.h"
+#include "Enemy.h"
 
 //extern bool FirstPersonView;
 //extern float min_X[70], max_X[70], min_Z[70], max_Z[70];
@@ -191,17 +191,32 @@ void Bullet::BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::ve
 	//}
 }
 
-//void Bullet::BulletSettingAgain(glm::vec3 Pos)
-//{
-//	position = enemy[enemy_i][enemy_j]->getPosition();
-//	position.y = 0.45f;
-//
-//	tPos = Pos;
-//	tPos.y = 0.45f;
-//	direction = glm::normalize(tPos - position);
-//	position += 0.5f * direction;
-//	angle = atan2(direction.x, direction.z);
-//}
+void Bullet::BulletSetting(Enemy* enemy, const glm::vec3 pos)
+{
+	if (b_type == 2)
+	{
+		position = enemy->GetPosition();
+		position.y = 0.45f;
+	
+		tPos = pos;
+		tPos.y = 0.45f;
+		direction = glm::normalize(tPos - position);
+		position += 0.5f * direction;
+		angle = atan2(direction.x, direction.z);
+	}
+}
+
+void Bullet::BulletSettingAgain(Enemy* enemy, glm::vec3 Pos)
+{
+	position = enemy->GetPosition();
+	position.y = 0.45f;
+
+	tPos = Pos;
+	tPos.y = 0.45f;
+	direction = glm::normalize(tPos - position);
+	position += 0.5f * direction;
+	angle = atan2(direction.x, direction.z);
+}
 
 void Bullet::render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 	glm::mat4 lightSpaceMatrix, GLuint shadowMap)

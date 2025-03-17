@@ -53,27 +53,28 @@ const std::vector<glm::vec3> ENEMY_SPAWN_POINTS = {
 
 Enemy::Enemy(int num, int POINT)
 {
+    alien_BoneInfo = new vector<BoneInfo>();
 	animModel = new AnimatedModel();
 
     if (num == 1)
     {
-        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "basepose/alien_1_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = LoadTexture("texture/alien_1_basecolor.png");
+        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "Glb/alien_1_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("Texture/alien_1_basecolor.png");
     }
     else if (num == 2)
     {
-        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "basepose/alien_2_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = LoadTexture("texture/alien_2_basecolor.png");
+        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "Glb/alien_2_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("Texture/alien_2_basecolor.png");
     }
     else if (num == 3)
     {
-        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "basepose/alien_3_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = LoadTexture("texture/alien_3_basecolor.png");
+        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "Glb/alien_3_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("Texture/alien_3_basecolor.png");
     }
-    SetupShader("enemyvs.glsl", "enemyfs.glsl", shaderprogram);
+    SetupShader("Shaders/EnemyVert.glsl", "Shaders/EnemyFrag.glsl", shaderprogram);
     glGenVertexArrays(1, &lVAO);
     glGenBuffers(1, &lVBO);
-    SetupShader("enemylineVert.glsl", "enemylineFrag.glsl", shaderprogram2);
+    SetupShader("Shaders/EnemyLineVert.glsl", "Shaders/EnemyLineFrag.glsl", shaderprogram2);
     type = num;
     enemypos = ENEMY_SPAWN_POINTS[(9 * (num - 1)) + POINT];
     point = POINT;
@@ -116,11 +117,11 @@ Enemy::~Enemy()
     glDeleteProgram(shaderprogram);
 }
 
-void Enemy::Draw(int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
+void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
 {
     if (!dead)
     {
-        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
+        //animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
         glUseProgram(shaderprogram);
         animModel->SetupBoneTransforms(*alien_BoneInfo, shaderprogram);
 
@@ -179,7 +180,7 @@ void Enemy::Draw(int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy
             if (!newbullet)
             {
                 newBullet = new Bullet(2, type - 1, point);
-                newBullet->BulletSetting();
+                newBullet->BulletSetting(this, pos);
                 newbullet = true;
 
                 tPos = newBullet->gettPos();
@@ -337,13 +338,13 @@ void Enemy::MoveToward(MainCharacter* mainCat)
         {
             if (state != 2 && state != 4)
             {
-                if (!wallcollapsed_s() && pos.z > enemypos.z)
+                if (/*!wallcollapsed_s() &&*/ pos.z > enemypos.z)
                     enemypos.z += 0.01f;
-                if (!wallcollapsed_w() && pos.z < enemypos.z)
+                if (/*!wallcollapsed_w() &&*/ pos.z < enemypos.z)
                     enemypos.z -= 0.01f;
-                if (!wallcollapsed_d() && pos.x > enemypos.x)
+                if (/*!wallcollapsed_d() &&*/ pos.x > enemypos.x)
                     enemypos.x += 0.01f;
-                if (!wallcollapsed_a() && pos.x < enemypos.x)
+                if (/*!wallcollapsed_a() &&*/ pos.x < enemypos.x)
                     enemypos.x -= 0.01f;
             }
 
@@ -558,8 +559,8 @@ void Enemy::SetAnimation(MainCharacter* mainCat)
         if ((enemy_CurrentAnim->CurrentTime >= 800 && enemy_CurrentAnim->CurrentTime <= 1300) && !fire)
         {
             newBullet = new Bullet(2, type - 1, point);
-            newBullet->bulletSettingAgain(tPos);
-            enemyBullets[type - 1][point].push_back(newBullet);
+            newBullet->BulletSettingAgain(this, tPos);
+            bullets.push_back(newBullet);
         }
         else if (enemy_CurrentAnim->CurrentTime > 1300 && !fire)
             fire = true;

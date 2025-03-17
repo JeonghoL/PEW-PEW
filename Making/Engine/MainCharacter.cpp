@@ -5,27 +5,6 @@
 #include "Bullet.h"
 #include "Camera.h"
 
-// TODO(이정호): 정리 다 되면 없애자.
-//extern float getCamerahori();
-//extern bool getFirstPersonView();
-//extern bool wallcollapsed_w(), wallcollapsed_s(), wallcollapsed_a(), wallcollapsed_d();
-//extern bool wallcollapsed_forward(const glm::vec3& forward);
-//extern bool wallcollapsed_backward(const glm::vec3& forward);
-//extern bool wallcollapsed_right(const glm::vec3& right);
-//extern bool wallcollapsed_left(const glm::vec3& right);
-//
-//extern void setupBoneTransforms(std::vector<BoneInfo>& BoneInfoName, GLuint shadername);
-//extern void UpdateAnimation(int j, std::vector<BoneInfo>& BoneInfoName, float deltaTime, AnimInfo& currentAnim);
-//
-//extern void loadGLBFile(int j, std::vector<BoneInfo>& BoneInfoName, const std::string& filename, GLuint& VAO, GLuint& VBO, GLuint& VBO2, GLuint& EBO, std::vector<unsigned int>& Indices);
-//void setupShader(const char* vertexName, const char* fragmentName, GLuint& shaderName);
-//extern Texture textureLoader;
-//extern AnimInfo player_CurrentAnim;
-//extern bool firing;
-//extern bool firing_induration;
-//extern float light_angle;
-//extern bool finish;
-
 MainCharacter::MainCharacter()
 {
 	player_BoneInfo = new vector<BoneInfo>();

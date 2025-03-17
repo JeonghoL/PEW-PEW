@@ -13,7 +13,7 @@ public:
     Enemy(int num, int POINT);
     ~Enemy();
 
-    void Draw(int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
+    void Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
     void DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime);
 
     void MoveToward(MainCharacter* mainCat);
@@ -60,6 +60,7 @@ private:
 
     Bullet* newBullet;
     glm::vec3 tPos;
+    vector<Bullet*> bullets;
 
     vector<BoneInfo>* alien_BoneInfo;
     AnimatedModel* animModel;

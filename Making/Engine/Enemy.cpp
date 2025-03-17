@@ -142,7 +142,7 @@ void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec
 {
     if (!dead)
     {
-        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
+        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime, *enemy_CurrentAnim);
         glUseProgram(shaderprogram);
         animModel->SetupBoneTransforms(*alien_BoneInfo, shaderprogram);
 

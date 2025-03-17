@@ -245,9 +245,7 @@ void Camera::SetInitialDirection(const glm::vec3& direction)
 
 glm::vec3 Camera::SetMouseWorldDirection(float cur_x, float cur_y, const glm::mat4& projection, const glm::mat4& view, const glm::vec3& targetPos)
 {
-    if (!IsAltPressed()) {
-        return GetMouseWorldDirection(cur_x, cur_y, projection, view, targetPos);
-    }
+    return GetMouseWorldDirection(cur_x, cur_y, projection, view, targetPos);
 }
 
 glm::vec3 Camera::GetPosition(const glm::vec3& targetPos) {

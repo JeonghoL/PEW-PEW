@@ -130,7 +130,7 @@ public:
 		unordered_map<std::string, AnimInfo> animations;
 		std::string currentAnimationName;
 
-		void loadAnimation(const std::string& name, const std::string& filename,
+		void LoadAnimation(const std::string& name, const std::string& filename,
 			vector<unique_ptr<Assimp::Importer>>& importers, AnimatedModel* model) {
 			importers.push_back(make_unique<Assimp::Importer>());
 			const aiScene* scene = importers.back()->ReadFile(filename,
@@ -160,7 +160,7 @@ public:
 				cout << "Unloaded animation: " << name << endl;
 		}
 
-		void changeAnimation(const std::string& name, AnimInfo& currentAnim) {
+		void ChangeAnimation(const std::string& name, AnimInfo& currentAnim) {
 			auto it = animations.find(name);
 			if (it != animations.end()) {
 				currentAnim = it->second;
@@ -170,7 +170,7 @@ public:
 			}
 		}
 
-		const std::string& getcurrentAnimation() const {
+		const std::string& GetCurrentAnimation() const {
 			return currentAnimationName;
 		}
 	};
@@ -189,14 +189,14 @@ private:
 	void LoadBones(const aiMesh* mesh, vector<BoneInfo>& BoneInfoName);
 	
 private:
-	int get_bone_id(const aiBone* pBone);
-	void parse_single_bone(int mesh_index, const aiBone* pBone);
-	void parsh_mesh_bones(int mesh_index, const aiMesh* pMesh);
-	void parse_meshes(const aiScene* pScene);
-	void parse_scene(const aiScene* pScene);
+	int Get_Bone_Id(const aiBone* pBone);
+	void Parse_Single_Bone(int mesh_index, const aiBone* pBone);
+	void Parsh_Mesh_Bones(int mesh_index, const aiMesh* pMesh);
+	void Parse_Meshes(const aiScene* pScene);
+	void Parse_Scene(const aiScene* pScene);
 
 private:
-	glm::mat4 aiMatrix4x4ToGlm(const aiMatrix4x4& from);
+	glm::mat4 AiMatrix4x4ToGlm(const aiMatrix4x4& from);
 	const aiNodeAnim* FindNodeAnim(const aiAnimation* animation, const std::string& nodeName);
 
 	glm::vec3 InterpolateScale(float AnimationTime, const aiNodeAnim* pNodeAnim);

@@ -51,6 +51,13 @@ void Engine::Update()
 		GET_SINGLE(Timer)->Update();
 		camera->Update();
 		mainCat->Update();
+		for (int i = 0; i < 3; ++i)
+		{
+			for (int j = 0; j < 9; ++j)
+			{
+				enemy[i][j]->Update(mainCat);
+			}
+		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Draw(window);
@@ -71,7 +78,8 @@ void Engine::Draw(GLFWwindow* window)
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
 	glm::mat4 view = camera->GetViewMatrix(mainCat->GetPosition());
-	mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->GetPosition());
+	if (!camera->IsAltPressed())
+		mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->GetPosition());
 	glm::vec3 viewPos = camera->GetPosition(mainCat->GetPosition());
 	glm::mat4 lightSpaceMatrix = shadowMap->GetLightSpaceMatrix();
 	float angle = camera->GetAngle();

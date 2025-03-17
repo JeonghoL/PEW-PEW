@@ -180,16 +180,16 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 			if (isMovingNow) {
 				if (isRunningNow)
 				{
-					input->mainCat->GetAnimLibrary()->changeAnimation("Run", *input->mainCat->GetCurrentAnim());
+					input->mainCat->GetAnimLibrary()->ChangeAnimation("Run", *input->mainCat->GetCurrentAnim());
 				}
 				else
 				{
-					input->mainCat->GetAnimLibrary()->changeAnimation("Walk", *input->mainCat->GetCurrentAnim());
+					input->mainCat->GetAnimLibrary()->ChangeAnimation("Walk", *input->mainCat->GetCurrentAnim());
 				}
 			}
 			else
 			{
-				input->mainCat->GetAnimLibrary()->changeAnimation("Idle", *input->mainCat->GetCurrentAnim());
+				input->mainCat->GetAnimLibrary()->ChangeAnimation("Idle", *input->mainCat->GetCurrentAnim());
 			}
 		}
 	}
@@ -225,10 +225,10 @@ void Input::MouseFunc(GLFWwindow* window, int button, int action, int mods)
 	}
 
 	// 수정필요
-	if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Run")
-		input->mainCat->GetAnimLibrary()->changeAnimation("FireRun", *input->mainCat->GetCurrentAnim());
-	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Walk")
-		input->mainCat->GetAnimLibrary()->changeAnimation("FireWalk", *input->mainCat->GetCurrentAnim());
-	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->getcurrentAnimation() == "Idle")
-		input->mainCat->GetAnimLibrary()->changeAnimation("Fire", *input->mainCat->GetCurrentAnim());
+	if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->GetCurrentAnimation() == "Run")
+		input->mainCat->GetAnimLibrary()->ChangeAnimation("FireRun", *input->mainCat->GetCurrentAnim());
+	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->GetCurrentAnimation() == "Walk")
+		input->mainCat->GetAnimLibrary()->ChangeAnimation("FireWalk", *input->mainCat->GetCurrentAnim());
+	else if (input->mainCat->GetFiring() && input->mainCat->GetAnimLibrary()->GetCurrentAnimation() == "Idle")
+		input->mainCat->GetAnimLibrary()->ChangeAnimation("Fire", *input->mainCat->GetCurrentAnim());
 }

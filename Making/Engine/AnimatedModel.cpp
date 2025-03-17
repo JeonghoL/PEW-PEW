@@ -56,7 +56,7 @@ void AnimatedModel::LoadGLBFile(int j, vector<BoneInfo>& BoneInfoName, const std
 		}
 	}
 
-	parse_scene(scene);
+	Parse_Scene(scene);
 	//CheckBoneHierarchy(scene->mRootNode);		// 본 계층구조 확인함수
 	//PrintBoneHierarchy(scene->mRootNode);
 	//checkFileAnimation(scene);		// T-pose 캐릭터 파일에 애니메이션 있는지 확인
@@ -212,7 +212,7 @@ void AnimatedModel::CheckWeights()
 void AnimatedModel::CalculateNodeTransform(int j, vector<BoneInfo>& BoneInfoName, const aiNode* pNode, const glm::mat4& ParentTransform, const AnimInfo& currentAnim)
 {
 	std::string NodeName(pNode->mName.data);
-	glm::mat4 NodeTransformation = aiMatrix4x4ToGlm(pNode->mTransformation);
+	glm::mat4 NodeTransformation = AiMatrix4x4ToGlm(pNode->mTransformation);
 	const aiNodeAnim* pNodeAnim = FindNodeAnim(currentAnim.animation, NodeName);
 
 	if (pNodeAnim) {
@@ -281,7 +281,7 @@ void AnimatedModel::UpdateAnimation(int j, vector<BoneInfo>& BoneInfoName, float
 	CalculateNodeTransform(j, BoneInfoName, currentAnim.rootNode, glm::mat4(1.0f), currentAnim);
 }
 
-int AnimatedModel::get_bone_id(const aiBone* pBone)
+int AnimatedModel::Get_Bone_Id(const aiBone* pBone)
 {
 	int bone_id = 0;
 	std::string bone_name(pBone->mName.C_Str());
@@ -311,11 +311,11 @@ int AnimatedModel::get_bone_id(const aiBone* pBone)
 	return bone_id;
 }
 
-void AnimatedModel::parse_single_bone(int mesh_index, const aiBone* pBone)
+void AnimatedModel::Parse_Single_Bone(int mesh_index, const aiBone* pBone)
 {
 	if (!pBone) return;
 
-	int bone_id = get_bone_id(pBone);
+	int bone_id = Get_Bone_Id(pBone);
 	std::string bone_name(pBone->mName.C_Str());
 
 	for (unsigned int i = 0; i < pBone->mNumWeights; ++i) {
@@ -326,15 +326,15 @@ void AnimatedModel::parse_single_bone(int mesh_index, const aiBone* pBone)
 	}
 }
 
-void AnimatedModel::parsh_mesh_bones(int mesh_index, const aiMesh* pMesh)
+void AnimatedModel::Parsh_Mesh_Bones(int mesh_index, const aiMesh* pMesh)
 {
 	for (int i = 0; i < pMesh->mNumBones; ++i)
 	{
-		parse_single_bone(mesh_index, pMesh->mBones[i]);
+		Parse_Single_Bone(mesh_index, pMesh->mBones[i]);
 	}
 }
 
-void AnimatedModel::parse_meshes(const aiScene* pScene)
+void AnimatedModel::Parse_Meshes(const aiScene* pScene)
 {
 	int total_vertices = 0;
 	int total_indices = 0;
@@ -357,19 +357,19 @@ void AnimatedModel::parse_meshes(const aiScene* pScene)
 		vertex_to_bones.resize(total_vertices);
 
 		if (pMesh->HasBones()) {
-			parsh_mesh_bones(i, pMesh);
+			Parsh_Mesh_Bones(i, pMesh);
 		}
 	}
 	NormalizeBoneWeights();
 	CheckWeights();
 }
 
-void AnimatedModel::parse_scene(const aiScene* pScene)
+void AnimatedModel::Parse_Scene(const aiScene* pScene)
 {
-	parse_meshes(pScene);
+	Parse_Meshes(pScene);
 }
 
-glm::mat4 AnimatedModel::aiMatrix4x4ToGlm(const aiMatrix4x4& from)
+glm::mat4 AnimatedModel::AiMatrix4x4ToGlm(const aiMatrix4x4& from)
 {
 	glm::mat4 to;
 	to[0][0] = from.a1; to[0][1] = from.b1; to[0][2] = from.c1; to[0][3] = from.d1;

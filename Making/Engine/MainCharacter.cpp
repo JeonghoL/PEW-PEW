@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "MainCharacter.h"
-#include "AnimatedModel.h"
 #include "ShadowMapping.h"
 #include "Bullet.h"
 #include "Camera.h"
@@ -304,7 +303,7 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 
 	if (!GetDying())
 	{
-		if (animLibrary->getcurrentAnimation() == "FireRun")
+		if (animLibrary->GetCurrentAnimation() == "FireRun")
 		{
 			firing_induration = true;
 			firetimer = player_CurrentAnim->Duration * 0.56f;
@@ -343,12 +342,12 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 					if (IsMoving())
 					{
 						if (Shift_value())
-							animLibrary->changeAnimation("Run", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("Run", *player_CurrentAnim);
 						else
-							animLibrary->changeAnimation("Walk", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("Walk", *player_CurrentAnim);
 					}
 					else
-						animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+						animLibrary->ChangeAnimation("Idle", *player_CurrentAnim);
 					firing_induration = false;
 				}
 				else
@@ -356,19 +355,19 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 					if (IsMoving())
 					{
 						if (!Shift_value())
-							animLibrary->changeAnimation("FireWalk", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("FireWalk", *player_CurrentAnim);
 						else
-							animLibrary->changeAnimation("FireRun", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("FireRun", *player_CurrentAnim);
 					}
 					else
-						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
+						animLibrary->ChangeAnimation("Fire", *player_CurrentAnim);
 				}
 
 				for (bool& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}
-		else if (animLibrary->getcurrentAnimation() == "FireWalk")
+		else if (animLibrary->GetCurrentAnimation() == "FireWalk")
 		{
 			firing_induration = true;
 			firetimer = player_CurrentAnim->Duration * 0.56f;
@@ -407,12 +406,12 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 					if (IsMoving())
 					{
 						if (Shift_value())
-							animLibrary->changeAnimation("Run", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("Run", *player_CurrentAnim);
 						else
-							animLibrary->changeAnimation("Walk", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("Walk", *player_CurrentAnim);
 					}
 					else
-						animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+						animLibrary->ChangeAnimation("Idle", *player_CurrentAnim);
 					firing_induration = false;
 				}
 				else
@@ -420,19 +419,19 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 					if (IsMoving())
 					{
 						if (Shift_value())
-							animLibrary->changeAnimation("FireRun", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("FireRun", *player_CurrentAnim);
 						else
-							animLibrary->changeAnimation("FireWalk", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("FireWalk", *player_CurrentAnim);
 					}
 					else
-						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
+						animLibrary->ChangeAnimation("Fire", *player_CurrentAnim);
 				}
 
 				for (bool& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}
-		else if (animLibrary->getcurrentAnimation() == "Fire")
+		else if (animLibrary->GetCurrentAnimation() == "Fire")
 		{
 			firing_induration = true;
 			firetimer = player_CurrentAnim->Duration * 0.56f;
@@ -471,12 +470,12 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 					if (IsMoving())
 					{
 						if (Shift_value())
-							animLibrary->changeAnimation("Run", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("Run", *player_CurrentAnim);
 						else
-							animLibrary->changeAnimation("Walk", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("Walk", *player_CurrentAnim);
 					}
 					else
-						animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+						animLibrary->ChangeAnimation("Idle", *player_CurrentAnim);
 					firing_induration = false;
 				}
 				else
@@ -484,25 +483,25 @@ void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& p
 					if (IsMoving())
 					{
 						if (Shift_value())
-							animLibrary->changeAnimation("FireRun", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("FireRun", *player_CurrentAnim);
 						else
-							animLibrary->changeAnimation("FireWalk", *player_CurrentAnim);
+							animLibrary->ChangeAnimation("FireWalk", *player_CurrentAnim);
 					}
 					else
-						animLibrary->changeAnimation("Fire", *player_CurrentAnim);
+						animLibrary->ChangeAnimation("Fire", *player_CurrentAnim);
 				}
 
 				for (auto& bullet_nums : Bullet_cnt)
 					bullet_nums = false;
 			}
 		}
-		else if (animLibrary->getcurrentAnimation() == "Die")
-			animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+		else if (animLibrary->GetCurrentAnimation() == "Die")
+			animLibrary->ChangeAnimation("Idle", *player_CurrentAnim);
 	}
 	else
 	{
-		if (animLibrary->getcurrentAnimation() != "Die")
-			animLibrary->changeAnimation("Die", *player_CurrentAnim);
+		if (animLibrary->GetCurrentAnimation() != "Die")
+			animLibrary->ChangeAnimation("Die", *player_CurrentAnim);
 		else
 		{
 			if (player_CurrentAnim->CurrentTime + 10 >= player_CurrentAnim->Duration)
@@ -528,25 +527,25 @@ void MainCharacter::SaveAnimations()
 	// Texture
 	// sound
 
-    animLibrary->loadAnimation("Idle", "Animations/cat_animation_idle.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Die", "Animations/cat_animation_die.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Walk", "Animations/cat_animation_walking.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Run", "Animations/cat_animation_run.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Hit", "Animations/cat_animation_hit.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Jump", "Animations/cat_animation_jump.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("AimIdle", "Animations/cat_animation_idle_aim.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("AimWalk", "Animations/cat_animation_walking_aim.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Fire", "Animations/cat_animation_firing_aim.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("FireWalk", "Animations/cat_animation_firing_walk.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("FireRun", "Animations/cat_animation_firing_run.glb", animationImporters, animModel);
-    animLibrary->loadAnimation("Dance", "Animations/cat_animation_dance.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Idle", "Animations/cat_animation_idle.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Die", "Animations/cat_animation_die.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Walk", "Animations/cat_animation_walking.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Run", "Animations/cat_animation_run.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Hit", "Animations/cat_animation_hit.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Jump", "Animations/cat_animation_jump.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("AimIdle", "Animations/cat_animation_idle_aim.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("AimWalk", "Animations/cat_animation_walking_aim.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Fire", "Animations/cat_animation_firing_aim.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("FireWalk", "Animations/cat_animation_firing_walk.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("FireRun", "Animations/cat_animation_firing_run.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Dance", "Animations/cat_animation_dance.glb", animationImporters, animModel);
 
-    animLibrary->changeAnimation("Idle", *player_CurrentAnim);
+    animLibrary->ChangeAnimation("Idle", *player_CurrentAnim);
 }
 
 void MainCharacter::SetAnimationType(const std::string& animName)
 {
     if (animLibrary && player_CurrentAnim) {
-        animLibrary->changeAnimation(animName, *player_CurrentAnim);
+        animLibrary->ChangeAnimation(animName, *player_CurrentAnim);
     }
 }

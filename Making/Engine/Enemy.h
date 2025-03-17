@@ -1,8 +1,6 @@
 #pragma once
+#include "AnimatedModel.h"
 
-struct AnimInfo;
-struct BoneInfo;
-class AnimatedModel;
 class Bullet;
 class MainCharacter;
 class ShadowMapping;
@@ -12,6 +10,8 @@ class Enemy
 public:
     Enemy(int num, int POINT);
     ~Enemy();
+
+    void Update(MainCharacter* mainCat);
 
     void Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
     void DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap, float deltaTime);
@@ -37,6 +37,9 @@ public:
 
     void SetDead();
     void SetReviveTimer();
+
+    void SaveAnimations();
+    void ChangeEnemiesAnimation();
 
 private:
     glm::vec3 enemypos, targetpos;
@@ -65,4 +68,7 @@ private:
     vector<BoneInfo>* alien_BoneInfo;
     AnimatedModel* animModel;
     AnimInfo* enemy_CurrentAnim;
+    AnimatedModel::AnimationLibrary* animLibrary = { nullptr };
+
+    std::vector<std::unique_ptr<Assimp::Importer>> animationImporters;
 };

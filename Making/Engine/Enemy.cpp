@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include "MainCharacter.h"
 #include "Bullet.h"
-#include "AnimatedModel.h"
 #include "ShadowMapping.h"
 
 //extern MainCharacter* mainCat;
@@ -55,6 +54,10 @@ Enemy::Enemy(int num, int POINT)
 {
     alien_BoneInfo = new vector<BoneInfo>();
 	animModel = new AnimatedModel();
+    enemy_CurrentAnim = new AnimInfo();
+    animLibrary = new AnimatedModel::AnimationLibrary();
+
+    SaveAnimations();
 
     if (num == 1)
     {
@@ -112,16 +115,34 @@ Enemy::Enemy(int num, int POINT)
 
 Enemy::~Enemy()
 {
+    delete enemy_CurrentAnim;
+    delete alien_BoneInfo;
+    delete animModel;
+
+    if (animLibrary != nullptr) {
+        delete animLibrary;
+    }
+
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &VBO2);
+    glDeleteBuffers(1, &EBO);
+    glDeleteTextures(1, &Texture);
     glDeleteProgram(shaderprogram);
+}
+
+void Enemy::Update(MainCharacter* mainCat)
+{
+    ChangeEnemiesAnimation();
+    SetAnimation(mainCat);
+    MoveToward(mainCat);
 }
 
 void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
 {
     if (!dead)
     {
-        //animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
+        animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime * 0.5f, *enemy_CurrentAnim);
         glUseProgram(shaderprogram);
         animModel->SetupBoneTransforms(*alien_BoneInfo, shaderprogram);
 
@@ -650,4 +671,56 @@ void Enemy::SetDead()
 void Enemy::SetReviveTimer()
 {
     revive_timer = 240.0f;
+}
+
+void Enemy::SaveAnimations()
+{
+    animLibrary->LoadAnimation("Idle", "Animations/alien_animation_idle.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Run", "Animations/alien_animation_run.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Attack", "Animations/alien_animation_attack.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Hit", "Animations/alien_animation_hit.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Death", "Animations/alien_animation_death.glb", animationImporters, animModel);
+    animLibrary->LoadAnimation("Dance", "Animations/cat_animation_dance.glb", animationImporters, animModel);
+
+    animLibrary->ChangeAnimation("Idle", *enemy_CurrentAnim);
+}
+
+void Enemy::ChangeEnemiesAnimation()
+{
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 9; ++j)
+        {
+            if (state == 0)
+            {
+                if (animLibrary->GetCurrentAnimation() != "Idle")
+                    animLibrary->ChangeAnimation("Idle", *enemy_CurrentAnim);
+            }
+            else if (state == 1)
+            {
+                if (animLibrary->GetCurrentAnimation() != "Run")
+                    animLibrary->ChangeAnimation("Run", *enemy_CurrentAnim);
+            }
+            else if (state == 2)
+            {
+                if (animLibrary->GetCurrentAnimation() != "Attack")
+                    animLibrary->ChangeAnimation("Attack", *enemy_CurrentAnim);
+            }
+            else if (state == 3)
+            {
+                if (animLibrary->GetCurrentAnimation() == "Idle")
+                    animLibrary->ChangeAnimation("Hit", *enemy_CurrentAnim);
+            }
+            else if (state == 4)
+            {
+                if (animLibrary->GetCurrentAnimation() != "Death")
+                    animLibrary->ChangeAnimation("Death", *enemy_CurrentAnim);
+            }
+            else if (state == 5)
+            {
+                if (animLibrary->GetCurrentAnimation() != "Dance")
+                    animLibrary->ChangeAnimation("Dance", *enemy_CurrentAnim);
+            }
+        }
+    }
 }

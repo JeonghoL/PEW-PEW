@@ -16,7 +16,7 @@ void Input::KeyBoardInput(GLFWwindow* window, int key, int scancode, int action,
 				input->camera->SetStart(true);
 			break;
 		case GLFW_KEY_Q:
-			if ((input->camera->Get_start_pos() == 0 && !input->mainCat->GetDying())/* || finish*/)
+			if ((!(input->camera->Get_start_pos() == 0) && !input->mainCat->GetDying())/* || finish*/)
 			{
 				if (action == GLFW_PRESS)
 					glfwSetWindowShouldClose(window, GL_TRUE);

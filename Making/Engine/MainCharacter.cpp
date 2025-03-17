@@ -199,7 +199,7 @@ void MainCharacter::Shift_on(bool in)
 //}
 
 void MainCharacter::Walk() {
-    //if (!getFirstPersonView()) {
+    if (!camera->GetViewType()) {
         if (_Right/* && !wallcollapsed_d()*/)
             characterPos.x += 0.005f;
         if (_Left/* && !wallcollapsed_a()*/)
@@ -208,32 +208,32 @@ void MainCharacter::Walk() {
             characterPos.z -= 0.005f;
         if (_Bottom/* && !wallcollapsed_s()*/)
             characterPos.z += 0.005f;
-    //}
-    /*else {
+    }
+    else {
         glm::vec3 forward(
-            sin(getCamerahori()),
+            sin(camera->GetHorizontalAngle()),
             0,
-            cos(getCamerahori())
+            cos(camera->GetHorizontalAngle())
         );
         glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
 
         glm::vec3 moveDir(0.0f);
-        if (Top_on && !wallcollapsed_forward(forward)) moveDir += forward;
-        if (Bottom_on && !wallcollapsed_backward(forward)) moveDir -= forward;
-        if (Right_on && !wallcollapsed_right(right)) moveDir += right;
-        if (Left_on && !wallcollapsed_left(right)) moveDir -= right;
+        if (_Top /*&& !wallcollapsed_forward(forward)*/) moveDir += forward;
+        if (_Bottom /*&& !wallcollapsed_backward(forward)*/) moveDir -= forward;
+        if (_Right /*&& !wallcollapsed_right(right)*/) moveDir += right;
+        if (_Left /*&& !wallcollapsed_left(right)*/) moveDir -= right;
 
         if (glm::length(moveDir) > 0) {
             moveDir = glm::normalize(moveDir);
             glm::vec3 nextPos = characterPos + moveDir * 0.005f;
             characterPos = nextPos;
         }
-    }*/
+    }
 }
 
 void MainCharacter::Run()
 {
-    //if (!getFirstPersonView()) {
+    if (!camera->GetViewType()) {
         if (_Right/* && !wallcollapsed_d()*/)
             characterPos.x += 0.012f;
         if (_Left/* && !wallcollapsed_a()*/)
@@ -242,27 +242,27 @@ void MainCharacter::Run()
             characterPos.z -= 0.012f;
         if (_Bottom/* && !wallcollapsed_s()*/)
             characterPos.z += 0.012f;
-    //}
-    //else {
-    //    glm::vec3 forward(
-    //        sin(getCamerahori()),
-    //        0,
-    //        cos(getCamerahori())
-    //    );
-    //    glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
-    //
-    //    glm::vec3 moveDir(0.0f);
-    //    if (Top_on && !wallcollapsed_forward(forward)) moveDir += forward;
-    //    if (Bottom_on && !wallcollapsed_backward(forward)) moveDir -= forward;
-    //    if (Right_on && !wallcollapsed_right(right)) moveDir += right;
-    //    if (Left_on && !wallcollapsed_left(right)) moveDir -= right;
-    //
-    //    if (glm::length(moveDir) > 0) {
-    //        moveDir = glm::normalize(moveDir);
-    //        glm::vec3 nextPos = characterPos + moveDir * 0.01f;
-    //        characterPos = nextPos;
-    //    }
-    //}
+    }
+    else {
+        glm::vec3 forward(
+            sin(camera->GetHorizontalAngle()),
+            0,
+            cos(camera->GetHorizontalAngle())
+        );
+        glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
+    
+        glm::vec3 moveDir(0.0f);
+        if (_Top /*&& !wallcollapsed_forward(forward)*/) moveDir += forward;
+        if (_Bottom /*&& !wallcollapsed_backward(forward)*/) moveDir -= forward;
+        if (_Right /*&& !wallcollapsed_right(right)*/) moveDir += right;
+        if (_Left /*&& !wallcollapsed_left(right)*/) moveDir -= right;
+    
+        if (glm::length(moveDir) > 0) {
+            moveDir = glm::normalize(moveDir);
+            glm::vec3 nextPos = characterPos + moveDir * 0.01f;
+            characterPos = nextPos;
+        }
+    }
     
 }
 

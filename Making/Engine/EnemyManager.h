@@ -12,5 +12,5 @@ public:
 	void Release();
 
 private:
-	Enemy* enemy[3][9];
+	Enemy* enemy[3][9] = { nullptr };
 };

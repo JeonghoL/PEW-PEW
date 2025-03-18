@@ -274,27 +274,27 @@ void MainCharacter::Run()
 //    }
 //}
 
-//void MainCharacter::setlife()
-//{
-//    if (life > 1)
-//    {
-//        life -= 1;
-//        hitcolor = glm::vec4(1.0f, 0.6f, 0.6f, 1.0f);
-//    }
-//    else if (life > 0)
-//    {
-//        life -= 1;
-//        hit_cnt = 200;
-//        hitcolor = glm::vec4(1.0f, 0.6f, 0.6f, 1.0f);
-//        dying = true;
-//        Right_on = { false };
-//        Left_on = { false };
-//        Top_on = { false };
-//        Bottom_on = { false };
-//        Shift_on = { false };
-//        hitbox_on = { false };
-//    }
-//}
+void MainCharacter::Setlife()
+{
+    if (life > 1)
+    {
+        life -= 1;
+        hitcolor = glm::vec4(1.0f, 0.6f, 0.6f, 1.0f);
+    }
+    else if (life > 0)
+    {
+        life -= 1;
+        hit_cnt = 200;
+        hitcolor = glm::vec4(1.0f, 0.6f, 0.6f, 1.0f);
+        dying = true;
+        _Right = { false };
+        _Left = { false };
+        _Top = { false };
+        _Bottom = { false };
+        _Shift = { false };
+        hitbox_on = { false };
+    }
+}
 
 void MainCharacter::ChangeCatAnimation(const glm::mat4& view, const glm::mat4& projection)
 {

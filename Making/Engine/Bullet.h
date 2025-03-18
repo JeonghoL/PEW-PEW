@@ -20,7 +20,8 @@ public:
 		glm::mat4 lightSpaceMatrix, GLuint shadowMap);
 	void renderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
 
-	bool isCollapsed();
+	bool IsCollapsed(Enemy* enemy[3][9]);
+	bool IsCollapsed(MainCharacter* mainCat);
 	void bulletUpdate();
 
 	glm::vec3 gettPos() { return tPos; }

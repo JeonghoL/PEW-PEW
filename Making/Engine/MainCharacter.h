@@ -33,7 +33,7 @@ public:
 
 	//void changehitColor();
 
-	//void setlife();
+	void Setlife();
 
 	bool IsMoving() const {
 		return _Right || _Left || _Top || _Bottom;

@@ -60,7 +60,7 @@ void Engine::Update()
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		Draw(window);
+		Render(window);
 		ShowFps();
 		
 		// TODO
@@ -70,7 +70,7 @@ void Engine::Update()
 	}
 }
 
-void Engine::Draw(GLFWwindow* window)
+void Engine::Render(GLFWwindow* window)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glfwGetCursorPos(window, &cur_x, &cur_y);
@@ -86,7 +86,7 @@ void Engine::Draw(GLFWwindow* window)
 
 	mainCat->ChangeCatAnimation(view, projection);
 
-	DrawShadow();
+	RenderShadow();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Normal Pass 시작
 	GET_SINGLE(Skybox)->Draw(view, projection);
@@ -105,7 +105,7 @@ void Engine::Draw(GLFWwindow* window)
 	glFinish();
 }
 
-void Engine::DrawShadow()
+void Engine::RenderShadow()
 {
 	shadowMap->UpdateLightSpaceMatrix(mainCat->GetPosition());		// Shadow Pass 시작
 	shadowMap->BindFramebuffer();

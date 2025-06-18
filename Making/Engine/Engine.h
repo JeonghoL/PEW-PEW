@@ -12,8 +12,8 @@ class Engine
 public:
 	void Init();
 	void Update();
-	void Draw(GLFWwindow* window);
-	void DrawShadow();
+	void Render(GLFWwindow* window);
+	void RenderShadow();
 	void Release();
 
 private:

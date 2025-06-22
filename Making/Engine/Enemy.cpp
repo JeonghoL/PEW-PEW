@@ -144,7 +144,7 @@ void Enemy::Update(float deltaTime, const glm::vec3& cPos, Enemy* enemy, MainCha
     {
         animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime, *enemy_CurrentAnim);
         RotateEnemy(cPos, enemy);
-        ChangeEnemiesAnimation();
+        ChangeEnemyAnimation();
         UpdateStateAndBehavior(mainCat);
         MoveToward(mainCat);
         MakeBullets(cPos);
@@ -205,7 +205,7 @@ void Enemy::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::m
     }
 }
 
-void Enemy::DrawShadow(ShadowMapping* shadowMap)
+void Enemy::DrawEnemyShadow(ShadowMapping* shadowMap)
 {
     if (!dead)
     {
@@ -214,6 +214,14 @@ void Enemy::DrawShadow(ShadowMapping* shadowMap)
         animModel->SetupBoneTransforms(*alien_BoneInfo, shadowMap->GetDepthShaderProgram());
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+    }
+}
+
+void Enemy::DrawEnemyBulletShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
+{
+    for (auto& bullet : bullets)
+    {
+        bullet->RenderShadow(lightSpaceMatrix, depthShader);
     }
 }
 
@@ -346,7 +354,7 @@ void Enemy::MakeBullets(const glm::vec3& cPos)
             newBullet->BulletSetting(this, cPos);
             newbullet = true;
 
-            tPos = newBullet->gettPos();
+            tPos = newBullet->GettPos();
         }
     }
 }
@@ -527,7 +535,15 @@ void Enemy::UpdateStateAndBehavior(MainCharacter* mainCat)
             bullets.push_back(newBullet);
         }
         else if (enemy_CurrentAnim->CurrentTime > 1300 && !fire)
+        {
             fire = true;
+
+            for (auto& bullet : bullets)
+            {
+                delete bullet;  // 메모리 해제
+            }
+            bullets.clear();  // 벡터 비우기
+        }
         else if (enemy_CurrentAnim->CurrentTime + 10 >= (enemy_CurrentAnim->Duration))
         {
             if (mainCat->GetDying())
@@ -605,6 +621,16 @@ void Enemy::SetLife()
     }
 }
 
+void Enemy::ThrowBullets(const glm::mat4& view, const glm::mat4& projection,
+    glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint shadowMap)
+{
+    for (auto& bullet : bullets)
+    {
+        bullet->BulletUpdate();
+        bullet->Render(view, projection, viewPos, lightSpaceMatrix, shadowMap);
+    }
+}
+
 void Enemy::SetDead()
 {
     state = 4;
@@ -628,43 +654,37 @@ void Enemy::SaveAnimations()
     animLibrary->ChangeAnimation("Idle", *enemy_CurrentAnim);
 }
 
-void Enemy::ChangeEnemiesAnimation()
+void Enemy::ChangeEnemyAnimation()
 {
-    for (int i = 0; i < 3; ++i)
+    if (state == 0)
     {
-        for (int j = 0; j < 9; ++j)
-        {
-            if (state == 0)
-            {
-                if (animLibrary->GetCurrentAnimation() != "Idle")
-                    animLibrary->ChangeAnimation("Idle", *enemy_CurrentAnim);
-            }
-            else if (state == 1)
-            {
-                if (animLibrary->GetCurrentAnimation() != "Run")
-                    animLibrary->ChangeAnimation("Run", *enemy_CurrentAnim);
-            }
-            else if (state == 2)
-            {
-                if (animLibrary->GetCurrentAnimation() != "Attack")
-                    animLibrary->ChangeAnimation("Attack", *enemy_CurrentAnim);
-            }
-            else if (state == 3)
-            {
-                if (animLibrary->GetCurrentAnimation() == "Idle")
-                    animLibrary->ChangeAnimation("Hit", *enemy_CurrentAnim);
-            }
-            else if (state == 4)
-            {
-                if (animLibrary->GetCurrentAnimation() != "Death")
-                    animLibrary->ChangeAnimation("Death", *enemy_CurrentAnim);
-            }
-            else if (state == 5)
-            {
-                if (animLibrary->GetCurrentAnimation() != "Dance")
-                    animLibrary->ChangeAnimation("Dance", *enemy_CurrentAnim);
-            }
-        }
+        if (animLibrary->GetCurrentAnimation() != "Idle")
+            animLibrary->ChangeAnimation("Idle", *enemy_CurrentAnim);
+    }
+    else if (state == 1)
+    {
+        if (animLibrary->GetCurrentAnimation() != "Run")
+            animLibrary->ChangeAnimation("Run", *enemy_CurrentAnim);
+    }
+    else if (state == 2)
+    {
+        if (animLibrary->GetCurrentAnimation() != "Attack")
+            animLibrary->ChangeAnimation("Attack", *enemy_CurrentAnim);
+    }
+    else if (state == 3)
+    {
+        if (animLibrary->GetCurrentAnimation() == "Idle")
+            animLibrary->ChangeAnimation("Hit", *enemy_CurrentAnim);
+    }
+    else if (state == 4)
+    {
+        if (animLibrary->GetCurrentAnimation() != "Death")
+            animLibrary->ChangeAnimation("Death", *enemy_CurrentAnim);
+    }
+    else if (state == 5)
+    {
+        if (animLibrary->GetCurrentAnimation() != "Dance")
+            animLibrary->ChangeAnimation("Dance", *enemy_CurrentAnim);
     }
 }
 

@@ -101,7 +101,10 @@ void Engine::Render(GLFWwindow* window)
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 9; ++j)
+		{
 			enemy[i][j]->Draw(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
+			enemy[i][j]->ThrowBullets(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
+		}
 	}
 
 	glFinish();
@@ -120,29 +123,24 @@ void Engine::RenderShadow()
 
 	float angle = camera->GetAngle();
 
-	mainCat->Drawshadow(angle, shadowMap->GetDepthShaderProgram(), shadowMap->GetLightSpaceMatrix());
+	mainCat->DrawMainCatShadow(angle, shadowMap->GetDepthShaderProgram(), shadowMap->GetLightSpaceMatrix());
 
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 9; ++j)
 		{
-			enemy[i][j]->DrawShadow(shadowMap);
+			enemy[i][j]->DrawEnemyShadow(shadowMap);
 		}
 	}
 
 	GET_SINGLE(StaticObjectManager)->DrawShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
 
-	//for (auto& bullet : bullets)
-	//{
-	//	bullet->renderShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
-	//}
-
-	//for (int i = 0; i < 3; ++i) {
-	//	for (int j = 0; j < 9; ++j) {
-	//		for (auto& bullet : enemyBullets[i][j]) {
-	//			bullet->renderShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
-	//		}
-	//	}
-	//}
+	mainCat->DrawCatBulletShadow(shadowMap->GetLightSpaceMatrix(), shadowMap->GetStaticDepthShaderProgram());
+	
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 9; ++j) {
+			enemy[i][j]->DrawEnemyBulletShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
+		}
+	}
 
 	shadowMap->UnbindFramebuffer();
 	glViewport(0, 0, WIN_W, WIN_H);			// Shadow Pass Á¾·á

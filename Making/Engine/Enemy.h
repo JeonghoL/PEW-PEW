@@ -18,7 +18,9 @@ public:
     void Update(float deltaTime, const glm::vec3& cPos, Enemy* enemy, MainCharacter* mainCat);
 
     void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
-    void DrawShadow(ShadowMapping* shadowMap);
+
+    void DrawEnemyShadow(ShadowMapping* shadowMap);
+    void DrawEnemyBulletShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
 
     void DrawAttackingLine(const glm::mat4& view, const glm::mat4& projection);
 
@@ -43,11 +45,13 @@ public:
     const bool& GetDead() const { return dead; }
     const float& GetLastAngle() const { return lastangle; }
 
+    void ThrowBullets(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint shadowMap);
+
     void SetDead();
     void SetReviveTimer();
 
     void SaveAnimations();
-    void ChangeEnemiesAnimation();
+    void ChangeEnemyAnimation();
     void ChangeHitColor();
 
     void ReviveEnemy(const glm::vec3& cPos);

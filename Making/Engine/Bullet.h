@@ -10,22 +10,24 @@ public:
 	Bullet(int type, int i, int j);
 	~Bullet();
 
+	void SelectBulletType(int type, int i, int j);
+
 	void LoadBulletGLB(const std::string& filename);
 	GLuint LoadBulletTexture(const char* path);
 
 	void BulletSetting(MainCharacter* mainCharacter, Camera* camera, glm::vec3 mousePick);
 	void BulletSetting(Enemy* enemy, const glm::vec3 pos);
 	void BulletSettingAgain(Enemy* enemy, glm::vec3 Pos);
-	void render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
+	void Render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 		glm::mat4 lightSpaceMatrix, GLuint shadowMap);
-	void renderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
+	void RenderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
 
 	bool IsCollapsed(Enemy* enemy[3][9]);
 	bool IsCollapsed(MainCharacter* mainCat);
-	void bulletUpdate();
+	void BulletUpdate();
 
-	glm::vec3 gettPos() { return tPos; }
-	void setdirection(glm::vec3 startPos, glm::vec3 endPos) { direction = glm::normalize(endPos - startPos); }
+	glm::vec3 GettPos() { return tPos; }
+	void SetDirection(glm::vec3 startPos, glm::vec3 endPos) { direction = glm::normalize(endPos - startPos); }
 
 private:
 	glm::vec3 position;

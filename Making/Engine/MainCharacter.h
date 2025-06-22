@@ -14,7 +14,8 @@ public:
 	void Update();
 	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, float deltaTime, float angle);
 
-	void Drawshadow(float angle, GLuint depthShaderProgram, const glm::mat4& lightSpaceMatrix);
+	void DrawMainCatShadow(float angle, GLuint depthShaderProgram, const glm::mat4& lightSpaceMatrix);
+	void DrawCatBulletShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader);
 
 	void SetRight_on(bool in);
 	void SetLeft_on(bool in);

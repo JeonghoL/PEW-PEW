@@ -125,7 +125,7 @@ void MainCharacter::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos
     //}
 }
 
-void MainCharacter::Drawshadow(float angle, GLuint depthShaderProgram, const glm::mat4& lightSpaceMatrix)
+void MainCharacter::DrawMainCatShadow(float angle, GLuint depthShaderProgram, const glm::mat4& lightSpaceMatrix)
 {
     //if (!dead)
     //{
@@ -144,6 +144,14 @@ void MainCharacter::Drawshadow(float angle, GLuint depthShaderProgram, const glm
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     //}
+}
+
+void MainCharacter::DrawCatBulletShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
+{
+    for (auto& bullet : bullets)
+    {
+        bullet->RenderShadow(lightSpaceMatrix, depthShader);
+    }
 }
 
 void MainCharacter::SetRight_on(bool in)
@@ -469,8 +477,8 @@ void MainCharacter::ThrowBullets(const glm::mat4& orgview, const glm::mat4& orgp
 {
 	for (auto& bullet : bullets)
 	{
-		bullet->bulletUpdate();
-		bullet->render(orgview, orgproj, viewPos, lightSpaceMatrix, shadowMap);
+		bullet->BulletUpdate();
+		bullet->Render(orgview, orgproj, viewPos, lightSpaceMatrix, shadowMap);
 	}
 }
 

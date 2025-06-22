@@ -8,6 +8,18 @@
 Bullet::Bullet(int type, int i, int j)
 {
 	SetupShader("Shaders/StaticObjectVert.glsl", "Shaders/StaticObjectFrag.glsl", shaderprogram);
+	SelectBulletType(type, i, j);
+}
+
+Bullet::~Bullet()
+{
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteProgram(shaderprogram);
+}
+
+void Bullet::SelectBulletType(int type, int i, int j)
+{
 	if (type == 1)
 	{
 		LoadBulletGLB("StaticGlb/dagger.glb");
@@ -24,13 +36,6 @@ Bullet::Bullet(int type, int i, int j)
 		enemy_j = j;
 		bulletSpeed = 0.3f;
 	}
-}
-
-Bullet::~Bullet()
-{
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderprogram);
 }
 
 
@@ -204,7 +209,7 @@ void Bullet::BulletSettingAgain(Enemy* enemy, glm::vec3 Pos)
 	angle = atan2(direction.x, direction.z);
 }
 
-void Bullet::render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
+void Bullet::Render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec3 viewPos,
 	glm::mat4 lightSpaceMatrix, GLuint shadowMap)
 {
 	glUseProgram(shaderprogram);
@@ -238,7 +243,7 @@ void Bullet::render(const glm::mat4& orgview, const glm::mat4& orgproj, glm::vec
 	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 }
 
-void Bullet::renderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
+void Bullet::RenderShadow(const glm::mat4& lightSpaceMatrix, GLuint depthShader)
 {
 	glUseProgram(depthShader);
 	glUniformMatrix4fv(glGetUniformLocation(depthShader, "lightSpaceMatrix"),
@@ -324,7 +329,7 @@ bool Bullet::IsCollapsed(MainCharacter* mainCat)
 	return check;
 }
 
-void Bullet::bulletUpdate()
+void Bullet::BulletUpdate()
 {
 	position += direction * bulletSpeed;
 

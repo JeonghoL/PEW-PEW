@@ -15,22 +15,24 @@ public:
     void SetSpawnPosition();
     void SetSpawnAngle();
     void SetupShaders();
-    void Update(MainCharacter* mainCat);
+    void Update(float deltaTime, const glm::vec3& cPos, Enemy* enemy, MainCharacter* mainCat);
 
-    void Draw(float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
+    void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
     void DrawShadow(ShadowMapping* shadowMap);
 
     void DrawAttackingLine(const glm::mat4& view, const glm::mat4& projection);
 
     void MoveToward(MainCharacter* mainCat);
+    void RotateEnemy(const glm::vec3& cPos, Enemy* enemy);
     void LookUpdate(const glm::vec3& cPos);
+    void MakeBullets(const glm::vec3& cPos);
 
     bool wallcollapsed_s();
     bool wallcollapsed_w();
     bool wallcollapsed_d();
     bool wallcollapsed_a();
 
-    void UpdateAnimationAndState(MainCharacter* mainCat);
+    void UpdateStateAndBehavior(MainCharacter* mainCat);
 
     void SetLife();
 
@@ -46,6 +48,7 @@ public:
 
     void SaveAnimations();
     void ChangeEnemiesAnimation();
+    void ChangeHitColor();
 
     void ReviveEnemy(const glm::vec3& cPos);
 

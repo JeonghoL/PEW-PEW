@@ -49,13 +49,15 @@ void Engine::Update()
 
 	while (!glfwWindowShouldClose(window)) {
 		GET_SINGLE(Timer)->Update();
+		float deltatime = GET_SINGLE(Timer)->GetDeltaTime();
+
 		camera->Update();
 		mainCat->Update();
 		for (int i = 0; i < 3; ++i)
 		{
 			for (int j = 0; j < 9; ++j)
 			{
-				enemy[i][j]->Update(mainCat);
+				enemy[i][j]->Update(deltatime, mainCat->GetPosition(), enemy[i][j], mainCat);
 			}
 		}
 
@@ -99,7 +101,7 @@ void Engine::Render(GLFWwindow* window)
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 9; ++j)
-			enemy[i][j]->Draw(deltatime, mainCat->GetPosition(), enemy[i][j], view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
+			enemy[i][j]->Draw(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
 	}
 
 	glFinish();

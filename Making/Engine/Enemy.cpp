@@ -138,46 +138,27 @@ void Enemy::SetupShaders()
     SetupShader("Shaders/EnemyLineVert.glsl", "Shaders/EnemyLineFrag.glsl", shaderprogram2);
 }
 
-void Enemy::Update(MainCharacter* mainCat)
-{
-    ChangeEnemiesAnimation();
-    UpdateAnimationAndState(mainCat);
-    MoveToward(mainCat);
-
-    /*if (state == 2 && enemy_CurrentAnim->CurrentTime < 750)
-    {
-        if (!newbullet)
-        {
-            newBullet = new Bullet(2, type - 1, point);
-            newBullet->BulletSetting(this, pos);
-            newbullet = true;
-
-            tPos = newBullet->gettPos();
-        }
-    }*/
-}
-
-void Enemy::Draw(float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
+void Enemy::Update(float deltaTime, const glm::vec3& cPos, Enemy* enemy, MainCharacter* mainCat)
 {
     if (!dead)
     {
         animModel->UpdateAnimation(type + 1, *alien_BoneInfo, deltaTime, *enemy_CurrentAnim);
+        RotateEnemy(cPos, enemy);
+        ChangeEnemiesAnimation();
+        UpdateStateAndBehavior(mainCat);
+        MoveToward(mainCat);
+        MakeBullets(cPos);
+    }
+    else
+        ReviveEnemy(cPos);
+}
+
+void Enemy::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
+{
+    if (!dead)
+    {
         glUseProgram(shaderprogram);
         animModel->SetupBoneTransforms(*alien_BoneInfo, shaderprogram);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, enemy->GetPosition());
-        glm::vec3 pos = cPos;
-        float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
-        float angle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
-        if (distance < 13.0f)
-        {
-            if (!(state == 2 || state == 4))
-            {
-                lastangle = angle;
-            }
-        }
-        model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
 
         ViewLoc = glGetUniformLocation(shaderprogram, "view");
         glUniformMatrix4fv(ViewLoc, 1, GL_FALSE, &view[0][0]);
@@ -217,36 +198,10 @@ void Enemy::Draw(float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4
 
         if (state == 2 && enemy_CurrentAnim->CurrentTime < 750)
         {
-            if (!newbullet)
-            {
-                newBullet = new Bullet(2, type - 1, point);
-                newBullet->BulletSetting(this, pos);
-                newbullet = true;
-
-                tPos = newBullet->gettPos();
-            }
-
             DrawAttackingLine(view, projection);
         }
 
-        if (hitcolor == glm::vec4(1.0f, 0.6f, 0.6f, 1.0f))
-        {
-            hit_cnt -= 1;
-        }
-
-        if (hit_cnt == 0)
-        {
-            hitcolor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-            hit_cnt = 200;
-        }
-    }
-    else if (dead && revive_timer > 0)
-    {
-        revive_timer -= 1.0f;
-    }
-    else if (dead && revive_timer == 0)
-    {
-        ReviveEnemy(cPos);
+        ChangeHitColor();
     }
 }
 
@@ -352,6 +307,23 @@ void Enemy::MoveToward(MainCharacter* mainCat)
     }
 }
 
+void Enemy::RotateEnemy(const glm::vec3& cPos, Enemy* enemy)
+{
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, enemy->GetPosition());
+    glm::vec3 pos = cPos;
+    float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
+    float angle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
+    if (distance < 13.0f)
+    {
+        if (!(state == 2 || state == 4))
+        {
+            lastangle = angle;
+        }
+    }
+    model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
 void Enemy::LookUpdate(const glm::vec3& cPos)
 {
     glm::vec3 pos = cPos;
@@ -362,6 +334,21 @@ void Enemy::LookUpdate(const glm::vec3& cPos)
     model = glm::translate(model, enemypos);
     if (distance > 4.0f && distance < 13.0f)
         model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+void Enemy::MakeBullets(const glm::vec3& cPos)
+{
+    if (state == 2 && enemy_CurrentAnim->CurrentTime < 750)
+    {
+        if (!newbullet)
+        {
+            newBullet = new Bullet(2, type - 1, point);
+            newBullet->BulletSetting(this, cPos);
+            newbullet = true;
+
+            tPos = newBullet->gettPos();
+        }
+    }
 }
 
 //bool Enemy::wallcollapsed_s()
@@ -520,7 +507,7 @@ void Enemy::LookUpdate(const glm::vec3& cPos)
 //    return check;
 //}
 
-void Enemy::UpdateAnimationAndState(MainCharacter* mainCat)
+void Enemy::UpdateStateAndBehavior(MainCharacter* mainCat)
 {
     glm::vec3 pos = mainCat->GetPosition();
     glm::vec3 direction = glm::normalize(pos - enemypos);
@@ -681,31 +668,52 @@ void Enemy::ChangeEnemiesAnimation()
     }
 }
 
+void Enemy::ChangeHitColor()
+{
+    if (hitcolor == glm::vec4(1.0f, 0.6f, 0.6f, 1.0f))
+    {
+        hit_cnt -= 1;
+    }
+
+    if (hit_cnt == 0)
+    {
+        hitcolor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        hit_cnt = 200;
+    }
+}
+
 void Enemy::ReviveEnemy(const glm::vec3& cPos)
 {
-    SetSpawnPosition();
-    state = { 0 };
-    life = { 6 };
-    hit_cnt = { 200 };
-    revive_timer = { 2400.0f };
-    dead = { false };
-    aim_target = { false };
-    glm::vec3 pos = cPos;
-    lastangle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
-    fire = { false };
-    newbullet = { false };
-    tPos = glm::vec3(0.0f);
-
-    glm::vec3 direction = glm::normalize(pos - enemypos);
-    float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
-
-    if (distance > 4.0f)
+    if (dead && revive_timer > 0)
     {
-        SetSpawnAngle();
+        revive_timer -= 1.0f;
     }
-    else
-        model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
+    else if (dead && revive_timer == 0)
+    {
+        SetSpawnPosition();
+        state = { 0 };
+        life = { 6 };
+        hit_cnt = { 200 };
+        revive_timer = { 2400.0f };
+        dead = { false };
+        aim_target = { false };
+        glm::vec3 pos = cPos;
+        lastangle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
+        fire = { false };
+        newbullet = { false };
+        tPos = glm::vec3(0.0f);
 
-    //if (finish)
-    //    state = 5;
+        glm::vec3 direction = glm::normalize(pos - enemypos);
+        float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
+
+        if (distance > 4.0f)
+        {
+            SetSpawnAngle();
+        }
+        else
+            model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        //if (finish)
+        //    state = 5;
+    }
 }

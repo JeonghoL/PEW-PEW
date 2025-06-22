@@ -11,10 +11,16 @@ public:
     Enemy(int num, int POINT);
     ~Enemy();
 
+    void LoadModel();
+    void SetSpawnPosition();
+    void SetSpawnAngle();
+    void SetupShaders();
     void Update(MainCharacter* mainCat);
 
-    void Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
-    void DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap);
+    void Draw(float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap);
+    void DrawShadow(ShadowMapping* shadowMap);
+
+    void DrawAttackingLine(const glm::mat4& view, const glm::mat4& projection);
 
     void MoveToward(MainCharacter* mainCat);
     void LookUpdate(const glm::vec3& cPos);
@@ -24,7 +30,7 @@ public:
     bool wallcollapsed_d();
     bool wallcollapsed_a();
 
-    void SetAnimation(MainCharacter* mainCat);
+    void UpdateAnimationAndState(MainCharacter* mainCat);
 
     void SetLife();
 
@@ -40,6 +46,8 @@ public:
 
     void SaveAnimations();
     void ChangeEnemiesAnimation();
+
+    void ReviveEnemy(const glm::vec3& cPos);
 
 private:
     glm::vec3 enemypos, targetpos;

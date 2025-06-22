@@ -4,7 +4,66 @@
 #include "Bullet.h"
 #include "ShadowMapping.h"
 
-const std::vector<glm::vec3> ENEMY_SPAWN_POINTS = {
+Enemy::Enemy(int num, int POINT)
+{
+    alien_BoneInfo = new vector<BoneInfo>();
+	animModel = new AnimatedModel();
+    enemy_CurrentAnim = new AnimInfo();
+    animLibrary = new AnimatedModel::AnimationLibrary();
+
+    type = num;
+    point = POINT;
+
+    SaveAnimations();
+    LoadModel();
+    SetSpawnPosition();
+    SetSpawnAngle();
+    SetupShaders();
+
+    glGenVertexArrays(1, &lVAO);
+    glGenBuffers(1, &lVBO);
+}
+
+Enemy::~Enemy()
+{
+    delete enemy_CurrentAnim;
+    delete alien_BoneInfo;
+    delete animModel;
+
+    if (animLibrary != nullptr) {
+        delete animLibrary;
+    }
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &VBO2);
+    glDeleteBuffers(1, &EBO);
+    glDeleteTextures(1, &Texture);
+    glDeleteProgram(shaderprogram);
+}
+
+void Enemy::LoadModel()
+{
+    if (type == 1)
+    {
+        animModel->LoadGLBFile(type + 1, *alien_BoneInfo, "Glb/alien_1_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("Texture/alien_1_basecolor.png");
+    }
+    else if (type == 2)
+    {
+        animModel->LoadGLBFile(type + 1, *alien_BoneInfo, "Glb/alien_2_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("Texture/alien_2_basecolor.png");
+    }
+    else if (type == 3)
+    {
+        animModel->LoadGLBFile(type + 1, *alien_BoneInfo, "Glb/alien_3_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
+        Texture = LoadTexture("Texture/alien_3_basecolor.png");
+    }
+}
+
+void Enemy::SetSpawnPosition()
+{
+    const std::vector<glm::vec3> ENEMY_SPAWN_POINTS = {
     glm::vec3(1.54972, 0.0f, 35.1811),
     glm::vec3(-2.91028, 0.0f, 19.5118),
     glm::vec3(9.50484, 0.0f, 10.4216),
@@ -34,40 +93,14 @@ const std::vector<glm::vec3> ENEMY_SPAWN_POINTS = {
     glm::vec3(-4.94215, 0.0f, -45.7352),
     glm::vec3(-16.5574, 0.0f, -31.8925),
     glm::vec3(-48.2449, 0.0f, -22.5823),
-};
+    };
 
-Enemy::Enemy(int num, int POINT)
+    enemypos = ENEMY_SPAWN_POINTS[(9 * (type - 1)) + point];
+}
+
+void Enemy::SetSpawnAngle()
 {
-    alien_BoneInfo = new vector<BoneInfo>();
-	animModel = new AnimatedModel();
-    enemy_CurrentAnim = new AnimInfo();
-    animLibrary = new AnimatedModel::AnimationLibrary();
-
-    SaveAnimations();
-
-    if (num == 1)
-    {
-        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "Glb/alien_1_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = LoadTexture("Texture/alien_1_basecolor.png");
-    }
-    else if (num == 2)
-    {
-        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "Glb/alien_2_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = LoadTexture("Texture/alien_2_basecolor.png");
-    }
-    else if (num == 3)
-    {
-        animModel->LoadGLBFile(num + 1, *alien_BoneInfo, "Glb/alien_3_Tpose.glb", VAO, VBO, VBO2, EBO, Indices);
-        Texture = LoadTexture("Texture/alien_3_basecolor.png");
-    }
-    SetupShader("Shaders/EnemyVert.glsl", "Shaders/EnemyFrag.glsl", shaderprogram);
-    glGenVertexArrays(1, &lVAO);
-    glGenBuffers(1, &lVBO);
-    SetupShader("Shaders/EnemyLineVert.glsl", "Shaders/EnemyLineFrag.glsl", shaderprogram2);
-    type = num;
-    enemypos = ENEMY_SPAWN_POINTS[(9 * (num - 1)) + POINT];
-    point = POINT;
-    switch (POINT)
+    switch (point)
     {
     case 0:
         lastangle = -0.52f;
@@ -99,32 +132,32 @@ Enemy::Enemy(int num, int POINT)
     }
 }
 
-Enemy::~Enemy()
+void Enemy::SetupShaders()
 {
-    delete enemy_CurrentAnim;
-    delete alien_BoneInfo;
-    delete animModel;
-
-    if (animLibrary != nullptr) {
-        delete animLibrary;
-    }
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &VBO2);
-    glDeleteBuffers(1, &EBO);
-    glDeleteTextures(1, &Texture);
-    glDeleteProgram(shaderprogram);
+    SetupShader("Shaders/EnemyVert.glsl", "Shaders/EnemyFrag.glsl", shaderprogram);
+    SetupShader("Shaders/EnemyLineVert.glsl", "Shaders/EnemyLineFrag.glsl", shaderprogram2);
 }
 
 void Enemy::Update(MainCharacter* mainCat)
 {
     ChangeEnemiesAnimation();
-    SetAnimation(mainCat);
+    UpdateAnimationAndState(mainCat);
     MoveToward(mainCat);
+
+    /*if (state == 2 && enemy_CurrentAnim->CurrentTime < 750)
+    {
+        if (!newbullet)
+        {
+            newBullet = new Bullet(2, type - 1, point);
+            newBullet->BulletSetting(this, pos);
+            newbullet = true;
+
+            tPos = newBullet->gettPos();
+        }
+    }*/
 }
 
-void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
+void Enemy::Draw(float deltaTime, const glm::vec3& cPos, Enemy* enemy, glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, glm::mat4 lightSpaceMatrix, GLuint depthMap)
 {
     if (!dead)
     {
@@ -193,43 +226,7 @@ void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec
                 tPos = newBullet->gettPos();
             }
 
-            glUseProgram(shaderprogram2);
-
-            const int segments = 30;
-            std::vector<glm::vec3> linePositions;
-
-            glm::vec3 startPos = { enemypos.x, 0.45f, enemypos.z };
-            glm::vec3 endPos = { targetpos.x - (enemypos.x - targetpos.x), 0.45f,
-                                targetpos.z - (enemypos.z - targetpos.z) };
-
-            glm::vec3 direction = endPos - startPos;
-            float totalLength = glm::length(direction);
-            float segmentLength = totalLength / (segments * 2);
-
-            direction = glm::normalize(direction);
-
-            for (int i = 0; i < segments; i++) {
-                float start = i * segmentLength * 2;
-                linePositions.push_back(startPos + direction * start);
-                linePositions.push_back(startPos + direction * (start + segmentLength));
-            }
-
-            glBindVertexArray(lVAO);
-            glBindBuffer(GL_ARRAY_BUFFER, lVBO);
-            glBufferData(GL_ARRAY_BUFFER, linePositions.size() * sizeof(glm::vec3),
-                linePositions.data(), GL_DYNAMIC_DRAW);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(0);
-
-            glUniformMatrix4fv(glGetUniformLocation(shaderprogram2, "view"), 1,
-                GL_FALSE, glm::value_ptr(view));
-            glUniformMatrix4fv(glGetUniformLocation(shaderprogram2, "projection"), 1,
-                GL_FALSE, glm::value_ptr(projection));
-            glUniform3f(glGetUniformLocation(shaderprogram2, "lineColor"), 1.0f, 0.2f, 0.2f);
-
-            glLineWidth(2.0f);
-            glDrawArrays(GL_LINES, 0, linePositions.size());
-            glBindVertexArray(0);
+            DrawAttackingLine(view, projection);
         }
 
         if (hitcolor == glm::vec4(1.0f, 0.6f, 0.6f, 1.0f))
@@ -249,87 +246,61 @@ void Enemy::Draw(const glm::vec3 pos, int POINT, float deltaTime, const glm::vec
     }
     else if (dead && revive_timer == 0)
     {
-        enemypos = ENEMY_SPAWN_POINTS[(9 * (type - 1)) + point];
-        state = { 0 };
-        life = { 6 };
-        hit_cnt = { 200 };
-        revive_timer = { 2400.0f };
-        dead = { false };
-        aim_target = { false };
-        glm::vec3 pos = cPos;
-        lastangle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
-        fire = { false };
-        newbullet = { false };
-        tPos = glm::vec3(0.0f);
-
-        glm::vec3 direction = glm::normalize(pos - enemypos);
-        float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
-
-        if (distance > 4.0f)
-        {
-            switch (point)
-            {
-            case 0:
-                lastangle = -0.52f;
-                break;
-            case 1:
-                lastangle = 2.6f;
-                break;
-            case 2:
-                lastangle = 1.03f;
-                break;
-            case 3:
-                lastangle = -0.52f;
-                break;
-            case 4:
-                lastangle = 1.03f;
-                break;
-            case 5:
-                lastangle = 2.6f;
-                break;
-            case 6:
-                lastangle = 1.03f;
-                break;
-            case 7:
-                lastangle = 2.6f;
-                break;
-            case 8:
-                lastangle = 2.6f;
-                break;
-            }
-        }
-        else
-            model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
-
-        //if (finish)
-        //    state = 5;
+        ReviveEnemy(cPos);
     }
 }
 
-void Enemy::DrawShadow(int POINT, const glm::vec3& cPos, Enemy* enemy, ShadowMapping* shadowMap)
+void Enemy::DrawShadow(ShadowMapping* shadowMap)
 {
     if (!dead)
     {
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, enemy->GetPosition());
-        glm::vec3 pos = cPos;
-        float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
-        float angle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
-        if (distance < 13.0f)
-        {
-            if (!(state == 2 || state == 4))
-            {
-                lastangle = angle;
-            }
-        }
-        model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
-
         ModelLoc = glGetUniformLocation(shadowMap->GetDepthShaderProgram(), "model");
         glUniformMatrix4fv(ModelLoc, 1, GL_FALSE, glm::value_ptr(model));
         animModel->SetupBoneTransforms(*alien_BoneInfo, shadowMap->GetDepthShaderProgram());
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     }
+}
+
+void Enemy::DrawAttackingLine(const glm::mat4& view, const glm::mat4& projection)
+{
+    glUseProgram(shaderprogram2);
+
+    const int segments = 30;
+    std::vector<glm::vec3> linePositions;
+
+    glm::vec3 startPos = { enemypos.x, 0.45f, enemypos.z };
+    glm::vec3 endPos = { targetpos.x - (enemypos.x - targetpos.x), 0.45f,
+                        targetpos.z - (enemypos.z - targetpos.z) };
+
+    glm::vec3 direction = endPos - startPos;
+    float totalLength = glm::length(direction);
+    float segmentLength = totalLength / (segments * 2);
+
+    direction = glm::normalize(direction);
+
+    for (int i = 0; i < segments; i++) {
+        float start = i * segmentLength * 2;
+        linePositions.push_back(startPos + direction * start);
+        linePositions.push_back(startPos + direction * (start + segmentLength));
+    }
+
+    glBindVertexArray(lVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, lVBO);
+    glBufferData(GL_ARRAY_BUFFER, linePositions.size() * sizeof(glm::vec3),
+        linePositions.data(), GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glUniformMatrix4fv(glGetUniformLocation(shaderprogram2, "view"), 1,
+        GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaderprogram2, "projection"), 1,
+        GL_FALSE, glm::value_ptr(projection));
+    glUniform3f(glGetUniformLocation(shaderprogram2, "lineColor"), 1.0f, 0.2f, 0.2f);
+
+    glLineWidth(2.0f);
+    glDrawArrays(GL_LINES, 0, linePositions.size());
+    glBindVertexArray(0);
 }
 
 void Enemy::MoveToward(MainCharacter* mainCat)
@@ -549,7 +520,7 @@ void Enemy::LookUpdate(const glm::vec3& cPos)
 //    return check;
 //}
 
-void Enemy::SetAnimation(MainCharacter* mainCat)
+void Enemy::UpdateAnimationAndState(MainCharacter* mainCat)
 {
     glm::vec3 pos = mainCat->GetPosition();
     glm::vec3 direction = glm::normalize(pos - enemypos);
@@ -708,4 +679,33 @@ void Enemy::ChangeEnemiesAnimation()
             }
         }
     }
+}
+
+void Enemy::ReviveEnemy(const glm::vec3& cPos)
+{
+    SetSpawnPosition();
+    state = { 0 };
+    life = { 6 };
+    hit_cnt = { 200 };
+    revive_timer = { 2400.0f };
+    dead = { false };
+    aim_target = { false };
+    glm::vec3 pos = cPos;
+    lastangle = atan2(pos.x - enemypos.x, pos.z - enemypos.z);
+    fire = { false };
+    newbullet = { false };
+    tPos = glm::vec3(0.0f);
+
+    glm::vec3 direction = glm::normalize(pos - enemypos);
+    float distance = glm::length(glm::vec2(pos.x - enemypos.x, pos.z - enemypos.z));
+
+    if (distance > 4.0f)
+    {
+        SetSpawnAngle();
+    }
+    else
+        model = glm::rotate(model, lastangle, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    //if (finish)
+    //    state = 5;
 }

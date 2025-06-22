@@ -99,7 +99,7 @@ void Engine::Render(GLFWwindow* window)
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 9; ++j)
-			enemy[i][j]->Draw(viewPos, j, deltatime, mainCat->GetPosition(), enemy[i][j], view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
+			enemy[i][j]->Draw(deltatime, mainCat->GetPosition(), enemy[i][j], view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
 	}
 
 	glFinish();
@@ -123,7 +123,7 @@ void Engine::RenderShadow()
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 9; ++j)
 		{
-			enemy[i][j]->DrawShadow(j, mainCat->GetPosition(), enemy[i][j], shadowMap);
+			enemy[i][j]->DrawShadow(shadowMap);
 		}
 	}
 

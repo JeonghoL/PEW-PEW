@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "EnginePch.h"
 #include "stb_image.h"
 
 double cur_x = 0.0f;

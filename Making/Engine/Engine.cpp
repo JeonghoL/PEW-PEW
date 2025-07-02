@@ -2,39 +2,20 @@
 #include "Engine.h"
 #include "WindowInfo.h"
 #include "Timer.h"
-#include "Skybox.h"
-#include "Camera.h"
-#include "MainCharacter.h"
-#include "Enemy.h"
 #include "Input.h"
-#include "StaticObjectManager.h"
-#include "ShadowMapping.h"
+#include "GraphicsManager.h"
 
 void Engine::Init()
 {
 	GET_SINGLE(WindowInfo)->Init();
 	GET_SINGLE(Timer)->Init();
-	GET_SINGLE(Skybox)->Init();
-	GET_SINGLE(StaticObjectManager)->Init();
 
-	camera = new Camera();
-	mainCat = new MainCharacter();
-
-	shadowMap = new ShadowMapping();
-
-	mainCat->SetCamera(camera);
-
-	for (int i = 0; i < 3; ++i)
-	{
-		for (int j = 0; j < 9; ++j)
-		{
-			enemy[i][j] = new Enemy(i + 1, j);
-		}
-	}
+	graphics = new GraphicsManager();
+	graphics->Init();
 
 	input = new Input();
-	input->SetCamera(camera);
-	input->SetMainCharacter(mainCat);
+	input->SetCamera(graphics->GetCamera());
+	input->SetMainCharacter(graphics->GetMainCat());
 
 	GLFWwindow* window = GET_SINGLE(WindowInfo)->GetWindow();
 	glfwSetWindowUserPointer(window, input);
@@ -49,20 +30,9 @@ void Engine::Update()
 
 	while (!glfwWindowShouldClose(window)) {
 		GET_SINGLE(Timer)->Update();
-		float deltatime = GET_SINGLE(Timer)->GetDeltaTime();
 
-		camera->Update();
-		mainCat->Update();
-		for (int i = 0; i < 3; ++i)
-		{
-			for (int j = 0; j < 9; ++j)
-			{
-				enemy[i][j]->Update(deltatime, mainCat->GetPosition(), enemy[i][j], mainCat);
-			}
-		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		Render(window);
+		graphics->Update();
+		graphics->Render(window);
 		ShowFps();
 		
 		// TODO
@@ -72,93 +42,11 @@ void Engine::Update()
 	}
 }
 
-void Engine::Render(GLFWwindow* window)
-{
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glfwGetCursorPos(window, &cur_x, &cur_y);
-	float deltatime = GET_SINGLE(Timer)->GetDeltaTime();
-
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIN_W / (float)WIN_H, 0.1f, 1000.0f);
-	glm::mat4 view = camera->GetViewMatrix(mainCat->GetPosition());
-	if (!camera->IsAltPressed())
-		mouseDir = camera->SetMouseWorldDirection(cur_x, cur_y, projection, view, mainCat->GetPosition());
-	glm::vec3 viewPos = camera->GetPosition(mainCat->GetPosition());
-	glm::mat4 lightSpaceMatrix = shadowMap->GetLightSpaceMatrix();
-	float angle = camera->GetAngle();
-
-	mainCat->ChangeCatAnimation(view, projection);
-
-	RenderShadow();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Normal Pass 시작
-	GET_SINGLE(Skybox)->Draw(view, projection);
-	
-	GET_SINGLE(StaticObjectManager)->Draw(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
-
-	mainCat->Draw(view, projection, viewPos, deltatime, angle);
-	mainCat->ThrowBullets(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
-
-	for (int i = 0; i < 3; ++i)
-	{
-		for (int j = 0; j < 9; ++j)
-		{
-			enemy[i][j]->Draw(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
-			enemy[i][j]->ThrowBullets(view, projection, viewPos, lightSpaceMatrix, shadowMap->GetDepthMap());
-		}
-	}
-
-	glFinish();
-}
-
-void Engine::RenderShadow()
-{
-	shadowMap->UpdateLightSpaceMatrix(mainCat->GetPosition());		// Shadow Pass 시작
-	shadowMap->BindFramebuffer();
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	glUseProgram(shadowMap->GetDepthShaderProgram());			// Depth map 렌더링
-	glm::mat4 lightSpaceMatrix = shadowMap->GetLightSpaceMatrix();
-	GLuint lightSpaceMatrixLoc = glGetUniformLocation(shadowMap->GetDepthShaderProgram(), "lightSpaceMatrix");
-	glUniformMatrix4fv(lightSpaceMatrixLoc, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-	float angle = camera->GetAngle();
-
-	mainCat->DrawMainCatShadow(angle, shadowMap->GetDepthShaderProgram(), shadowMap->GetLightSpaceMatrix());
-
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 9; ++j)
-		{
-			enemy[i][j]->DrawEnemyShadow(shadowMap);
-		}
-	}
-
-	GET_SINGLE(StaticObjectManager)->DrawShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
-
-	mainCat->DrawCatBulletShadow(shadowMap->GetLightSpaceMatrix(), shadowMap->GetStaticDepthShaderProgram());
-	
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 9; ++j) {
-			enemy[i][j]->DrawEnemyBulletShadow(lightSpaceMatrix, shadowMap->GetStaticDepthShaderProgram());
-		}
-	}
-
-	shadowMap->UnbindFramebuffer();
-	glViewport(0, 0, WIN_W, WIN_H);			// Shadow Pass 종료
-}
-
 void Engine::Release()
 {
-	GET_SINGLE(Skybox)->Release();
-	GET_SINGLE(StaticObjectManager)->Release();
+	graphics->Release();
 	delete input;
-	delete mainCat;
-	delete shadowMap;
-	delete camera;
-	for (int i = 0; i < 3; ++i)
-	{
-		for (int j = 0; j < 9; ++j)
-			delete enemy[i][j];
-	}
+	delete graphics;
 }
 
 void Engine::ShowFps()

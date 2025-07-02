@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <memory>
 using namespace std;
 
 #include <GL/glew.h>
@@ -72,8 +73,6 @@ extern glm::vec3 mouseDir;
 constexpr unsigned int MAX_BONES = 100;
 
 extern float light_angle;
-
-extern unique_ptr<class Engine> GEngine;
 
 // 공용 함수들
 string LoadFile(const string& filename);

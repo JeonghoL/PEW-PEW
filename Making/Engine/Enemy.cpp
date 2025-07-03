@@ -537,12 +537,6 @@ void Enemy::UpdateStateAndBehavior(MainCharacter* mainCat)
         else if (enemy_CurrentAnim->CurrentTime > 1300 && !fire)
         {
             fire = true;
-
-            for (auto& bullet : bullets)
-            {
-                delete bullet;  // 메모리 해제
-            }
-            bullets.clear();  // 벡터 비우기
         }
         else if (enemy_CurrentAnim->CurrentTime + 10 >= (enemy_CurrentAnim->Duration))
         {
@@ -570,6 +564,12 @@ void Enemy::UpdateStateAndBehavior(MainCharacter* mainCat)
                 fire = false;
                 newbullet = false;
             }
+
+            for (auto& bullet : bullets)
+            {
+                delete bullet;  // 메모리 해제
+            }
+            bullets.clear();  // 벡터 비우기
         }
     }
     else if (state == 3)
